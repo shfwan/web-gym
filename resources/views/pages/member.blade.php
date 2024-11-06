@@ -12,7 +12,8 @@
                 {{-- Search --}}
                 <label class="input input-bordered max-w-lg w-full flex items-center gap-2">
                     <input type="text" class="grow" placeholder="Search" />
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="h-4 w-4 opacity-70">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                        class="h-4 w-4 opacity-70">
                         <path fill-rule="evenodd"
                             d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
                             clip-rule="evenodd" />
@@ -20,15 +21,34 @@
                 </label>
 
                 {{-- Button Add Member --}}
-                <button class="btn btn-success text-white">
+                <button class="btn btn-success text-white" onclick="addMember.showModal()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-person-plus-fill" viewBox="0 0 16 16">
                         <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
                         <path fill-rule="evenodd"
                             d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5" />
                     </svg>
-                    New Member asd
+                    New Member
                 </button>
+
+                <x-modal id="addMember" title="Tambah Member">
+                    @csrf
+                    <form action="" method="post">
+                        <div class="flex flex-col w-full gap-4">
+                            <input type="text" placeholder="Nama depan" class="input input-bordered w-full max-w-md" />
+                            <input type="text" placeholder="Nama Belakang"
+                                class="input input-bordered w-full max-w-md" />
+                            <input type="text" placeholder="Email" class="input input-bordered w-full max-w-md" />
+                            <input type="text" placeholder="Nomor HP" class="input input-bordered w-full max-w-md" />
+                            <select class="select select-bordered w-full max-w-xs">
+                                <option disabled selected>Pilih Masa Aktif Member</option>
+                                <option>1 Minggu</option>
+                                <option>1 Bulan</option>
+                                <option>3 Bulan</option>
+                            </select>
+                        </div>
+                    </form>
+                </x-modal>
 
             </div>
 
@@ -57,7 +77,8 @@
                                 </div>
                                 <div class="inline-flex flex-col gap-2 w-full">
                                     <label for="label" class="text-sm text-gray-500">Description</label>
-                                    <p class="truncate w-full text-base text-gray-700">If a dog chews shoes whose shoes does he choose?</p>
+                                    <p class="truncate w-full text-base text-gray-700">If a dog chews shoes whose shoes does
+                                        he choose?</p>
                                 </div>
                             </div>
 

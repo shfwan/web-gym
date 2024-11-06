@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,36 +16,46 @@ use Illuminate\Support\Facades\Route;
 
 // User & Guest Routes
 
-Route::get('/', function () {
-    return view('home');
+Route::middleware(["guest"])->group(function () {
+    Route::get('/login', [AuthController::class, 'index'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/', function () {
+        return view('home');
+    });
 });
 
-Route::get('/pelatih', function () {
-    return view('pages.pelatih');
-});
+Route::middleware(["auth"])->group(function () {
 
-Route::get('/booking', function () {
-    return view('pages.booking');
-});
+    Route::post("/login", [AuthController::class, "logOut"]);
 
-Route::get('/profil', function () {
-    return view('pages.profil');
-});
+    // User Memeber Routes
+    Route::get('/pelatih', function () {
+        return view('pages.pelatih');
+    })->middleware('userAccess:member');
+
+    Route::get('/booking', function () {
+        return view('pages.booking');
+    })->middleware('userAccess:member');
+
+    Route::get('/profil', function () {
+        return view('pages.profil');
+    })->middleware('userAccess:member');
 
 
-// Admin Routes
-Route::get("/dashboard", function () {
-    return view("pages.dashboard");
-});
+    // Admin Routes
+    Route::get("/dashboard", function () {
+        return view("pages.dashboard");
+    })->middleware('userAccess:admin');
 
-Route::get("/management", function () {
-    return view("pages.management");
-});
+    Route::get("/management", function () {
+        return view("pages.management");
+    })->middleware('userAccess:admin');
 
-Route::get("/member", function () {
-    return view("pages.member");
-});
+    Route::get("/member", function () {
+        return view("pages.member");
+    })->middleware('userAccess:admin');
 
-Route::get('/riwayat', function () {
-    return view("pages.riwayat");
+    Route::get('/riwayat', function () {
+        return view("pages.riwa yat");
+    })->middleware('userAccess:admin');
 });

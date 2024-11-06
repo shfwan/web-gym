@@ -11,13 +11,29 @@
 <body class="bg-gray-100 w-full min-h-screen antialiased">
     {{-- @include('components.top-navigation') --}}
     <div class="flex">
-        @include('components.side-navigation')
-        <div class="flex-grow ml-64 min-h-screen">
-            @yield('content')
+        {{-- @if (Auth::user() && Auth::user()->role == 'admin')
+            @include('components.side-navigation')
+            <div class="flex-grow ml-64 min-h-screen">
+                @yield('content')
+            </div>
+        @else
+            <div class="flex flex-col w-full">
+                @include('components.top-navigation')
+                <div class="flex-grow min-h-screen">
+                    @yield('content')
+                </div>
+            </div>
+        @endif --}}
+        <div class="flex flex-col w-full">
+            @include('components.top-navigation')
+            <div class="flex-grow min-h-screen">
+                @yield('content')
+            </div>
         </div>
     </div>
 </body>
-{{-- @include('layouts.footer') --}}
+
+@include('layouts.footer')
 
 
 </html>
