@@ -9,6 +9,16 @@ class Pelatih extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'gym_id',
+        'name',
+        'picture',
+        'description',
+        'price',
+    ];
+
+    
+
     public function gym() {
         return $this->belongsTo(Gym::class);
     }

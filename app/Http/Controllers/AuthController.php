@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    function index() {
+    function index()
+    {
         return view('pages.login');
     }
 
@@ -15,12 +17,12 @@ class AuthController extends Controller
     {
         $request->validate(
             [
-                'email' => 'required',
-                'password' => 'required '
+                'email' => 'required|email',
+                'password' => 'required',
             ],
             [
-                'email.required' => 'Email Harus Diisi',
-                'password.required' => 'Password Harus Diisi',
+                'email.required' => 'Email is required',
+                'password.required' => 'Password is required',
             ]
         );
 
@@ -37,16 +39,77 @@ class AuthController extends Controller
             } else if (Auth::user()->role == "member") {
                 return redirect('pelatih');
             } else {
-                return redirect('')->withErrors('Invalid')->withInput();
+                return redirect('login')->withErrors('Invalid')->withInput();
             }
         } else {
-            return redirect('')->withErrors('Username or Password Incorrect')->withInput();
+            return redirect('login')->withErrors('Username or Password Incorrect')->withInput();
         }
+    }
+
+    function registerIndex()
+    {
+        return view('pages.register');
+    }
+
+    function register($request)
+    {
+        $request->validate(
+            [
+                'firstname' => 'required|string',
+                'lastname' => 'required|string',
+                'email' => 'required|email',
+                'phone' => 'required|string',
+                'password' => 'required|string',
+                'confirm_password' => 'required|string',
+            ],
+            [
+                'firstname.required' => 'First Name is required',
+                'lastname.required' => 'Last Name is required',
+                'email.required' => 'Email is required',
+                'phone.required' => 'Phone is required',
+                'password.required' => 'Password is required',
+                'confirm_password.required' => 'Confirm Password is required',
+            ]
+        );
+
+
+        $data = [
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => bcrypt($request->password)
+        ];
+
+        User::create($data);
+
+        return redirect()->route('login')->with('success', "Success Register");
+    }
+
+    function changePassword(Request $request) {
+        $request->validate([
+            'password' => 'required',
+            'confirm_password' => 'required',
+        ]);
+
+
+        if ($request->password != $request->confirm_password) {
+            return redirect()->route('profil')->with('error', "Password not same");
+        }
+
+        $data = [
+            'password' => bcrypt($request->password)
+        ];
+
+        User::where('id', Auth::user()->id)->update($data);
+
+        Auth::logout();
+        return redirect('/');
     }
 
     function logOut()
     {
         Auth::logout();
-        return redirect('');
+        return redirect('/');
     }
 }

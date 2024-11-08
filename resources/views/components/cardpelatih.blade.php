@@ -6,7 +6,7 @@
     'onclick' => ''
 ])
 
-<div class="card bg-white rounded-md border hover:shadow transition-all min-w-72 cursor-pointer" onclick="{{ $onclick }}">
+<div class="card bg-white rounded-md border hover:shadow transition-all min-w-72 max-h-fit cursor-pointer" onclick="{{ $onclick }}">
     <figure class="px-4 pt-4">
         <img src="{{ $picture }}" alt="Shoes" class="rounded-md" />
     </figure>

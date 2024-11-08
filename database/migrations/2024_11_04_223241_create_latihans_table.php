@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('latihans', function (Blueprint $table) {
             $table->id();
-            $table->string("tittle");
+            $table->string("title");
             $table->string("description");
             $table->string("image");
             $table->timestamps();

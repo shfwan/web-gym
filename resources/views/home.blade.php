@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="block w-full space-y-24 ">
-        <section class="min-h-screen w-full bg-yellow-300 ">
+        <section class="min-h-screen w-full bg-no-repeat object-fill" style="background-image: url('{{ asset('/gambar/1.jpg') }}') ">
             <div class="max-w-7xl mx-auto p-6 lg:p-8">
 
-                <h1 class="text-5xl font-bold">Welcome To Laravel</h1>
+                {{-- <h1 class="text-5xl font-bold">Welcome To Laravel</h1> --}}
             </div>
         </section>
 

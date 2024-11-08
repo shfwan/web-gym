@@ -5,15 +5,19 @@
         <div class="flex flex-col items-center justify-center gap-8">
             <div class="block place-items-center space-y-6">
                 <h1 class="font-semibold text-2xl text-black">Pelatih yang Tersedia</h1>
+
+                {{-- Search --}}
+                <x-search action="{{ route('pelatih.search') }}" name="cari" placeholder="Cari Pelatih" value="{{ old('cari') }}" />
+
                 <div class="grid grid-cols-4 gap-4">
-                    @for ($i = 0; $i < 10; $i++)
+                    @foreach ($listPelatih as $item)
                         <x-cardpelatih
                             picture="{{ 'https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg' }}"
-                            name="Budiono Siregar" description="Cita-cita Kapal Laut" price="100000"
+                            name="{{ $item->name }}" description="{{ $item->description }}" price="{{ $item->price }}"
                             onclick="pelatih.showModal()" />
-                    @endfor
+                    @endforeach
                     <x-modal id="pelatih" title="Pelatih">
-                        <div class="flex flex-col gap-4 max-w-3xl">
+                        <div data class="flex flex-col gap-4 max-w-3xl">
                             {{-- Information --}}
                             <div class="inline-flex gap-4 w-full">
                                 <figure class="max-w-20">

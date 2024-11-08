@@ -9,9 +9,8 @@
 </head>
 
 <body class="bg-gray-100 w-full min-h-screen antialiased">
-    {{-- @include('components.top-navigation') --}}
     <div class="flex">
-        {{-- @if (Auth::user() && Auth::user()->role == 'admin')
+        @if (Auth::user() && Auth::user()->role == 'admin')
             @include('components.side-navigation')
             <div class="flex-grow ml-64 min-h-screen">
                 @yield('content')
@@ -23,17 +22,17 @@
                     @yield('content')
                 </div>
             </div>
-        @endif --}}
-        <div class="flex flex-col w-full">
-            @include('components.top-navigation')
-            <div class="flex-grow min-h-screen">
-                @yield('content')
-            </div>
-        </div>
+        @endif
+
     </div>
 </body>
 
-@include('layouts.footer')
+@if (Auth::user() && Auth::user()->role == 'member')
+    @include('layouts.footer')
+@endif
 
+<script>
+    @yield('script')
+</script>
 
 </html>
