@@ -18,7 +18,7 @@
                 </div>
                 @foreach ($listTransaksi as $item)
                     <div
-                        class="w-full grid grid-cols-6 border border-gray-300 transition-all cursor-pointer   p-4 gap-4 rounded-md place-items-center">
+                        class="w-full grid grid-cols-6 border border-gray-300 transition-all p-4 gap-4 rounded-md place-items-center">
                         <div class="place-self-start flex items-center justify-center h-full">
                             <h3 class="text-black truncate ">{{ $item->user->firstname }}</h3>
                         </div>
@@ -42,24 +42,26 @@
                         <h3 class="text-black place-self-center truncate text-ellipsis">{{ $item->created_at }}</h3>
                         <div class="place-self-center inline-flex gap-4">
                             @if ($item->status == 'pending')
-                                <button id="pay-button" type="submit"
+                                <button id={{ "pay-button.$item->id" }} type="submit"
                                     class="btn btn-info btn-sm w-fit text-white rounded">Bayar</button>
                             @else
                                 <button class="btn btn-success btn-sm w-fit text-white rounded"
                                     onclick="detailTransaksi{{ $item->id }}.showModal()">Lihat Transaksi</button>
                                 <x-modal id="detailTransaksi{{ $item->id }}" title="Detail Transaksi">
                                     <div class="flex flex-col gap-4  min-w-96 cursor-default">
-                                        <x-label type="text" title="Transaksi ID" value="{{ $item->id }}"/>
-                                        <x-label type="text" title="Nama Pelatih" value="{{ $item->user->firstname }}"/>
-                                        <x-label type="text" title="Tipe Pembayaran" value="{{ $item->type }}"/>
-                                        <x-label type="text" title="Tanggal" value="{{ $item->date }}"/>
+                                        <x-label type="text" title="Transaksi ID" value="{{ $item->id }}" />
+                                        <x-label type="text" title="Nama Pelatih"
+                                            value="{{ $item->user->firstname }}" />
+                                        <x-label type="text" title="Tipe Pembayaran" value="{{ $item->type }}" />
+                                        <x-label type="text" title="Tanggal" value="{{ $item->date }}" />
                                         <x-label type="status" title="Status Pembayaran">
                                             <div class="badge badge-success text-white p-4">
                                                 {{ $item->status }}
                                             </div>
                                         </x-label>
-                                        <x-label type="number" title="Total Harga"  value="{{ $item->total_price }}" />
-                                        <x-label type="text" title="Tanggal Transaksi"  value="{{ $item->created_at }}" />
+                                        <x-label type="number" title="Total Harga" value="{{ $item->total_price }}" />
+                                        <x-label type="text" title="Tanggal Transaksi"
+                                            value="{{ $item->created_at }}" />
                                     </div>
                                 </x-modal>
                             @endif
@@ -67,32 +69,31 @@
                     </div>
 
 
-                    @section('script')
-                        <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}">
-                        </script>
-                        <script type="text/javascript">
-                            document.getElementById('pay-button').onclick = function() {
-                                // SnapToken acquired from previous step
-                                snap.pay('{{ $item->snap_token }}', {
-                                    // Optional
-                                    onSuccess: function(result) {
-                                        /* You may add your own js here, this is just example */
-                                        window.location.href = '{{ route('transaction.success', ['id' => $item->id]) }}';
-                                    },
-                                    // Optional
-                                    onPending: function(result) {
-                                        /* You may add your own js here, this is just example */
-                                        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                                    },
-                                    // Optional
-                                    onError: function(result) {
-                                        /* You may add your own js here, this is just example */
-                                        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                                    }
-                                });
-                            };
-                        </script>
-                    @endsection
+                    
+                    <script id="" type="text/javascript">
+                        document.getElementById('pay-button.{{ $item->id }}').onclick = function() {
+
+                            // SnapToken acquired from previous step
+                            snap.pay('{{ $item->snap_token }}', {
+                                // Optional
+                                onSuccess: function(result) {
+                                    /* You may add your own js here, this is just example */
+                                    window.location.href = '{{ route('transaction.success', ['id' => $item->id]) }}';
+                                },
+                                // Optional
+                                onPending: function(result) {
+                                    /* You may add your own js here, this is just example */
+                                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                                },
+                                // Optional
+                                onError: function(result) {
+                                    /* You may add your own js here, this is just example */
+                                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                                }
+                            });
+                        };
+                    </script>
+
                 @endforeach
             </div>
             <div class="join">

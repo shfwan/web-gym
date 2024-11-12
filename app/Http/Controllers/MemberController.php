@@ -84,23 +84,12 @@ class MemberController extends Controller
             'phone' => $request->phone
         ]);
 
-        dd($user);
-
-
         return redirect()->route('member')->with('success', "Success Update Member");
     }
 
-    function deleteMember(Request $request)
+    function deleteMember($id)
     {
-        $request->validate(
-            [
-                'name' => 'required',
-
-            ],
-            [
-                'name.required' => 'Name is required',
-            ]
-        );
-        return view('pages.member');
+        User::where('id', $id)->delete();
+        return redirect()->route('member')->with('success', "Success Delete Member");
     }
 }

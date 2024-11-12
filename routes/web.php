@@ -68,8 +68,8 @@ Route::middleware(['auth'])->group(function () {
     // Pelatih
     Route::post("/managemen/pelatih", [PelatihController::class, "addPelatih"])->middleware('userAccess:admin')->name('pelatih.post');
     Route::get("/management/pelatih", [PelatihController::class, "searchPelatihManagement"])->middleware('userAccess:admin')->name('pelatih.management');
-    Route::post("/management/pelatih/{id}", [PelatihController::class, "updatePelatih"])->middleware('userAccess:admin')->name('pelatih.update');
-    Route::post("/management/pelatih/{id}", [PelatihController::class, "deletePelatih"])->middleware('userAccess:admin')->name('pelatih.delete');
+    Route::post("/management/pelatih/update/{id}", [PelatihController::class, "updatePelatih"])->middleware('userAccess:admin')->name('pelatih.update');
+    Route::post("/management/pelatih/delete/{id}", [PelatihController::class, "deletePelatih"])->middleware('userAccess:admin')->name('pelatih.delete');
 
     // Latihan
     Route::post("/management/latihan", [LatihanController::class, "addLatihan"])->middleware('userAccess:admin')->name('latihan.post');
@@ -77,10 +77,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post("/management/latihan/{id}", [LatihanController::class, "deleteLatihan"])->middleware('userAccess:admin')->name('latihan.delete');
 
     Route::get("/member", [MemberController::class, "index"])->middleware('userAccess:admin')->name('member');
-    Route::post("/member", [MemberController::class, "addMember"])->middleware('userAccess:admin')->name('member.post');
     Route::get("/member/search", [MemberController::class, "searchMember"])->middleware('userAccess:admin')->name('member.search');
-    Route::post("/member/{id}", [MemberController::class, "updateMember"])->middleware('userAccess:admin')->name('member.update');
-    Route::delete("/member/{id}", [MemberController::class, "deleteMember"])->middleware('userAccess:admin')->name('member.delete');
+    Route::post("/member", [MemberController::class, "addMember"])->middleware('userAccess:admin')->name('member.post');
+    Route::post("/member/update/{id}", [MemberController::class, "updateMember"])->middleware('userAccess:admin')->name('member.update');
+    Route::post("/member/delete/{id}", [MemberController::class, "deleteMember"])->middleware('userAccess:admin')->name('member.delete');
 
     Route::get("/riwayat", [HistoryController::class, "index"])->middleware('userAccess:admin')->name('history');
 

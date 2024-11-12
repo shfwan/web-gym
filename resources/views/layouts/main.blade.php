@@ -9,6 +9,7 @@
 </head>
 
 <body class="bg-gray-100 w-full min-h-screen antialiased">
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
     <div class="flex">
         @if (Auth::user() && Auth::user()->role == 'admin')
             @include('components.side-navigation')
@@ -25,7 +26,7 @@
         @endif
 
     </div>
-    
+
     @yield('script')
 </body>
 

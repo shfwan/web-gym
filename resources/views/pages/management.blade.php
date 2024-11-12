@@ -96,7 +96,7 @@
                                             </ul>
                                         </div>
                                     @endif
-                                    <form action="{{ route('pelatih.post') }}" method="post"
+                                    <form action="{{ route('pelatih.update', $item->id) }}" method="post"
                                         enctype="multipart/form-data">
                                         @csrf
                                         <div class="flex flex-col w-full gap-4 max-w-2xl">
@@ -108,7 +108,7 @@
                                                 type="number" placeholder="Masukan Harga" />
                                             <textarea name="description" class="textarea textarea-bordered"  placeholder="Deskripsi">{{ $item->description }}</textarea>
 
-                                            <button type="submit" class="btn btn-success text-white">Tambah</button>
+                                            <button type="submit" class="btn btn-warning text-white">Ubah</button>
                                         </div>
 
                                     </form>
