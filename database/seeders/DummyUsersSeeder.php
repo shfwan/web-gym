@@ -26,7 +26,7 @@ class DummyUsersSeeder extends Seeder
             [
                 'firstname' => 'User 1',
                 'lastname' => 'User 1',
-                'email' => 'User@User.com',
+                'email' => 'User1@User.com',
                 'phone' => '123456789',
                 'role' => 'member',
                 'password' => bcrypt('user'),
@@ -35,7 +35,7 @@ class DummyUsersSeeder extends Seeder
             [
                 'firstname' => 'User 2',
                 'lastname' => 'User 2',
-                'email' => 'User@User.com',
+                'email' => 'User2@User.com',
                 'phone' => '08123456789',
                 'role' => 'member',
                 'password' => bcrypt('user'),

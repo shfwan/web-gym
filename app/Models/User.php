@@ -46,8 +46,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function order() {
-        return $this->hasMany(Order::class);
+    public function transaction() {
+        return $this->hasMany(Transaction::class);
     }
 
     public function profil() {

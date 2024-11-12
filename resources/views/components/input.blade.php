@@ -4,7 +4,7 @@
     'value' => '',
     'type' => 'text',
     'placeholder' => '',
-    'disable' => false
+    'disabled' => false
 ])
 
 <div class="block w-full space-y-2">
@@ -12,7 +12,7 @@
     <input
         name="{{ $name }}"
         value="{{ $value }}"
-        {{ $disable ? 'disabled' : '' }}
+        {{ $disabled ? 'disabled' : '' }}
         class="input input-bordered w-full max-w-full bg-transparent disabled:bg-gray-200 disabled:border-none disabled:text-gray-500 text-black  focus:bg-transparent"
         type="{{ $type }}"
         placeholder="{{ $placeholder }}"

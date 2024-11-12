@@ -25,14 +25,13 @@
         @endif
 
     </div>
+    
+    @yield('script')
 </body>
 
 @if (Auth::user() && Auth::user()->role == 'member')
     @include('layouts.footer')
 @endif
 
-<script>
-    @yield('script')
-</script>
 
 </html>

@@ -2,9 +2,12 @@
 
 @section('content')
     <div class="block w-full space-y-24 ">
-        <section class="min-h-screen w-full bg-no-repeat object-fill" style="background-image: url('{{ asset('/gambar/1.jpg') }}') ">
-            <div class="max-w-7xl mx-auto p-6 lg:p-8">
+        <section class="min-h-screen w-full bg-no-repeat object-center object-scale-down relative" style="background-image: url('{{ asset('/gambar/gym.jpg') }}') ">
+            <img class="absolute aspect-video object-center flex-[1_0_100%]" src="/gambar/gym.jpg" alt="">
+            <div class="max-w-7xl mx-auto p-6 lg:p-8 relative">
+                <div class="absolute w-96 h-96 top-[30%] bg-yellow-400/50 rounded-md z-10">
 
+                </div>
                 {{-- <h1 class="text-5xl font-bold">Welcome To Laravel</h1> --}}
             </div>
         </section>
@@ -40,9 +43,9 @@
         </section>
 
         <section class="w-full bg-black min-h-96 relative">
-            <div class="w-96 h-96 bg-yellow-400 absolute -top-16 left-24">
-
-            </div>
+            <figure class="max-w-96 absolute -top-16 left-24">
+                <img class="flex-[1_0_100%] rounded-md" src="/gambar/1.jpg" alt="">
+            </figure>
         </section>
 
         <section class="max-w-4xl mx-auto p-6 lg:p-8 w-full min-h-screen flex flex-col items-center justify-center  gap-16">
@@ -71,7 +74,8 @@
         </section>
 
         <section class="w-full bg-black min-h-96 relative">
-            <div class="w-96 h-96 bg-yellow-400 absolute -top-16 right-32">
+            <div class="max-w-96 absolute -top-16 right-32">
+                <img class="flex-[1_0_100%] rounded-md" src="/gambar/2.jpg" alt="">
 
             </div>
         </section>

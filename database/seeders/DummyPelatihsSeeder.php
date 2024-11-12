@@ -15,28 +15,28 @@ class DummyPelatihsSeeder extends Seeder
     {
         $pelatihData = [
             [
-                'gym_id' => 1,
+                'gym_id' => 2,
                 'name' => 'Pelatih 1',
                 'picture' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
                 'description' => 'Pelatih 1 description',
                 'price' => 100000,
             ],
             [
-                'gym_id' => 1,
+                'gym_id' => 2,
                 'name' => 'Pelatih 2',
                 'picture' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
                 'description' => 'Pelatih 2 description',
                 'price' => 100000,
             ],
             [
-                'gym_id' => 1,
+                'gym_id' => 2,
                 'name' => 'Pelatih 3',
                 'picture' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
                 'description' => 'Pelatih 3 description',
                 'price' => 100000,
             ],
             [
-                'gym_id' => 1,
+                'gym_id' => 2,
                 'name' => 'Pelatih 4',
                 'picture' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
                 'description' => 'Pelatih 4 description',

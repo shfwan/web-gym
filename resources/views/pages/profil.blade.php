@@ -8,12 +8,17 @@
                     <img class="flex-[1_0_100%]" src="{{$profil->picture}}" alt="profil">
                     <input class="hidden" type="file" name="picture" id="file">
                 </figure>
+
+                {{
+                    $status = true
+                }}
+
                 <h2 class="font-semibold text-xl">{{$user->firstname}}</h2>
-                <x-input disable={{true}} value="{{$user->firstname}}" label="Nama depan" name="firstname" type="text" placeholder="Nama depan" />
-                <x-input disable={{true}} value="{{$user->lastname}}" label="Nama belakang" name="lastname" type="text" placeholder="Nama belakang" />
-                <x-input disable={{true}} value="{{$user->email}}" label="Email" name="email" type="text" placeholder="Email" />
-                <x-input disable={{true}} value="{{$user->phone}}" label="Nomor HP" name="phone" type="text" placeholder="Nomor HP" />
-                <button class="btn btn-warning text-white btn-wide">Edit Profil</button>
+                <x-input disabled="{{ $status }}" value="{{$user->firstname}}" label="Nama depan" name="firstname" type="text" placeholder="Nama depan" />
+                <x-input disabled="{{ $status }}" value="{{$user->lastname}}" label="Nama belakang" name="lastname" type="text" placeholder="Nama belakang" />
+                <x-input disabled="{{ $status }}" value="{{$user->email}}" label="Email" name="email" type="text" placeholder="Email" />
+                <x-input disabled="{{ $status }}" value="{{$user->phone}}" label="Nomor HP" name="phone" type="text" placeholder="Nomor HP" />
+                <button class="btn btn-warning text-white btn-wide" onclick="alert('Edit Profil')">Edit Profil</button>
                 <button class="btn btn-info text-white btn-wide" onclick="ubahPassword.showModal()">Ubah Password</button>
             </div>
             <x-modal title="Ubah Password" id="ubahPassword">

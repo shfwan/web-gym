@@ -17,7 +17,7 @@
                 <form action="" method="post">
                     @csrf
                     <div class="flex flex-col gap-4">
-                        <x-input label="Email" name="email" value="{{ old('email') }}" type="text" placeholder="Email atau Nomor Telepon"/>
+                        <x-input label="User" name="email" value="{{ old('email') }}" type="text" placeholder="Email atau Nomor Telepon"/>
                         <x-input label="Password" name="password" value="{{ old('password') }}" type="password" placeholder="Password" />
                         <button name="submit" type="submit" class="btn btn-lg w-full text-white btn-warning">Login</button>
                     </div>

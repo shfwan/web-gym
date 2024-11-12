@@ -7,23 +7,66 @@
             <div class="inline-flex gap-4 max-w-screen-2xl w-full">
                 <x-cardstat title="Member" count="{{ $countMember }}" icon="" />
                 <x-cardstat title="Pelatih" count="{{ $countPelatih }}" icon="" />
-                <x-cardstat title="Booking" count="10" icon="" />
+                <x-cardstat title="Booking" count="{{ count($listTransaksi) }}" icon="" />
             </div>
 
             {{-- List Booking --}}
             <div class="block w-full h-full space-y-4">
-                <h2 class="font-semibold text-base text-gray-800">Total Booking 10</h2>
+                <h2 class="font-semibold text-base text-gray-800">Total Booking Hari ini {{ count($listTransaksi) }}</h2>
                 <div class="h-[30rem] overflow-hidden border rounded-md p-4">
-                    <div class="flex flex-col gap-4 w-full h-full overflow-y-scroll">
-                        @for ($i = 0; $i < 13; $i++)
-                            <div class="max-w-7xl w-full grid grid-cols-5 border border-gray-300 transition-all cursor-pointer hover:shadow-md  p-4 gap-4 rounded-md">
-                                <h3 class="text-black truncate">Budiono Siregarar</h3>
-                                <h3 class="text-black truncate">Ahmad Kasim</h3>
-                                <h3 class="text-black place-self-center">Abs, Forearm</h3>
-                                <h3 class="text-black place-self-center">2024-11-10</h3>
-                                <h3 class="text-black place-self-center">@currency(20000)</h3>
+                    <div class="flex flex-col gap-4 w-full max-w-full">
+                        <div class="w-full grid grid-cols-6 border border-gray-300 p-4 gap-4 rounded-md place-items-center">
+                            <h3 class="text-black font-semibold place-self-start">Nama Member</h3>
+                            <h3 class="text-black font-semibold">Harga</h3>
+                            <h3 class="text-black font-semibold place-self-start">Tipe Pembayaran</h3>
+                            <h3 class="text-black font-semibold">Status</h3>
+                            <h3 class="text-black font-semibold">Tanggal</h3>
+                            <h3 class="text-black font-semibold">Aksi</h3>
+                        </div>
+                        @foreach ($listTransaksi as $item)
+                            <div
+                                class="w-full grid grid-cols-6 border border-gray-300 transition-all cursor-pointer   p-4 gap-4 rounded-md place-items-center">
+                                <div class="place-self-start flex items-center justify-center h-full">
+                                    <h3 class="text-black truncate ">{{ $item->user->firstname }}</h3>
+                                </div>
+                                <h3 class="text-black ">@currency($item->total_price)</h3>
+                                <div class="place-self-start  h-full flex items-center justify-center">
+                                    <h3 class="text-black truncate">{{ $item->type }}</h3>
+                                </div>
+                                @if ($item->status == 'accepted')
+                                    <div class="badge badge-success text-white p-4">
+                                        {{ $item->status }}
+                                    </div>
+                                @else
+                                    <div class="badge badge-error text-white p-4">
+                                        {{ $item->status }}
+                                    </div>
+                                @endif
+                                <h3 class="text-black place-self-center truncate text-ellipsis">{{ $item->created_at }}</h3>
+                                <div class="place-self-center inline-flex gap-4">
+                                    <button class="btn btn-success btn-sm w-fit text-white rounded"
+                                        onclick="detailTransaksi{{ $item->id }}.showModal()">Lihat
+                                        Transaksi</button>
+                                    <x-modal id="detailTransaksi{{ $item->id }}" title="Detail Transaksi">
+                                        <div class="flex flex-col gap-4  min-w-96 cursor-default">
+                                            <x-label type="text" title="Transaksi ID" value="{{ $item->id }}" />
+                                            <x-label type="text" title="Nama Pelatih"
+                                                value="{{ $item->user->firstname }}" />
+                                            <x-label type="text" title="Tipe Pembayaran" value="{{ $item->type }}" />
+                                            <x-label type="text" title="Tanggal" value="{{ $item->date }}" />
+                                            <x-label type="status" title="Status Pembayaran">
+                                                <div class="badge badge-success text-white p-4">
+                                                    {{ $item->status }}
+                                                </div>
+                                            </x-label>
+                                            <x-label type="number" title="Total Harga" value="{{ $item->total_price }}" />
+                                            <x-label type="text" title="Tanggal Transaksi"
+                                                value="{{ $item->created_at }}" />
+                                        </div>
+                                    </x-modal>
+                                </div>
                             </div>
-                        @endfor
+                        @endforeach
                     </div>
                 </div>
             </div>

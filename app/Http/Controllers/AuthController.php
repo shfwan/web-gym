@@ -83,6 +83,9 @@ class AuthController extends Controller
 
         User::create($data);
 
+        if(Auth::user()->role == 'admin') {
+            return redirect()->route('member')->with('success', "Success Register");
+        }
         return redirect()->route('login')->with('success', "Success Register");
     }
 

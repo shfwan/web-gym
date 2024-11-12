@@ -10,7 +10,8 @@
                 <hr>
                 <div class="inline-flex justify-between items-center w-full">
                     {{-- Search --}}
-                    <x-search action="{{ route('pelatih.management') }}" name="cari" placeholder="Cari Pelatih" value="{{ old('cari') }}" />
+                    <x-search action="{{ route('pelatih.management') }}" name="cari" placeholder="Cari Pelatih"
+                        value="{{ old('cari') }}" />
 
                     {{-- Button Add Pelatih --}}
                     <button class="btn btn-success text-white" onclick="addPelatih.showModal()">
@@ -64,7 +65,7 @@
                                 description="{{ $item->description }}" price="{{ $item->price }}">
                                 {{-- Button Edit Member --}}
                                 <button class="btn btn-sm rounded-md btn-warning text-white"
-                                    onclick="editPelatih.showModal()">
+                                    onclick="editPelatih{{ $item->id }}.showModal()">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                         fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                         <path
@@ -85,34 +86,35 @@
                                         </svg>
                                     </button>
                                 </form>
+                                <x-modal id="editPelatih{{ $item->id }}" title="Edit Pelatih">
+                                    @if ($errors->any())
+                                        <div class="bg-red-400 rounded-md p-4">
+                                            <ul>
+                                                @foreach ($errors->all() as $item)
+                                                    <li class="text-white">{{ $item }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    <form action="{{ route('pelatih.post') }}" method="post"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="flex flex-col w-full gap-4 max-w-2xl">
+                                            <input id="file" name="picture" type="file"
+                                                class=" file-input w-full max-w-xs" />
+                                            <x-input label="Nama" name="name" value="{{ $item->name }}"
+                                                type="text" placeholder="Nama Pelatih" />
+                                            <x-input label="Harga" name="price" value="{{ $item->price }}"
+                                                type="number" placeholder="Masukan Harga" />
+                                            <textarea name="description" class="textarea textarea-bordered"  placeholder="Deskripsi">{{ $item->description }}</textarea>
+
+                                            <button type="submit" class="btn btn-success text-white">Tambah</button>
+                                        </div>
+
+                                    </form>
+                                </x-modal>
                             </x-cardpelatih>
                         @endforeach
-                        <x-modal id="editPelatih" title="Edit Pelatih">
-                            @if ($errors->any())
-                                <div class="bg-red-400 rounded-md p-4">
-                                    <ul>
-                                        @foreach ($errors->all() as $item)
-                                            <li class="text-white">{{ $item }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-                            <form action="{{ route('pelatih.post') }}" method="post" enctype="multipart/form-data">
-                                @csrf
-                                <div class="flex flex-col w-full gap-4 max-w-2xl">
-                                    <input id="file" name="picture" type="file"
-                                        class=" file-input w-full max-w-xs" />
-                                    <x-input label="Nama" name="name" value="{{ old('name') }}" type="text"
-                                        placeholder="Nama Pelatih" />
-                                    <x-input label="Harga" name="price" value="{{ old('price') }}" type="number"
-                                        placeholder="Masukan Harga" />
-                                    <textarea name="description" class="textarea textarea-bordered" placeholder="Deskripsi"></textarea>
-
-                                    <button type="submit" class="btn btn-success text-white">Tambah</button>
-                                </div>
-
-                            </form>
-                        </x-modal>
                     </div>
                 </div>
             </div>

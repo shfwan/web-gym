@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("name", 255);
             $table->string("picture")->nullable();
             $table->string("description")->nullable();
-            $table->decimal("price");
+            $table->integer("price");
             $table->foreignId("gym_id")->constrained("gyms");
             $table->timestamps();
         });

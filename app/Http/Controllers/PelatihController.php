@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pelatih;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PelatihController extends Controller
 {
@@ -22,15 +23,17 @@ class PelatihController extends Controller
         return view('pages.pelatih');
     }
 
-    function searchPelatih(Request $request) {
-        $keyword = $request->cari;
+    function searchPelatih(Request $request)
+    {
+        $keyword = $request->value;
 
         $pelatih = Pelatih::where('name', 'like', '%' . $keyword . '%')->get();
 
         return view('pages.pelatih', ['listPelatih' => $pelatih]);
     }
 
-    function searchPelatihManagement(Request $request) {
+    function searchPelatihManagement(Request $request)
+    {
         $keyword = $request->cari;
 
         $pelatih = Pelatih::where('name', 'like', '%' . $keyword . '%')->get();
@@ -45,7 +48,7 @@ class PelatihController extends Controller
                 'name' => 'required|string',
                 'description' => 'string',
                 'price' => 'required|numeric',
-                'picture' => 'required|max:4096'
+                'picture' => 'required|mimes:png,jpg,jpeg|max:4096'
             ],
             [
                 'name.required' => 'Name is required',
@@ -56,8 +59,8 @@ class PelatihController extends Controller
 
 
         $image = time() . '.' . $request->picture->extension();
-        $request->picture->move(public_path('images'), $image);
-
+        $path = 'upload/' . $image;
+        Storage::disk('public')->put($path, file_get_contents($image));
 
         $data = [
             'gym_id' => 1,
@@ -79,7 +82,7 @@ class PelatihController extends Controller
                 'name' => 'string',
                 'description' => 'string',
                 'price' => 'numeric',
-                'picture' => 'max:4096'
+                'picture' => 'mimes:png,jpg,jpeg|max:4096'
             ],
             [
                 'name.required' => 'Name is required',
@@ -89,8 +92,8 @@ class PelatihController extends Controller
         );
 
         $image = time() . '.' . $request->picture->extension();
-        $request->picture->move(public_path('images'), $image);
-
+        $path = 'upload/' . $image;
+        Storage::disk('public')->put($path, file_get_contents($image));
 
         $data = [
             'picture' => $image,

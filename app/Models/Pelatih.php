@@ -17,9 +17,13 @@ class Pelatih extends Model
         'price',
     ];
 
-    
+
 
     public function gym() {
         return $this->belongsTo(Gym::class);
+    }
+
+    public function transaction() {
+        return $this->hasMany(Transaction::class);
     }
 }

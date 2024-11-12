@@ -6,11 +6,11 @@
 
 @section('content')
     <div class="bg-white w-full min-h-screen p-8">
-        <div class="flex flex-col w-full gap-8 h-full">
+        <div class="flex flex-col w-full gap-8 min-h-screen">
             <div class="inline-flex justify-between items-center min-w-full">
 
                 {{-- Search --}}
-                <x-search name="cari_member" placeholder="Cari Member" name="search"/>
+                <x-search action="{{ route('member.search') }}" name="value" placeholder="Cari Member" />
 
                 {{-- Button Add Member --}}
                 <button class="btn btn-success text-white" onclick="addMember.showModal()">
@@ -23,17 +23,19 @@
                     New Member
                 </button>
 
+                {{-- Modal Add Member --}}
                 <x-modal id="addMember" title="Tambah Member">
-                    <form action="{{route('register.post')}}" method="post">
+                    <form action="{{ route('member.post') }}" method="post">
                         @csrf
                         <div class="flex flex-col w-full gap-4">
                             <div class="grid grid-cols-2 gap-4">
-                                <x-input title="Nama Depan" name="firstname" type="text" placeholder="Nama depan" />
-                                <x-input title="Nama Belakan" name="lastname" type="text" placeholder="Nama Belakang"/>
-                                <x-input title="Email" name="email" type="text" placeholder="Email" />
-                                <x-input title="Nomor HP" name="phone" type="text" placeholder="Nomor HP" />
-                                <x-input title="Password" name="password" type="text" placeholder="Password" />
-                                <x-input title="Konfirmasi Password" name="confirm_password" type="text" placeholder="Konfirmasi Password" />
+                                <x-input label="Nama Depan" name="firstname" type="text" placeholder="Nama depan" />
+                                <x-input label="Nama Belakan" name="lastname" type="text" placeholder="Nama Belakang" />
+                                <x-input label="Email" name="email" type="text" placeholder="Email" />
+                                <x-input label="Nomor HP" name="phone" type="text" placeholder="Nomor HP" />
+                                <x-input label="Password" name="password" type="text" placeholder="Password" />
+                                <x-input label="Konfirmasi Password" name="confirm_password" type="text"
+                                    placeholder="Konfirmasi Password" />
                                 <select class="select select-bordered w-full max-w-xs">
                                     <option disabled selected>Pilih Masa Aktif Member</option>
                                     <option>1 Minggu</option>
@@ -41,7 +43,7 @@
                                     <option>3 Bulan</option>
                                 </select>
                             </div>
-                            <button class="btn btn-primary">Tambah</button>
+                            <button class="btn btn-success text-white">Tambah</button>
                         </div>
                     </form>
                 </x-modal>
@@ -52,15 +54,12 @@
             <h2 class="font-semibold text-base text-gray-800">Total Member {{ count($listMember) }}</h2>
             <div class="grid grid-cols-4 gap-4">
                 @foreach ($listMember as $item)
-                    <x-cardmember
-                        fullname="{{ $item->firstname . ' ' . $item->lastname }}"
-                        picture="{{ $item->picture }}"
-                        phone="{{ $item->phone }}"
-                        email="{{ $item->email }}"
-                        description="">
+                    <x-cardmember fullname="{{ $item->firstname . ' ' . $item->lastname }}" picture="{{ $item->picture }}"
+                        phone="{{ $item->phone }}" email="{{ $item->email }}" description="">
 
                         {{-- Button Perpanjang Member --}}
-                        <button class="btn btn-sm rounded-md btn-info text-white">
+                        <button class="btn btn-sm rounded-md btn-info text-white"
+                            onclick="perpanjangMember{{ $item->id }}.showModal()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-calendar2-week" viewBox="0 0 16 16">
                                 <path
@@ -71,7 +70,8 @@
                         </button>
 
                         {{-- Button Edit Member --}}
-                        <button class="btn btn-sm rounded-md btn-warning text-white">
+                        <button class="btn btn-sm rounded-md btn-warning text-white"
+                            onclick="editMember{{ $item->id }}.showModal()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-pencil-square" viewBox="0 0 16 16">
                                 <path
@@ -90,18 +90,53 @@
                             </svg>
                         </button>
 
+                        {{-- Modal Edit Member --}}
+                        <x-modal id="editMember{{ $item->id }}" title="Edit Member">
+                            {{-- <form action="{{ route('member.update', $item->id) }}" method="POST">
+                                @csrf
+                                <div class="flex flex-col w-96 gap-4">
+                                    <x-input value="{{ $item->firstname }}" label="Nama Depan" name="firstname"
+                                        type="text" placeholder="Nama depan" />
+                                    <x-input value="{{ $item->lastname }}" label="Nama Belakang" name="lastname"
+                                        type="text" placeholder="Nama Belakang" />
+                                    <x-input value="{{ $item->email }}" label="Email" name="email" type="text"
+                                        placeholder="Email" />
+                                    <x-input value="{{ $item->phone }}" label="Nomor HP" name="phone" type="text"
+                                        placeholder="Nomor HP" />
+                                    <button class="btn btn-warning text-white">Update</button>
+                                </div>
+                            </form> --}}
+                        </x-modal>
+
+                        {{-- Modal Perpanjang Member --}}
+                        <x-modal id="perpanjangMember{{ $item->id }}" title="Perpanjang Member">
+                            {{-- Card Member --}}
+                            <div class="grid grid-cols-3 gap-4">
+                                @for ($i = 0; $i < 3; $i++)
+                                    <div class="card bg-base-100 w-96 h-96 shadow-xl">
+                                        <div class="card-body">
+                                            <h2 class="card-title">Card title!</h2>
+                                            <p>If a dog chews shoes whose shoes does he choose?</p>
+                                            <div class="card-actions justify-end">
+                                                <button class="btn btn-primary">Buy Now</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endfor
+                            </div>
+                        </x-modal>
+
                     </x-cardmember>
                 @endforeach
             </div>
 
             {{-- Pagination --}}
-            <div class="flex justify-center mt-auto">
-                <div class="join ">
-                    <button class="join-item btn btn-active">1</button>
-                    <button class="join-item btn">2</button>
-                    <button class="join-item btn">3</button>
-                    <button class="join-item btn">4</button>
-                </div>
+
+            <div class="join mt-auto">
+                <button class="join-item btn btn-outline btn-active">1</button>
+                <button class="join-item btn btn-outline">2</button>
+                <button class="join-item btn btn-outline">3</button>
+                <button class="join-item btn btn-outline">4</button>
             </div>
         </div>
     </div>
