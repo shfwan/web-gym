@@ -80,7 +80,7 @@ class PelatihController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'price' => $request->price,
-            // 'available_days' => $request->days
+            'available_days' => $request->days
         ];
 
         Pelatih::create($data);
@@ -105,7 +105,7 @@ class PelatihController extends Controller
                 'name.required' => 'Name is required',
                 'price.required' => 'Price is required',
                 'picture.required' => 'Picture is required',
-                'available_days' => $request->days
+                'available_days' => 'Days is required'
 
             ]
         );
