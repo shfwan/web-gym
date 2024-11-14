@@ -15,6 +15,14 @@ class Pelatih extends Model
         'picture',
         'description',
         'price',
+        'email',
+        'phone',
+        'address',
+        'available'
+    ];
+
+    protected $cast = [
+        'available' => 'array'
     ];
 
 

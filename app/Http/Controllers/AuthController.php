@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profil;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -81,7 +82,13 @@ class AuthController extends Controller
             'password' => bcrypt($request->password)
         ];
 
-        User::create($data);
+        $user = User::create($data);
+
+        if($user) {
+            Profil::create([
+                'user_id' => $user->id
+            ]);
+        }
 
         if(Auth::user()->role == 'admin') {
             return redirect()->route('member')->with('success', "Success Register");

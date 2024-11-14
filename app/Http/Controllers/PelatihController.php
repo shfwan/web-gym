@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gym;
 use App\Models\Pelatih;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -43,31 +44,42 @@ class PelatihController extends Controller
 
     function addPelatih(Request $request)
     {
+
         $request->validate(
             [
                 'name' => 'required|string',
                 'description' => 'string',
+                'email' => 'string',
+                'phone' => 'numeric',
+                'address' => 'string',
                 'price' => 'required|numeric',
-                'picture' => 'required|mimes:png,jpg,jpeg|max:4096'
+                'picture' => 'required|mimes:png,jpg,jpeg|max:4096',
+                'days' => 'required|min:1'
             ],
             [
                 'name.required' => 'Name is required',
                 'price.required' => 'Price is required',
                 'picture.required' => 'Picture is required',
+                'days.required' => 'Days is required'
             ]
         );
 
 
         $image = time() . '.' . $request->picture->extension();
-        $path = 'upload/' . $image;
-        Storage::disk('public')->put($path, file_get_contents($image));
+        move_uploaded_file($image, '/upload');
+        // Storage::disk('public')->put($path, file_get_contents($image));
+        $findGymId = Gym::where('user_id', auth()->user()->id)->first();
 
         $data = [
-            'gym_id' => 1,
+            'gym_id' => $findGymId->id,
             'picture' => $image,
             'name' => $request->name,
             'description' => $request->description,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
             'price' => $request->price,
+            'available_days' => $request->days
         ];
 
         Pelatih::create($data);
@@ -77,32 +89,41 @@ class PelatihController extends Controller
 
     function updatePelatih(Request $request, $id)
     {
-        $request->validate(
-            [
-                'name' => 'string',
-                'description' => 'string',
-                'price' => 'numeric',
-                'picture' => 'mimes:png,jpg,jpeg|max:4096'
-            ],
-            [
-                'name.required' => 'Name is required',
-                'price.required' => 'Price is required',
-                'picture.required' => 'Picture is required',
-            ]
-        );
+        // $request->validate(
+        //     [
+        //         'name' => 'string',
+        //         'description' => 'string',
+        //         'email' => 'string',
+        //         'phone' => 'numeric',
+        //         'address' => 'string',
+        //         'price' => 'numeric',
+        //         'picture' => 'mimes:png,jpg,jpeg|max:4096'
+        //     ],
+        //     [
+        //         'name.required' => 'Name is required',
+        //         'price.required' => 'Price is required',
+        //         'picture.required' => 'Picture is required',
+        //     ]
+        // );
 
-        $image = time() . '.' . $request->picture->extension();
-        $path = 'upload/' . $image;
-        Storage::disk('public')->put($path, file_get_contents($image));
+        $image = $request->picture ? time() . '.' . $request->picture->extension() : null;
+        // $path = 'upload/' . $image;
+        if($image != null){
+            move_uploaded_file($image, '/upload');
+        }
+
 
         $data = [
             'picture' => $image,
             'name' => $request->name,
             'description' => $request->description,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
             'price' => $request->price,
         ];
 
-        Pelatih::create($data);
+        Pelatih::where('id', $id)->update($data);
 
         return redirect()->route('management')->with('success', "Data Berhasil Diperbarui");
     }

@@ -24,4 +24,8 @@ class Gym extends Model
     public function pelatih() {
         return $this->hasMany(Pelatih::class);
     }
+
+    public function cardMember() {
+        return $this->hasMany(CardMember::class);
+    }
 }

@@ -15,20 +15,10 @@ class DummyProfilsSeeder extends Seeder
     {
         $profilData = [
             [
-                'user_id' => 5,
+                'user_id' => "9d78c0c7-f22b-4dde-b0c4-158666681d4d",
                 'picture' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
                 'bio' => 'Profil 1 description',
             ],
-            [
-                'user_id' => 6,
-                'picture' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-                'bio' => 'Profil 2 description',
-            ],
-            [
-                'user_id' => 7,
-                'picture' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
-                'bio' => 'Profil 2 description',
-            ]
         ];
         foreach ($profilData as $key => $value) {
             Profil::create($value);

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('gyms', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("user_id")->constrained('users')->onDelete("cascade");
+            $table->foreignUuid("user_id")->constrained('users')->onDelete("cascade");
             $table->string("name", 255);
             $table->string("picture")->nullable();
             $table->string("description")->nullable();

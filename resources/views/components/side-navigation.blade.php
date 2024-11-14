@@ -7,11 +7,12 @@
     <nav class="w-full">
         <ul class="block space-y-2">
             <x-side-navlink href="/dashboard">Dashboard</x-side-navlink>
-            <x-side-navlink href="/management">Management</x-side-navlink>
+            <x-side-navlink href="/management">Pelatih</x-side-navlink>
             <x-side-navlink href="/member">Member</x-side-navlink>
             <x-side-navlink href="/transaksi">Transaction</x-side-navlink>
             <x-side-navlink href="/riwayat">Riwayat</x-side-navlink>
             <x-side-navlink href="/profil">Profil</x-side-navlink>
+            <x-side-navlink href="/setting">Setting</x-side-navlink>
             <x-side-navlink href="/logout">Keluar</x-side-navlink>
         </ul>
     </nav>

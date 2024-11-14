@@ -15,7 +15,7 @@ class DummyGymsSeeder extends Seeder
     {
         Gym::create(
             [
-                'user_id' => 5,
+                'user_id' => "9d78c0c7-f22b-4dde-b0c4-158666681d4d",
                 'name' => 'Gym 1',
                 'picture' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80',
                 'description' => 'Gym 1 description',

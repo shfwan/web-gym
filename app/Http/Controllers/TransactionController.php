@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CardMember;
+use App\Models\Member;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -9,9 +11,10 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
-    function index() {
+    function index()
+    {
 
-        if(Auth::user()->role == 'member') {
+        if (Auth::user()->role == 'member') {
             $transactions = Transaction::with('user')->where('user_id', Auth::user()->id)->get();
             return view('pages.booking', ['listTransaksi' => $transactions]);
         }
@@ -20,8 +23,46 @@ class TransactionController extends Controller
         return view('pages.booking', ['listTransaksi' => $transactions]);
     }
 
-    function success() {
-        Transaction::where('user_id', Auth::user()->id)->update(['status' => 'accepted']);
-        return view('pages.booking');
+    function success($id)
+    {
+        $updateOrder = Transaction::where('id', $id)->update(['status' => 'accepted']);
+        if($updateOrder) {
+
+            $findTransaction = Transaction::where('id', $id)->first();
+
+            if ($findTransaction->type != 'Booking' && $findTransaction->status == 'accepted') {
+                $findCardMember = CardMember::where('id', $findTransaction->product_id)->first();
+                $date = Carbon::now();
+
+                switch ($findCardMember->type) {
+                    case 'Hari':
+                        $expiredAt = $date->addDays(1 * $findCardMember->long);
+                        break;
+
+                    case 'Minggu':
+                        $expiredAt = $date->addDays(7 * $findCardMember->long);
+                        break;
+
+                    case 'Bulan':
+                        $expiredAt = $date->addDays(30 * $findCardMember->long);
+                        break;
+
+                    case 'Tahun':
+                        $expiredAt = $date->addDays(365 * $findCardMember->long);
+                        break;
+                    default:
+                }
+
+                if ($findCardMember) {
+                    Member::create([
+                        'user_id' => auth()->user()->id,
+                        'expiredAt' => $expiredAt->format('Y-m-d'),
+
+                    ]);
+                }
+            }
+        }
+        return view('pages.success');
+
     }
 }

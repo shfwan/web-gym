@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('members', function (Blueprint $table) {
+        Schema::create('card_members', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid("user_id")->constrained('users')->onDelete("cascade")->unique();
-            $table->boolean("statusMember")->default(true);
-            $table->date("expiredAt");
+            $table->foreignId("gym_id")->constrained("gyms");
+            $table->string('title');
+            $table->integer('price');
+            $table->string('description')->nullable();
+            $table->integer('long');
+            $table->enum('type', ['Hari','Minggu', 'Bulan', 'Tahun']);
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('members');
+        Schema::dropIfExists('card_members');
     }
 };

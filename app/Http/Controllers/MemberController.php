@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profil;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class MemberController extends Controller
     //
     function index()
     {
-        $listMember = User::all()->where('role', 'member');
+        $listMember = User::with('profil')->with('member')->where('role', 'member')->get();
         return view('pages.member', ["listMember" => $listMember]);
     }
 
@@ -56,6 +57,13 @@ class MemberController extends Controller
         ];
 
         User::create($data);
+
+        $user = User::where('email', $request->email)->first();
+
+        Profil::created([
+            'user_id' => $user->id
+        ]);
+
 
         return redirect()->route('member')->with('success', "Success Add New Member");
     }

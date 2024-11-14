@@ -45,7 +45,7 @@
                                 <button id={{ "pay-button.$item->id" }} type="submit"
                                     class="btn btn-info btn-sm w-fit text-white rounded">Bayar</button>
                             @else
-                                <button class="btn btn-success btn-sm w-fit text-white rounded"
+                                <button id="transaction-detail" class="btn btn-success btn-sm w-fit text-white rounded"
                                     onclick="detailTransaksi{{ $item->id }}.showModal()">Lihat Transaksi</button>
                                 <x-modal id="detailTransaksi{{ $item->id }}" title="Detail Transaksi">
                                     <div class="flex flex-col gap-4  min-w-96 cursor-default">
@@ -68,17 +68,14 @@
                         </div>
                     </div>
 
-
-                    
-                    <script id="" type="text/javascript">
+                    <script id="" type="text/javascript" hidden>
                         document.getElementById('pay-button.{{ $item->id }}').onclick = function() {
-
                             // SnapToken acquired from previous step
                             snap.pay('{{ $item->snap_token }}', {
                                 // Optional
                                 onSuccess: function(result) {
                                     /* You may add your own js here, this is just example */
-                                    window.location.href = '{{ route('transaction.success', ['id' => $item->id]) }}';
+                                    window.location.href = '{{ route('transaction.success', $item->id) }}';
                                 },
                                 // Optional
                                 onPending: function(result) {
@@ -91,9 +88,13 @@
                                     document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
                                 }
                             });
+
+                            document.getElementById('transaction-detail').onclick = () => {
+                                document.getElementById('detailTransaksi{{ $item->id }}').showModal()
+                            }
+
                         };
                     </script>
-
                 @endforeach
             </div>
             <div class="join">

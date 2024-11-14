@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId("user_id")->constrained('users')->onDelete("cascade");
-            $table->integer("pelatih_id");
+            $table->uuid('id')->primary();
+            $table->foreignUuid("user_id")->constrained('users')->onDelete("cascade");
+            $table->string("product_id");
             $table->integer("gym_id");
             $table->enum("type", ["Card Member", "Booking"])->default("Booking");
             $table->enum("status", ["pending", "accepted", "declined"])->default("pending");
-            $table->date("date");
+            $table->date("date")->nullable();
             $table->integer("total_price");
             $table->string("snap_token")->nullable();
             $table->timestamps();

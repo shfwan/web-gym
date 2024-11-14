@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('pelatihs', function (Blueprint $table) {
             $table->id();
-            $table->string("name", 255);
+            $table->string("name");
             $table->string("picture")->nullable();
             $table->string("description")->nullable();
             $table->integer("price");
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->json('available_days');
             $table->foreignId("gym_id")->constrained("gyms");
             $table->timestamps();
         });

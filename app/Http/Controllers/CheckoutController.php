@@ -11,17 +11,60 @@ use Midtrans\Snap;
 class CheckoutController extends Controller
 {
 
-    function checkout(Request $request)
+    function checkout(Request $request, $id)
     {
         $date = Carbon::now();
 
         $transaction = Transaction::create([
             'user_id' => Auth::user()->id,
-            'pelatih_id' => $request->id,
+            'product_id' => $id,
+            'gym_id' => $request->gym_id,
+            'type' => $request->type,
+            'status' => 'pending',
+            'date' => $date->format('Y-m-d'),
+            'total_price' => $request->price,
+
+        ]);
+
+        // Set your Merchant Server Key
+        \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+        \Midtrans\Config::$isProduction = config('midtrans.isProduction');
+        // Set sanitization on (default)
+        \Midtrans\Config::$isSanitized = config('midtrans.isSanitized');
+        // Set 3DS transaction for credit card to true
+        \Midtrans\Config::$is3ds = true;
+
+        $params = array(
+            'transaction_details' => array(
+                'order_id' => rand(),
+                'gross_amount' => $request->price,
+            ),
+            'customer_details' => array(
+                'first_name' => Auth::user()->firstname,
+                'last_name' => Auth::user()->lastname,
+                'email' => Auth::user()->email,
+                'phone' => Auth::user()->phone,
+            ),
+        );
+
+
+        $snapToken = Snap::getSnapToken($params);
+        $transaction->snap_token = $snapToken;
+        $transaction->save();
+
+
+        return redirect()->route('transaction');
+    }
+
+    function checkoutCardMember(Request $request)
+    {
+
+        $transaction = Transaction::create([
+            'user_id' => Auth::user()->id,
             'gym_id' => $request->gym_id,
             'type' => 'Booking',
             'status' => 'pending',
-            'date' => $date->format('Y-m-d'),
             'total_price' => $request->price,
 
         ]);
