@@ -33,15 +33,15 @@
                                 <x-input label="Nama Belakan" name="lastname" type="text" placeholder="Nama Belakang" />
                                 <x-input label="Email" name="email" type="text" placeholder="Email" />
                                 <x-input label="Nomor HP" name="phone" type="text" placeholder="Nomor HP" />
-                                <x-input label="Password" name="password" type="text" placeholder="Password" />
-                                <x-input label="Konfirmasi Password" name="confirm_password" type="text"
+                                <x-input label="Password" name="password" type="password" placeholder="Password" />
+                                <x-input label="Konfirmasi Password" name="confirm_password" type="password"
                                     placeholder="Konfirmasi Password" />
-                                <select class="select select-bordered w-full max-w-xs">
+                                {{-- <select class="select select-bordered w-full max-w-xs">
                                     <option disabled selected>Pilih Masa Aktif Member</option>
                                     <option>1 Minggu</option>
                                     <option>1 Bulan</option>
                                     <option>3 Bulan</option>
-                                </select>
+                                </select> --}}
                             </div>
                             <button class="btn btn-success text-white">Tambah</button>
                         </div>
