@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Gym;
 use App\Models\Pelatih;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -52,13 +53,13 @@ class PelatihController extends Controller
                 'address' => 'string',
                 'price' => 'required|numeric',
                 'picture' => 'required|mimes:png,jpg,jpeg|max:4096',
-                'days' => 'required|min:1'
+                // 'days' => 'required|min:1'
             ],
             [
                 'name.required' => 'Name is required',
                 'price.required' => 'Price is required',
                 'picture.required' => 'Picture is required',
-                'days.required' => 'Days is required'
+                // 'days.required' => 'Days is required'
             ]
         );
         // dd($request->days);
@@ -71,6 +72,8 @@ class PelatihController extends Controller
 
         Storage::disk('public')->put($path, file_get_contents($request->picture));
         $findGymId = Gym::where('user_id', auth()->user()->id)->first();
+
+        // dd($request->days);
 
         $data = [
             'gym_id' => $findGymId->id,
@@ -96,7 +99,7 @@ class PelatihController extends Controller
                 'name' => 'string',
                 'email' => 'string',
                 'phone' => 'numeric',
-                'address' => '  string',
+                'address' => 'string',
                 'price' => 'numeric',
                 'picture' => 'mimes:png,jpg,jpeg|max:4096',
                 'days' => 'min:1'
@@ -126,7 +129,7 @@ class PelatihController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'price' => $request->price,
-            'available_days' => $request->days
+            // 'available_days' => $request->days
         ];
 
         Pelatih::where('id', $id)->update($data);
