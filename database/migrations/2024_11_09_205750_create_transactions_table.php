@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid("user_id")->constrained('users')->onUpdate('cascade')->onDelete("cascade");
+            $table->foreignUuid("user_id")->constrained('users')->onDelete("cascade");
             $table->string("product_id");
             $table->integer("gym_id");
             $table->enum("type", ["Card Member", "Booking"])->default("Booking");

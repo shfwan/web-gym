@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('card_members', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId("gym_id")->constrained("gyms")->onUpdate('cascade')->onDelete("cascade");
+            $table->foreignId("gym_id")->constrained("gyms")->onDelete("cascade");
             $table->string('title');
             $table->integer('price');
             $table->string('description')->nullable();
