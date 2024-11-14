@@ -61,7 +61,8 @@ class PelatihController extends Controller
                 'days.required' => 'Days is required'
             ]
         );
-        // dd($request->all());
+        // dd($request->days);
+
 
 
 
@@ -75,12 +76,12 @@ class PelatihController extends Controller
             'gym_id' => $findGymId->id,
             'picture' => $image,
             'name' => $request->name,
-            'description' => $request->description,
+            'description' => '',
             'email' => $request->email,
             'phone' => $request->phone,
             'address' => $request->address,
             'price' => $request->price,
-            'available_days' => $request->days
+            // 'available_days' => $request->days
         ];
 
         Pelatih::create($data);
@@ -125,6 +126,7 @@ class PelatihController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'price' => $request->price,
+            'available_days' => $request->days
         ];
 
         Pelatih::where('id', $id)->update($data);

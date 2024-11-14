@@ -18,7 +18,7 @@ class Pelatih extends Model
         'email',
         'phone',
         'address',
-        'available_days'
+        // 'available_days'
     ];
 
     protected $cast = [
