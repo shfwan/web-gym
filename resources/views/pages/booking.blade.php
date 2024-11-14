@@ -69,6 +69,12 @@
                     </div>
 
                     <script id="" type="text/javascript" hidden>
+
+
+                        document.getElementById('transaction-detail').onclick = () => {
+                            document.getElementById('detailTransaksi{{ $item->id }}').showModal()
+                        }
+
                         document.getElementById('pay-button.{{ $item->id }}').onclick = function() {
                             // SnapToken acquired from previous step
                             snap.pay('{{ $item->snap_token }}', {
@@ -88,11 +94,6 @@
                                     document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
                                 }
                             });
-
-                            document.getElementById('transaction-detail').onclick = () => {
-                                document.getElementById('detailTransaksi{{ $item->id }}').showModal()
-                            }
-
                         };
                     </script>
                 @endforeach

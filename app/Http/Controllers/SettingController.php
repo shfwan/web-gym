@@ -7,9 +7,8 @@ use Illuminate\Http\Request;
 
 class SettingController extends Controller
 {
-
     function index() {
         $listCardMember = CardMember::all();
-        return view('layouts.navigation', ['listCardMember' => $listCardMember]);
+        return view('pages.setting', ['listCardMember' => $listCardMember]);
     }
 }

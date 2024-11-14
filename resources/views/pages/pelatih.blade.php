@@ -21,26 +21,31 @@
                 <div class="grid grid-cols-4 gap-4">
                     @foreach ($listPelatih as $item)
                         <x-cardpelatih
-                            picture="{{ 'https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg' }}"
+                            picture="{{ $item->picture }}"
                             name="{{ $item->name }}" description="{{ $item->description }}" price="{{ $item->price }}"
                             onclick="pelatih{{ $item->id }}.showModal()" />
 
                         <x-modal id="pelatih{{ $item->id }}" title="Pelatih">
-                            <form action="{{ route('transaction.checkout') }}" method="post">
+                            <form action="{{ route('transaction.checkout', $item->id) }}" method="post">
                                 @csrf
-                                <div data class="flex flex-col gap-4 min-w-96 max-w-3xl">
+                                <div data class="flex flex-col items-center justify-center gap-4 min-w-96 max-w-3xl">
                                     {{-- Information --}}
-                                    <div class="inline-flex gap-4 w-full">
-                                        <figure class="max-w-20">
-                                            <img class="flex-[1_0_100%]" src="" alt="">
-                                        </figure>
-                                        <div class="w-full block space-y-4">
-                                            <h1 class="text-xl font-semibold">{{ $item->name }}</h1>
-                                            <h2 class="text-lg font-semibold">@currency($item->price)</h2>
-                                            <p class="max-w-96">{{ $item->description }}</p>
+                                    <figure class="max-w-60">
+                                        <img class="flex-[1_0_100%] rounded-md" src="{{asset('storage/upload/' . $item->picture)}}" alt="">
+                                    </figure>
+                                    <div class="w-full grid grid-cols-2 gap-4">
+                                        <x-text label='Nama Pelatih' value='{{$item->name}}'/>
+                                        <x-text label='Alamat' value='{{$item->address}}'/>
+                                        <x-text label='Email' value='{{$item->email}}'/>
+                                        <x-text label='Nomor HP' value='{{$item->phone}}'/>
+                                        <div class="col-span-2">
+                                            <x-text label='Harga' type='number' value='{{$item->price}}'/>
                                         </div>
+
+                                        <p class="max-w-96">{{ $item->description }}</p>
                                     </div>
                                     <input name="id" type="text" value="{{ $item->id }}" class="hidden">
+                                    <input name="type" type="text" value="Booking" class="hidden">
                                     <input name="gym_id" type="text" value="{{ $item->gym_id }}" class="hidden">
                                     <input name="price" type="text" value="{{ $item->price }}" class="hidden">
 
@@ -75,7 +80,7 @@
 
                                     <div class="inline-flex w-full gap-4 justify-end">
                                         <button type="submit" class="btn btn-success btn-md text-white">
-                                            Checkout
+                                            Booking Sekarang
                                         </button>
                                     </div>
                                 </div>

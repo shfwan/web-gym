@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Storage;
 
 class PelatihController extends Controller
 {
-    //
     function listPelatih()
     {
         $listPelatih = Pelatih::all();
@@ -44,11 +43,10 @@ class PelatihController extends Controller
 
     function addPelatih(Request $request)
     {
-
         $request->validate(
             [
                 'name' => 'required|string',
-                'description' => 'string',
+                // 'description' => 'string',
                 'email' => 'string',
                 'phone' => 'numeric',
                 'address' => 'string',
@@ -63,11 +61,14 @@ class PelatihController extends Controller
                 'days.required' => 'Days is required'
             ]
         );
+        // dd($request->all());
+
 
 
         $image = time() . '.' . $request->picture->extension();
-        move_uploaded_file($image, '/upload');
-        // Storage::disk('public')->put($path, file_get_contents($image));
+        $path = "upload/" . $image;
+
+        Storage::disk('public')->put($path, file_get_contents($request->picture));
         $findGymId = Gym::where('user_id', auth()->user()->id)->first();
 
         $data = [
@@ -79,7 +80,7 @@ class PelatihController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'price' => $request->price,
-            'available_days' => $request->days
+            // 'available_days' => $request->days
         ];
 
         Pelatih::create($data);
@@ -89,27 +90,30 @@ class PelatihController extends Controller
 
     function updatePelatih(Request $request, $id)
     {
-        // $request->validate(
-        //     [
-        //         'name' => 'string',
-        //         'description' => 'string',
-        //         'email' => 'string',
-        //         'phone' => 'numeric',
-        //         'address' => 'string',
-        //         'price' => 'numeric',
-        //         'picture' => 'mimes:png,jpg,jpeg|max:4096'
-        //     ],
-        //     [
-        //         'name.required' => 'Name is required',
-        //         'price.required' => 'Price is required',
-        //         'picture.required' => 'Picture is required',
-        //     ]
-        // );
+        $request->validate(
+            [
+                'name' => 'string',
+                'email' => 'string',
+                'phone' => 'numeric',
+                'address' => '  string',
+                'price' => 'numeric',
+                'picture' => 'mimes:png,jpg,jpeg|max:4096',
+                'days' => 'min:1'
+
+            ],
+            [
+                'name.required' => 'Name is required',
+                'price.required' => 'Price is required',
+                'picture.required' => 'Picture is required',
+                'available_days' => $request->days
+
+            ]
+        );
 
         $image = $request->picture ? time() . '.' . $request->picture->extension() : null;
-        // $path = 'upload/' . $image;
-        if($image != null){
-            move_uploaded_file($image, '/upload');
+        if ($image != null) {
+            $path = "upload/" . $image;
+            Storage::disk('public')->put($path, file_get_contents($request->picture));
         }
 
 
@@ -130,8 +134,6 @@ class PelatihController extends Controller
 
     function deletePelatih($id)
     {
-        // dd($id);
-        // $pelatih = Pelatih::find($id);
         Pelatih::where('id', $id)->delete();
         return redirect()->route('management');
     }

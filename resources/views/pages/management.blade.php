@@ -56,24 +56,24 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                     placeholder="Nama Pelatih" />
                                 <x-input label="Email" name="email" value="{{ old('email') }}" type="text"
                                     placeholder="Email" />
-                                <x-input label="Nomor HP" name="phone" value="{{ old('phoen') }}" type="text"
+                                <x-input label="Nomor HP" name="phone" value="{{ old('phone') }}" type="text"
                                     placeholder="Nomor HP" />
                                 <x-input label="Alamat" name="address" value="{{ old('address') }}" type="text"
                                     placeholder="Nama Pelatih" />
                                 <x-input label="Harga" name="price" value="{{ old('price') }}" type="number"
                                     placeholder="Masukan Harga" />
-                                <x-textarea label="Deskripsi" name="description" placeholder="Deskripsi Pelatih" />
+                                <x-textarea label="Deskripsi" name="description" placeholder="Deskripsi Pelatih" value="{{ old('description') }}" />
 
                             </div>
                             <label class="font-normal text-sm text-gray-700" for="label">Pilih Hari yang Tersedia Untuk
                                 Pelatih</label>
                             <div class="inline-flex gap-4">
                                 @for ($i = 0; $i < count($days); $i++)
-                                    <div
-                                        id="add{{ $i }}"
+                                    <div id="add{{ $i }}"
                                         class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer"
                                         onclick="checkBox()">
-                                        <input type="checkbox" name="days[]" value="{{ $days[$i] }}" id="{{ $days[$i] }}" hidden>
+                                        <input type="checkbox" name="days[]" value="{{ $days[$i] }}"
+                                            id="{{ $days[$i] }}" hidden>
                                         <h2>{{ $days[$i] }}</h2>
                                     </div>
                                     <script id="{{ $days[$i] }}" type="text/javascript" hidden>
@@ -102,7 +102,7 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                     <h2 class="font-semibold text-base text-gray-800">Total Pelatih {{ count($listPelatih) }}</h2>
                     <div class="grid grid-cols-4 gap-4 min-h-[20rem] max-h-[40rem] border rounded-md p-4 overflow-y-scroll">
                         @foreach ($listPelatih as $item)
-                            <x-cardpelatih picture="{{ asset($item->picture) }}" name="{{ $item->name }}"
+                            <x-cardpelatih picture="{{ $item->picture }}" name="{{ $item->name }}"
                                 description="{{ $item->description }}" price="{{ $item->price }}">
                                 {{-- Button Edit Member --}}
                                 <button class="btn btn-sm rounded-md btn-warning text-white"
@@ -127,27 +127,76 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                         </svg>
                                     </button>
                                 </form>
+                                {{-- Modal Update Pelatih --}}
+                                <x-modal id="editPelatih{{ $item->id }}" title="Edit Pelatih">
+                                    @if ($errors->any())
+                                        <div class="bg-red-400 rounded-md p-4">
+                                            <ul>
+                                                @foreach ($errors->all() as $item)
+                                                    <li class="text-white">{{ $item }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    <form class="flex flex-col gap-4" action="{{ route('pelatih.update', $item->id) }}"
+                                        method="post" enctype="multipart/form-data">
+                                        @csrf
+                                        <input id="file" name="picture" type="file"
+                                            class=" file-input w-full max-w-xs " />
+
+                                        <div class="grid grid-cols-2 w-full gap-4 max-w-2xl">
+                                            <x-input label="Nama" name="name" value="{{ $item->name }}"
+                                                type="text" placeholder="Nama Pelatih" />
+                                            <x-input label="Email" name="email" value="{{ $item->email }}"
+                                                type="text" placeholder="Email" />
+                                            <x-input label="Nomor HP" name="phone" value="{{ $item->phone }}"
+                                                type="text" placeholder="Nomor HP" />
+                                            <x-input label="Alamat" name="address" value="{{ $item->address }}"
+                                                type="text" placeholder="Nama Pelatih" />
+                                            <x-input label="Harga" name="price" value="{{ $item->price }}"
+                                                type="number" placeholder="Masukan Harga" />
+                                            <x-textarea label="Deskripsi" name="description"
+                                                placeholder="Deskripsi Pelatih" value="{{ $item->description }}" />
+
+                                        </div>
+                                        <label class="font-normal text-sm text-gray-700" for="label">Pilih Hari yang
+                                            Tersedia Untuk
+                                            Pelatih</label>
+                                        <div class="inline-flex gap-4">
+                                            @for ($i = 0; $i < count($days); $i++)
+                                                <div id="update{{ $i }}"
+                                                    class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer"
+                                                    onclick="checkBox()">
+                                                    <input type="checkbox" name="days[]" value="{{ $days[$i] }}"
+                                                        id="{{ $days[$i] }}" hidden>
+                                                    <h2>{{ $days[$i] }}</h2>
+                                                </div>
+                                                <script id="{{ $days[$i] }}" type="text/javascript" hidden>
+                                                    document.getElementById('update{{ $i }}').onclick = () => {
+                                                        if (document.getElementById('{{ $days[$i] }}').checked) {
+                                                            document.getElementById('{{ $days[$i] }}').checked = false
+                                                            document.getElementById('update{{ $i }}').className =
+                                                                "flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer"
+
+                                                        } else {
+                                                            document.getElementById('{{ $days[$i] }}').checked = true
+                                                            document.getElementById('update{{ $i }}').className =
+                                                                "bg-success/80 flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all text-white font-semibold cursor-pointer"
+                                                        }
+                                                    }
+                                                </script>
+                                            @endfor
+                                        </div>
+                                        <button type="submit" class="btn btn-warning text-white">Ubah</button>
+
+                                    </form>
+                                </x-modal>
                             </x-cardpelatih>
                         @endforeach
 
                     </div>
                 </div>
-                <div id="btn" role="button"
-                    class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all"
-                    onclick="checkBox()">
-                    <input type="checkbox" name="hari" value="hari" id="hari">
-                    <label>Hari</label>
-                </div>
-                <script type="text/javascript">
-                    const checkBox = () => {
-                        // const checkbox = document.getElementById('hari');
-                        if (document.getElementById('hari').checked) {
-                            document.getElementById('hari').checked = false
-                        } else {
-                            document.getElementById('hari').checked = true
-                        }
-                    }
-                </script>
+
             </div>
 
         </div>

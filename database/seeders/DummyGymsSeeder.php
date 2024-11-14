@@ -13,6 +13,7 @@ class DummyGymsSeeder extends Seeder
      */
     public function run(): void
     {
+        
         Gym::create(
             [
                 'user_id' => "9d78c0c7-f22b-4dde-b0c4-158666681d4d",

@@ -88,7 +88,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Transaksi
     Route::post('/member/checkout/{id}', [CheckoutController::class, "checkout"])->middleware('userAccess:member')->name('transaction.checkout.card_member');
-    Route::post('/pelatih/checkout', [CheckoutController::class, "checkout"])->middleware('userAccess:member')->name('transaction.checkout');
+    Route::post('/pelatih/checkout/{id}', [CheckoutController::class, "checkout"])->middleware('userAccess:member')->name('transaction.checkout');
     Route::post('/cardmember/checkout', [CheckoutController::class, "checkoutCardMember"])->middleware('userAccess:member')->name('transaction.checkoutCardMember');
 
     // Setting

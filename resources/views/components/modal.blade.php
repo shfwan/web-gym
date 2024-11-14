@@ -4,7 +4,7 @@
 ])
 
 <dialog id="{{ $id }}" class="modal bg-black/30">
-    <div class="modal-box min-w-fit w-fit bg-white">
+    <div class="modal-box min-w-fit w-fit min-h-fit bg-white">
         <form method="dialog">
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>

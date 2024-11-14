@@ -15,6 +15,7 @@
                     <x-navlink href="/pelatih">Pelatih</x-navlink>
                     <x-navlink href="/transaksi">Trasanksi</x-navlink>
                     <x-navlink href="/profil">Profil</x-navlink>
+                    
                     <x-navlink href="/upgrade_member" class="btn btn-warning text-white" >Upgrade Ke
                         Member</x-navlink>
                     <x-side-navlink href="/logout">Keluar</x-side-navlink>

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid("user_id")->constrained('users')->onDelete("cascade")->unique();
+            $table->foreignUuid("user_id")->constrained('users')->onUpdate('cascade')->onDelete("cascade")->unique();
             $table->boolean("statusMember")->default(true);
             $table->date("expiredAt");
             $table->timestamps();

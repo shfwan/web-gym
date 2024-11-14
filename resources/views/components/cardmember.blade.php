@@ -12,7 +12,7 @@
 <div id="" class="card card-compact min-w-72 bg-white shadow-md rounded-md">
     <div class="w-full bg-yellow-100  h-32 rounded-t-md inline-flex p-4 gap-4 items-center">
         <figure class="max-w-24 border-white border-2 rounded-full bg-gray-300 p-4">
-            <img class="flex-[1_0_100%]" src="{{ $picture }}" alt="profil">
+            <img class="flex-[1_0_100%]" src="{{ asset('storage/upload/' . $picture) }}" alt="profil">
         </figure>
         <div class="block w-full">
             <h3 class="card-title text-gray-800">{{ $fullname }}</h3>

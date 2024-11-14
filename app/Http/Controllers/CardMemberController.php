@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\CardMember;
 use App\Models\Gym;
+use App\Models\Member;
 use Illuminate\Http\Request;
 
 class CardMemberController extends Controller
 {
     function index() {
-        $findCardMember = CardMember::where('user_id', auth()->user()->gym_id)->get();
+        $findCardMember = Member::where('user_id', auth()->user()->gym_id)->get();
         $listCardMember = CardMember::all();
         return view('pages.upgrade_card', [
             'listCardMember' => $listCardMember,

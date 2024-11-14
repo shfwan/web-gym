@@ -68,14 +68,14 @@
 
                 <div class="grid grid-cols-4 gap-4">
                     @foreach ($listCardMember as $item)
-                        <div class="card bg-white border w-96 h-72 shadow-xl">
-                            <div class="card-body">
+                        <div class="card bg-white border w-fit min-w-72 h-fit shadow b">
+                            <div class="card-body gap-8">
                                 <label class="card-title text-xl text-black" for="">{{ $item->title }}</label>
                                 <div class="w-full flex h-full flex-col items-center justify-center">
 
                                     <span class="inline-flex items-end">
-                                        <h1 class="text-4xl text-light text-gray-800">@currency($item->price) /</h1>
-                                        <h2 class="text-2xl text-gray-500">{{ $item->type }}</h2>
+                                        <h1 class="text-3xl text-light text-gray-800">@currency($item->price) /</h1>
+                                        <h2 class="text-xl text-gray-500">{{ $item->type }}</h2>
                                     </span>
                                 </div>
                                 {{-- <h2 class="card-title">Card title!</h2>

@@ -44,7 +44,7 @@
                                 @endif
                                 <h3 class="text-black place-self-center truncate text-ellipsis">{{ $item->created_at }}</h3>
                                 <div class="place-self-center inline-flex gap-4">
-                                    <button class="btn btn-success btn-sm w-fit text-white rounded"
+                                    <button id="transaction-detail" class="btn btn-success btn-sm w-fit text-white rounded"
                                         onclick="detailTransaksi{{ $item->id }}.showModal()">Lihat
                                         Transaksi</button>
                                     <x-modal id="detailTransaksi{{ $item->id }}" title="Detail Transaksi">
@@ -63,6 +63,11 @@
                                             <x-label type="text" title="Tanggal Transaksi"
                                                 value="{{ $item->created_at }}" />
                                         </div>
+                                        <script id="" type="text/javascript" hidden>
+                                            document.getElementById('transaction-detail').onclick = () => {
+                                                document.getElementById('detailTransaksi{{ $item->id }}').showModal()
+                                            }
+                                        </script>
                                     </x-modal>
                                 </div>
                             </div>
