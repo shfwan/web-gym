@@ -13,7 +13,7 @@
     <div class="flex">
         @if (Auth::user() && Auth::user()->role == 'admin')
             @include('components.side-navigation')
-            <div class="flex-grow ml-64 min-h-screen">
+            <div class="flex-grow ml-0 xl:ml-64 min-h-screen">
                 @yield('content')
             </div>
         @else

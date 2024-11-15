@@ -12,14 +12,14 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
             {{-- CRUD Pelatih --}}
             <div class="block w-full space-y-4">
-                <h1 class="font-bold text-2xl text-black">Pelatih</h1>
+                <h1 class="font-bold text-2xl text-black">Pelatihs</h1>
                 <hr>
                 <div class="inline-flex justify-between items-center w-full">
                     {{-- Search --}}
                     <x-search action="{{ route('pelatih.management') }}" name="cari" placeholder="Cari Pelatih"
                         value="{{ old('cari') }}" />
 
-                    {{-- Button Add Pelatih --}}
+                    Button Add Pelatih
                     <button class="btn btn-success text-white" onclick="addPelatih.showModal()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-person-plus-fill" viewBox="0 0 16 16">
@@ -100,9 +100,9 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
                 <div class="block w-full space-y-4">
                     <h2 class="font-semibold text-base text-gray-800">Total Pelatih {{ count($listPelatih) }}</h2>
-                    <div class="grid grid-cols-4 gap-4 min-h-[20rem] max-h-[40rem] border rounded-md p-4 overflow-y-scroll">
+                    <div class="grid grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-4 min-h-[20rem] max-h-[40rem] border rounded-md p-4 overflow-y-scroll">
                         @foreach ($listPelatih as $item)
-                            <x-cardpelatih picture="{{ $item->picture }}" name="{{ $item->name }}"
+                            <x-cardpelatih id="{{ $item->id }}" picture="{{ $item->picture }}" name="{{ $item->name }}"
                                 description="{{ $item->description }}" price="{{ $item->price }}">
                                 {{-- Button Edit Member --}}
                                 <button class="btn btn-sm rounded-md btn-warning text-white"

@@ -20,10 +20,10 @@
                 @endif
                 <div class="grid grid-cols-4 gap-4">
                     @foreach ($listPelatih as $item)
-                        <x-cardpelatih
-                            picture="{{ $item->picture }}"
-                            name="{{ $item->name }}" description="{{ $item->description }}" price="{{ $item->price }}"
-                            onclick="pelatih{{ $item->id }}.showModal()" />
+                        <x-cardpelatih picture="{{ $item->picture }}" name="{{ $item->name }}"
+                            description="{{ $item->description }}" price="{{ $item->price }}"
+                            tersedia="{{ $item->available_days }}" onclick="pelatih{{ $item->id }}.showModal()" />
+
 
                         <x-modal id="pelatih{{ $item->id }}" title="Pelatih">
                             <form action="{{ route('transaction.checkout', $item->id) }}" method="post">
@@ -31,15 +31,16 @@
                                 <div data class="flex flex-col items-center justify-center gap-4 min-w-96 max-w-3xl">
                                     {{-- Information --}}
                                     <figure class="max-w-60">
-                                        <img class="flex-[1_0_100%] rounded-md" src="{{asset('storage/upload/' . $item->picture)}}" alt="">
+                                        <img class="flex-[1_0_100%] rounded-md"
+                                            src="{{ asset('storage/upload/' . $item->picture) }}" alt="">
                                     </figure>
                                     <div class="w-full grid grid-cols-2 gap-4">
-                                        <x-text label='Nama Pelatih' value='{{$item->name}}'/>
-                                        <x-text label='Alamat' value='{{$item->address}}'/>
-                                        <x-text label='Email' value='{{$item->email}}'/>
-                                        <x-text label='Nomor HP' value='{{$item->phone}}'/>
+                                        <x-text label='Nama Pelatih' value='{{ $item->name }}' />
+                                        <x-text label='Alamat' value='{{ $item->address }}' />
+                                        <x-text label='Email' value='{{ $item->email }}' />
+                                        <x-text label='Nomor HP' value='{{ $item->phone }}' />
                                         <div class="col-span-2">
-                                            <x-text label='Harga' type='number' value='{{$item->price}}'/>
+                                            <x-text label='Harga' type='number' value='{{ $item->price }}' />
                                         </div>
 
                                         <p class="max-w-96">{{ $item->description }}</p>

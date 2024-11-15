@@ -21,9 +21,9 @@ class Pelatih extends Model
         // 'available_days'
     ];
 
-    protected $cast = [
-        'available' => 'array'
-    ];
+    // protected $casts = [
+    //     'available_days' => 'array'
+    // ];
 
 
 
