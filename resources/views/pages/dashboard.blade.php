@@ -8,7 +8,7 @@
                 <x-cardstat title="Member" count="{{ $countMember }}" icon="" />
                 <x-cardstat title="Pelatih" count="{{ $countPelatih }}" icon="" />
                 <x-cardstat title="Booking" count="{{ count($listTransaksi) }}" icon="" />
-                <x-cardstat title="Pendapatan" count="Rp. 0" icon="" />
+                <x-cardstat title="Pendapatan" count="{{ $countIncome }}" icon="" />
             </div>
 
             {{-- List Booking --}}

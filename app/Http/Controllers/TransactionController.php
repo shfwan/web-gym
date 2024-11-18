@@ -19,13 +19,13 @@ class TransactionController extends Controller
             return view('pages.booking', ['listTransaksi' => $transactions]);
         }
 
-        // $transactions = Transaction::with('user')->where('status', 'accepted')->where('date', Carbon::now()->format('Y-m-d'))->paginate(10);
-        $transactions = Transaction::query();
+        $transactions = Transaction::with('user')->where('status', 'accepted')->where('date', Carbon::now()->format('Y-m-d'))->paginate(10);
+        // $transactions = Transaction::query();
 
-        $transactions->when($request->type, function ($query) use ($request) {
-            return $query->where('type', $request->type);
-        });
-        
+        // $transactions->when($request->type, function ($query) use ($request) {
+        //     return $query->where('type', $request->type);
+        // });
+
         return view('pages.booking', ['listTransaksi' => $transactions]);
     }
 

@@ -76,7 +76,7 @@
                                     };
                                 </script>
                             @else
-                                <button id="transaction-detail" class="btn btn-success btn-sm w-fit text-white rounded"
+                                <button id="transaction-detail{{ $item->id }}" class="btn btn-success btn-sm w-fit text-white rounded"
                                     onclick="detailTransaksi{{ $item->id }}.showModal()">Lihat Transaksi</button>
                                 <x-modal id="detailTransaksi{{ $item->id }}" title="Detail Transaksi">
                                     <div class="flex flex-col gap-4  min-w-96 cursor-default">
@@ -97,7 +97,7 @@
                                 </x-modal>
 
                                 <script id="" type="text/javascript" hidden>
-                                    document.getElementById('transaction-detail').onclick = () => {
+                                    document.getElementById('transaction-detail{{ $item->id }}').onclick = () => {
                                         document.getElementById('detailTransaksi{{ $item->id }}').showModal()
                                     }
                                 </script>
@@ -132,7 +132,7 @@
                         };
                     </script>
                 @endforeach
-                {{$listTransaksi->links()}}
+                {{-- {{$listTransaksi->links()}} --}}
             </div>
         </div>
     </div>
