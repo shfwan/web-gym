@@ -20,7 +20,7 @@ class PelatihController extends Controller
             $countProductInTransaction = Transaction::where('date', $request->has('date') ? $request->input('date') : date('Y-m-d'))->where('product_id', $item->id)->where('status', 'accepted')->get();
             $item->booking = count($countProductInTransaction);
 
-            if ($item->booking == 1) {
+            if ($item->booking == $item->capacity) {
                 $item->statusAvailable = false;
             } else {
                 $item->statusAvailable = true;
@@ -60,12 +60,14 @@ class PelatihController extends Controller
                 'address' => 'string',
                 'price' => 'required|numeric',
                 'picture' => 'required|mimes:png,jpg,jpeg|max:4096',
+                'capacity' => 'required|min:1',
                 'days' => 'required|min:1'
             ],
             [
                 'name.required' => 'Name is required',
                 'price.required' => 'Price is required',
                 'picture.required' => 'Picture is required',
+                'capacity.required' => 'Capacity is required',
                 'days.required' => 'Days is required'
             ]
         );
@@ -86,6 +88,7 @@ class PelatihController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'price' => $request->price,
+            'capacity' => $request->capacity,
             'available_days' => $request->days
         ];
 
@@ -104,6 +107,7 @@ class PelatihController extends Controller
                 'address' => 'string',
                 'price' => 'numeric',
                 'picture' => 'mimes:png,jpg,jpeg|max:4096',
+                'capacity' => 'numeric',
                 'days' => 'min:1'
 
             ],
@@ -132,6 +136,7 @@ class PelatihController extends Controller
                     'phone' => $request->phone,
                     'address' => $request->address,
                     'price' => $request->price,
+                    'capacity' => $request->capacity,
                     'available_days' => $request->days
                 ]
             );
@@ -144,6 +149,7 @@ class PelatihController extends Controller
                     'phone' => $request->phone,
                     'address' => $request->address,
                     'price' => $request->price,
+                    'capacity' => $request->capacity,
                     'available_days' => $request->days
                 ]
             );

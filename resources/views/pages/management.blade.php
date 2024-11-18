@@ -167,38 +167,40 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                             Tersedia Untuk
                                             Pelatih</label>
                                         <div class="inline-flex gap-4">
-                                            @for ($i = 0; $i < count($days); $i++)
-                                                @if (in_array($days[$i], $item->available_days))
-                                                    <div id="update{{ $i }}"
-                                                        class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer bg-success/80 text-white">
-                                                        <input type="checkbox" name="days[]"
-                                                            value="{{ $days[$i] }}" id="update{{ $days[$i] }}"
-                                                            checked hidden>
-                                                        <h2>{{ $days[$i] }}</h2>
-                                                    </div>
-                                                @else
-                                                    <div id="update{{ $i }}"
-                                                        class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer">
-                                                        <input type="checkbox" name="days[]"
-                                                            value="{{ $days[$i] }}" id="update{{ $days[$i] }}"
-                                                            hidden>
-                                                        <h2>{{ $days[$i] }}</h2>
-                                                    </div>
-                                                @endif
-                                                <script id="{{ $days[$i] }}" type="text/javascript" hidden>
-                                                    document.getElementById('update{{ $i }}').onclick = () => {
-                                                        if (document.getElementById('update{{ $days[$i] }}').checked) {
-                                                            document.getElementById('update{{ $days[$i] }}').checked = false
-                                                            document.getElementById('update{{ $i }}').classList.remove("text-white")
-                                                            document.getElementById('update{{ $i }}').classList.remove("bg-success/80")
-                                                        } else {
-                                                            document.getElementById('update{{ $days[$i] }}').checked = true
-                                                            document.getElementById('update{{ $i }}').classList.add("text-white")
-                                                            document.getElementById('update{{ $i }}').classList.add("bg-success/80")
+                                            @if ($days)
+                                                @for ($i = 0; $i < count($days); $i++)
+                                                    @if (in_array($days[$i], $item->available_days))
+                                                        <div id="update{{ $i }}"
+                                                            class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer bg-success/80 text-white">
+                                                            <input type="checkbox" name="days[]"
+                                                                value="{{ $days[$i] }}" id="update{{ $days[$i] }}"
+                                                                checked hidden>
+                                                            <h2>{{ $days[$i] }}</h2>
+                                                        </div>
+                                                    @else
+                                                        <div id="update{{ $i }}"
+                                                            class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer">
+                                                            <input type="checkbox" name="days[]"
+                                                                value="{{ $days[$i] }}" id="update{{ $days[$i] }}"
+                                                                hidden>
+                                                            <h2>{{ $days[$i] }}</h2>
+                                                        </div>
+                                                    @endif
+                                                    <script id="{{ $days[$i] }}" type="text/javascript" hidden>
+                                                        document.getElementById('update{{ $i }}').onclick = () => {
+                                                            if (document.getElementById('update{{ $days[$i] }}').checked) {
+                                                                document.getElementById('update{{ $days[$i] }}').checked = false
+                                                                document.getElementById('update{{ $i }}').classList.remove("text-white")
+                                                                document.getElementById('update{{ $i }}').classList.remove("bg-success/80")
+                                                            } else {
+                                                                document.getElementById('update{{ $days[$i] }}').checked = true
+                                                                document.getElementById('update{{ $i }}').classList.add("text-white")
+                                                                document.getElementById('update{{ $i }}').classList.add("bg-success/80")
+                                                            }
                                                         }
-                                                    }
-                                                </script>
-                                            @endfor
+                                                    </script>
+                                                @endfor
+                                            @endif
                                         </div>
                                         <button type="submit" class="btn btn-warning text-white">Ubah</button>
 

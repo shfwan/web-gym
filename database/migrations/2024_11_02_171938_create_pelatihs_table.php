@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->integer('capacity')->default(1);
-            $table->json('available_days');
+            $table->json('available_days')->default([]);
             $table->foreignId("gym_id")->constrained("gyms")->onDelete("cascade");
             $table->timestamps();
         });
