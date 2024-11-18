@@ -13,7 +13,7 @@ class CheckoutController extends Controller
 
     function checkout(Request $request, $id)
     {
-        $date = Carbon::now();
+        $date = Carbon::parse($request->date);
 
         $transaction = Transaction::create([
             'user_id' => Auth::user()->id,

@@ -70,7 +70,7 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                     <div id="add{{ $i }}"
                                         class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer"
                                         onclick="checkBox()">
-                                        <input type="checkbox" name="days[]" value="{{ $days[$i] }}"
+                                        <input type="checkbox" name="days[]" value="{{ $i }}"
                                             id="{{ $days[$i] }}" hidden>
                                         <h2>{{ $days[$i] }}</h2>
                                     </div>
@@ -103,7 +103,7 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                         @foreach ($listPelatih as $item)
                             <x-cardpelatih id="{{ $item->id }}" picture="{{ $item->picture }}"
                                 name="{{ $item->name }}" description="{{ $item->description }}"
-                                price="{{ $item->price }}" {{-- tersedia="{{ $item->available_days }}" --}}>
+                                price="{{ $item->price }}">
                                 {{-- Button Edit Member --}}
                                 <button class="btn btn-sm rounded-md btn-warning text-white"
                                     onclick="editPelatih{{ $item->id }}.showModal()">
@@ -169,11 +169,11 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                         <div class="inline-flex gap-4">
                                             @if ($days)
                                                 @for ($i = 0; $i < count($days); $i++)
-                                                    @if (in_array($days[$i], $item->available_days))
+                                                    @if (in_array($i, $item->available_days))
                                                         <div id="update{{ $i }}"
                                                             class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer bg-success/80 text-white">
                                                             <input type="checkbox" name="days[]"
-                                                                value="{{ $days[$i] }}" id="update{{ $days[$i] }}"
+                                                                value="{{ $i }}" id="update{{ $days[$i] }}"
                                                                 checked hidden>
                                                             <h2>{{ $days[$i] }}</h2>
                                                         </div>
@@ -181,7 +181,7 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                                         <div id="update{{ $i }}"
                                                             class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer">
                                                             <input type="checkbox" name="days[]"
-                                                                value="{{ $days[$i] }}" id="update{{ $days[$i] }}"
+                                                                value="{{ $i }}" id="update{{ $days[$i] }}"
                                                                 hidden>
                                                             <h2>{{ $days[$i] }}</h2>
                                                         </div>

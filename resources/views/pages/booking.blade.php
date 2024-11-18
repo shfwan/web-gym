@@ -6,13 +6,20 @@
         <div class="block w-full space-y-8 place-items-start">
             <div class="inline-flex items-center justify-between gap-4">
                 <h1 class="font-semibold text-4xl text-black">Transaksi</h1>
-                <select class="select select-bordered ml-auto w-full max-w-xs bg-white text-black">
+                <select id="filter" class="select select-bordered ml-auto w-full max-w-xs bg-white text-black">
                     <option disabled selected>Filter Pembayaran</option>
                     <option>Semua</option>
                     <option>Booking</option>
                     <option>Card Member</option>
                   </select>
             </div>
+
+            <script type="text/javascript">
+                let filter = document.getElementById('filter')
+                filter.addEventListener('change', () => {
+                    window.location.href = '/transaksi?filter=' + filter.value
+                })
+            </script>
             <div class="flex flex-col gap-4 w-full max-w-7xl">
                 <div class="w-full grid grid-cols-6 border border-gray-300 p-4 gap-4 rounded-md place-items-center">
                     <h3 class="text-black font-semibold place-self-start">

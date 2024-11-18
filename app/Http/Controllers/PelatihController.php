@@ -5,25 +5,37 @@ namespace App\Http\Controllers;
 use App\Models\Gym;
 use App\Models\Pelatih;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+
+use function Laravel\Prompts\alert;
 
 class PelatihController extends Controller
 {
     function listPelatih(Request $request)
     {
         $listPelatih = Pelatih::paginate(10);
+        $date = Carbon::parse($request->has('date') ? $request->input('date') : date('Y-m-d'));
+        // dd($date->dayName);
 
         foreach ($listPelatih as $item) {
             $countProductInTransaction = Transaction::where('date', $request->has('date') ? $request->input('date') : date('Y-m-d'))->where('product_id', $item->id)->where('status', 'accepted')->get();
             $item->booking = count($countProductInTransaction);
 
-            if ($item->booking == $item->capacity) {
+            if ($item->booking >= $item->capacity) {
                 $item->statusAvailable = false;
             } else {
                 $item->statusAvailable = true;
+            }
+
+            if(in_array($date->dayOfWeek, $item->available_days )) {
+                $item->statusHari = true;
+            } else {
+                $item->statusHari = false;
+                alert("Tidak Tersedia");
             }
         }
 
@@ -119,6 +131,7 @@ class PelatihController extends Controller
 
             ]
         );
+
 
         $image = $request->picture ? time() . '.' . $request->picture->extension() : null;
         if ($image != null) {

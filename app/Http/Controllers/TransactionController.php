@@ -13,18 +13,19 @@ class TransactionController extends Controller
 {
     function index(Request $request)
     {
+        $filter = $request->has('filter') ? $request->filter : 'Semua';
 
         if (Auth::user()->role == 'member') {
-            $transactions = Transaction::with('user')->where('user_id', Auth::user()->id)->paginate(10);
+            if($filter == 'Semua') {
+
+                $transactions = Transaction::with('user')->orderBy('id', 'DESC')->where('user_id', Auth::user()->id)->paginate(10);
+                return view('pages.booking', ['listTransaksi' => $transactions]);
+            }
+            $transactions = Transaction::with('user')->orderBy('id', 'DESC')->where('type', $filter)->where('user_id', Auth::user()->id)->paginate(10);
             return view('pages.booking', ['listTransaksi' => $transactions]);
         }
 
-        $transactions = Transaction::with('user')->where('status', 'accepted')->where('date', Carbon::now()->format('Y-m-d'))->paginate(10);
-        // $transactions = Transaction::query();
-
-        // $transactions->when($request->type, function ($query) use ($request) {
-        //     return $query->where('type', $request->type);
-        // });
+        $transactions = Transaction::with('user')->orderBy('id', 'DESC')->where('type', $filter)->where('status', 'accepted')->where('date', Carbon::now()->format('Y-m-d'))->paginate(10);
 
         return view('pages.booking', ['listTransaksi' => $transactions]);
     }

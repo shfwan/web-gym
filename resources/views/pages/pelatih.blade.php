@@ -1,5 +1,8 @@
 @extends('layouts.main')
+<?php
+$days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
+?>
 @section('content')
     <div class="container mx-auto max-w-7xl min-h-screen bg-white p-8">
         <div class="flex flex-col items-center justify-center gap-8">
@@ -14,30 +17,16 @@
                     </div>
 
                     {{-- Date Filter --}}
-                    <div class="inline-flex gap-4 items-center">
-                        {{-- <input type="text" placeholder="Date" disabled
-                            class="input input-bordered w-full max-w-xs bg-transparent" />
-                        <button id="btn-date" class="btn btn-info rounded-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white"
-                                class="bi bi-calendar-week" viewBox="0 0 16 16">
-                                <path
-                                    d="M11 6.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z" />
-                                <path
-                                    d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z" />
-                            </svg>
-                        </button> --}}
-                    </div>
                     <input class="input bg-transparent input-bordered text-white bg-warning" type="date" name="date"
-                        id="date">
+                        value="{{ app('request')->input('date') != null ? app('request')->input('date') : date('Y-m-d') }}">
+
                     <script type="text/javascript">
                         let date = document.getElementById('date');
                         date.addEventListener('change', () => {
                             window.location.href = "/pelatih?date=" + date.value;
                         })
 
-                        document.getElementById('btn-date').onclick = () => {
-                            date.open()
-                        }
+
                     </script>
                 </div>
 
@@ -58,7 +47,8 @@
 
 
                         <x-modal id="pelatih{{ $item->id }}" title="Pelatih">
-                            <form class="flex flex-col gap-4" action="{{ route('transaction.checkout', $item->id) }}" method="post">
+                            <form class="flex flex-col gap-4" action="{{ route('transaction.checkout', $item->id) }}"
+                                method="post">
                                 @csrf
                                 <div data class="flex flex-col items-center justify-center gap-4 min-w-96 max-w-3xl">
                                     {{-- Information --}}
@@ -82,40 +72,40 @@
                                     <input name="type" type="text" value="Booking" class="hidden">
                                     <input name="gym_id" type="text" value="{{ $item->gym_id }}" class="hidden">
                                     <input name="price" type="text" value="{{ $item->price }}" class="hidden">
+                                    <input name="date" type="date"
+                                        value="{{ app('request')->input('date') != null ? app('request')->input('date') : date('Y-m-d') }}"
+                                        class="hidden">
 
-                                    {{-- List Latihan --}}
-                                    {{-- <div class="grid grid-cols-3 gap-4 overflow-y-scroll max-h-96 border p-4">
-                                        @for ($i = 0; $i < 10; $i++)
-                                                <div
-                                                    class="card card-side bg-white rounded-md border hover:shadow transition-all min-w-52 max-h-32 cursor-pointer p-4"
-                                                    onclick="checkbox.click()">
-                                                    <figure class="p-2 max-w-20  bg-gray-100 rounded-md">
-                                                        <img class="" src="/abs.png" alt="Shoes" class="rounded-md" />
-                                                    </figure>
-                                                    <div class="card-body items-start text-start">
-                                                        <h2 class="card-title text-xl font-bold text-black">ForeArms</h2>
-                                                        <div class="card-actions justify-end w-full">
-                                                        </div>
-                                                    </div>
-                                                    <input id="checkbox" type="checkbox" class="w-full" />
+                                    <label class="font-normal text-sm text-gray-700 text-start w-full" for="label">Hari
+                                        yang Tersedia</label>
+                                    <div class="inline-flex gap-4">
+
+                                        @for ($i = 0; $i < count($days); $i++)
+                                            @if (in_array($i, $item->available_days))
+                                                <div id="update{{ $i }}"
+                                                    class="flex flex-col w-full p-4 items-center justify-center border rounded-md bg-success/80 text-white">
+                                                    <input type="checkbox" name="days[]" value="{{ $i }}"
+                                                        id="update{{ $days[$i] }}" checked hidden>
+                                                    <h2>{{ $days[$i] }}</h2>
                                                 </div>
-                                            @endfor
-                                        <dialog id="latihan" class="modal">
-                                            <div class="modal-box">
-                                                <form method="dialog">
-                                                    <button
-                                                        class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                                                </form>
-                                                <h3 class="font-bold text-lg">Hello!</h3>
-                                                <p class="py-4">Press ESC key or click on ✕ button to close</p>
-                                            </div>
-                                        </dialog>
-                                    </div> --}}
-
+                                            @else
+                                                <div id="update{{ $i }}"
+                                                    class="flex flex-col w-full p-4 items-center justify-center border rounded-md">
+                                                    <input type="checkbox" name="days[]" value="{{ $i }}"
+                                                        id="update{{ $days[$i] }}" hidden>
+                                                    <h2>{{ $days[$i] }}</h2>
+                                                </div>
+                                            @endif
+                                        @endfor
+                                    </div>
                                 </div>
                                 <div class="inline-flex w-full gap-4 justify-end items-center">
-                                    <label class="text-error font-semibold {{$item->statusAvailable ? 'hidden' : ''}}" for="">Tidak bisa Booking karena Sudah Penuh</label>
-                                    <button type="submit" class="btn btn-success btn-md text-white {{$item->statusAvailable ? '' : 'btn-disabled'}}">
+                                    <label class="text-error font-semibold {{ $item->statusAvailable ? 'hidden' : '' }}"
+                                        for="">Tidak bisa Booking karena Sudah Penuh</label>
+                                    <label class="text-error font-semibold {{ $item->statusHari ? 'hidden' : '' }}"
+                                        for="">Pelatih tidak tersedia untuk hari ini</label>
+                                    <button type="submit"
+                                        class="btn btn-success btn-md text-white {{ $item->statusAvailable && $item->statusHari ? '' : 'btn-disabled' }}">
                                         Booking Sekarang
                                     </button>
                                 </div>
