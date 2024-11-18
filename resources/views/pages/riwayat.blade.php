@@ -69,12 +69,7 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
-            <div class="join">
-                <button class="join-item btn btn-outline btn-active">1</button>
-                <button class="join-item btn btn-outline">2</button>
-                <button class="join-item btn btn-outline">3</button>
-                <button class="join-item btn btn-outline">4</button>
+                {{ $listTransaksi->links() }}
             </div>
         </div>
     </div>

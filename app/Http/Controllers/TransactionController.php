@@ -11,15 +11,21 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
-    function index()
+    function index(Request $request)
     {
 
         if (Auth::user()->role == 'member') {
-            $transactions = Transaction::with('user')->where('user_id', Auth::user()->id)->get();
+            $transactions = Transaction::with('user')->where('user_id', Auth::user()->id)->paginate(10);
             return view('pages.booking', ['listTransaksi' => $transactions]);
         }
 
-        $transactions = Transaction::with('user')->where('status', 'accepted')->where('date', Carbon::now()->format('Y-m-d'))->get();
+        // $transactions = Transaction::with('user')->where('status', 'accepted')->where('date', Carbon::now()->format('Y-m-d'))->paginate(10);
+        $transactions = Transaction::query();
+
+        $transactions->when($request->type, function ($query) use ($request) {
+            return $query->where('type', $request->type);
+        });
+        
         return view('pages.booking', ['listTransaksi' => $transactions]);
     }
 
@@ -56,7 +62,7 @@ class TransactionController extends Controller
                 if ($findCardMember) {
                     Member::create([
                         'user_id' => auth()->user()->id,
-                        'expiredAt' => $expiredAt->format('Y-m-d'),
+                        'expiredAt' => $expiredAt->toDateString(),
 
                     ]);
                 }

@@ -18,12 +18,13 @@ class Pelatih extends Model
         'email',
         'phone',
         'address',
-        // 'available_days'
+        'capacity',
+        'available_days'
     ];
 
-    // protected $casts = [
-    //     'available_days' => 'array'
-    // ];
+    protected $casts = [
+        'available_days' => 'array'
+    ];
 
 
 

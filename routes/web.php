@@ -51,11 +51,14 @@ Route::middleware(['auth'])->group(function () {
 
     // User Member Routes
     Route::get('/pelatih', [PelatihController::class, 'listPelatih'])->middleware('userAccess:member')->name('pelatih');
-    Route::get('/pelatih', [PelatihController::class, 'searchPelatih'])->middleware('userAccess:member')->name('pelatih.search');
+    Route::get('/pelatih/search', [PelatihController::class, 'searchPelatih'])->middleware('userAccess:member')->name('pelatih.search');
 
     Route::get('/transaksi', [TransactionController::class, "index"])->name('transaction');
 
     Route::get('/profil', [ProfilController::class, "index"])->name('profil');
+    Route::post('/profil/{id}', [ProfilController::class, "update"])->name('profil.update');
+    Route::post('/profil/picture/{id}', [ProfilController::class, "updatePicture"])->name('profil.update-picture');
+    Route::post('/profil/picture/delete/{id}', [ProfilController::class, "deletePicture"])->name('profil.delete-picture');
     Route::get('/upgrade_member', [CardMemberController::class, "index"])->name('upgrade');
 
 
@@ -63,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get("/dashboard", [DashboardController::class, "index"])->middleware('userAccess:admin')->name('dashboard');
 
     Route::get("/management", function () {
-        $listPelatih = Pelatih::all();
+        $listPelatih = Pelatih::paginate(10);
         return view('pages.management', ["listPelatih" => $listPelatih]);
     })->middleware('userAccess:admin')->name('management');
 

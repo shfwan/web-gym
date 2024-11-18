@@ -12,14 +12,14 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
             {{-- CRUD Pelatih --}}
             <div class="block w-full space-y-4">
-                <h1 class="font-bold text-2xl text-black">Pelatihs</h1>
+                <h1 class="font-bold text-2xl text-black">Pelatih</h1>
                 <hr>
                 <div class="inline-flex justify-between items-center w-full">
                     {{-- Search --}}
                     <x-search action="{{ route('pelatih.management') }}" name="cari" placeholder="Cari Pelatih"
                         value="{{ old('cari') }}" />
 
-                    Button Add Pelatih
+                    {{-- Button Add Pelatih --}}
                     <button class="btn btn-success text-white" onclick="addPelatih.showModal()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             class="bi bi-person-plus-fill" viewBox="0 0 16 16">
@@ -47,11 +47,6 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                             <input id="file" name="picture" type="file" class=" file-input w-full max-w-xs " />
 
                             <div class="grid grid-cols-2 w-full gap-4 max-w-2xl">
-                                {{-- <span
-                                    class="min-w-52 min-h-60 rounded-full border cursor-pointer hover:shadow transition-all overflow-hidden"
-                                    onclick="file.click()">
-                                    <img src="" alt="">
-                                </span> --}}
                                 <x-input label="Nama" name="name" value="{{ old('name') }}" type="text"
                                     placeholder="Nama Pelatih" />
                                 <x-input label="Email" name="email" value="{{ old('email') }}" type="text"
@@ -59,10 +54,13 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                 <x-input label="Nomor HP" name="phone" value="{{ old('phone') }}" type="text"
                                     placeholder="Nomor HP" />
                                 <x-input label="Alamat" name="address" value="{{ old('address') }}" type="text"
-                                    placeholder="Nama Pelatih" />
+                                    placeholder="Alamat Pelatih" />
                                 <x-input label="Harga" name="price" value="{{ old('price') }}" type="number"
-                                    placeholder="Masukan Harga" />
-                                <x-textarea label="Deskripsi" name="description" placeholder="Deskripsi Pelatih" value="{{ old('description') }}" />
+                                    placeholder="Harga" />
+                                <x-input label="Kapasitas" name="capacity" value="{{ old('capacity') }}" type="number"
+                                    placeholder="Masukan Kapasistas Pelatih" />
+                                <x-textarea label="Deskripsi" name="description" placeholder="Deskripsi Pelatih"
+                                    value="{{ old('description') }}" />
 
                             </div>
                             <label class="font-normal text-sm text-gray-700" for="label">Pilih Hari yang Tersedia Untuk
@@ -100,10 +98,12 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
                 <div class="block w-full space-y-4">
                     <h2 class="font-semibold text-base text-gray-800">Total Pelatih {{ count($listPelatih) }}</h2>
-                    <div class="grid grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-4 min-h-[20rem] max-h-[40rem] border rounded-md p-4 overflow-y-scroll">
+                    <div
+                        class="grid grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-4 min-h-[20rem] max-h-[40rem] border rounded-md p-4 overflow-y-scroll">
                         @foreach ($listPelatih as $item)
-                            <x-cardpelatih id="{{ $item->id }}" picture="{{ $item->picture }}" name="{{ $item->name }}"
-                                description="{{ $item->description }}" price="{{ $item->price }}">
+                            <x-cardpelatih id="{{ $item->id }}" picture="{{ $item->picture }}"
+                                name="{{ $item->name }}" description="{{ $item->description }}"
+                                price="{{ $item->price }}" {{-- tersedia="{{ $item->available_days }}" --}}>
                                 {{-- Button Edit Member --}}
                                 <button class="btn btn-sm rounded-md btn-warning text-white"
                                     onclick="editPelatih{{ $item->id }}.showModal()">
@@ -155,8 +155,12 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                                 type="text" placeholder="Nama Pelatih" />
                                             <x-input label="Harga" name="price" value="{{ $item->price }}"
                                                 type="number" placeholder="Masukan Harga" />
+                                            <x-input label="Kapasitas" name="capacity" value="{{ $item->capacity }}"
+                                                type="number" placeholder="Masukan Kapasistas Pelatih" />
+
                                             <x-textarea label="Deskripsi" name="description"
                                                 placeholder="Deskripsi Pelatih" value="{{ $item->description }}" />
+
 
                                         </div>
                                         <label class="font-normal text-sm text-gray-700" for="label">Pilih Hari yang
@@ -164,24 +168,33 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                             Pelatih</label>
                                         <div class="inline-flex gap-4">
                                             @for ($i = 0; $i < count($days); $i++)
-                                                <div id="update{{ $i }}"
-                                                    class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer"
-                                                    onclick="checkBox()">
-                                                    <input type="checkbox" name="days[]" value="{{ $days[$i] }}"
-                                                        id="{{ $days[$i] }}" hidden>
-                                                    <h2>{{ $days[$i] }}</h2>
-                                                </div>
+                                                @if (in_array($days[$i], $item->available_days))
+                                                    <div id="update{{ $i }}"
+                                                        class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer bg-success/80 text-white">
+                                                        <input type="checkbox" name="days[]"
+                                                            value="{{ $days[$i] }}" id="update{{ $days[$i] }}"
+                                                            checked hidden>
+                                                        <h2>{{ $days[$i] }}</h2>
+                                                    </div>
+                                                @else
+                                                    <div id="update{{ $i }}"
+                                                        class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer">
+                                                        <input type="checkbox" name="days[]"
+                                                            value="{{ $days[$i] }}" id="update{{ $days[$i] }}"
+                                                            hidden>
+                                                        <h2>{{ $days[$i] }}</h2>
+                                                    </div>
+                                                @endif
                                                 <script id="{{ $days[$i] }}" type="text/javascript" hidden>
                                                     document.getElementById('update{{ $i }}').onclick = () => {
-                                                        if (document.getElementById('{{ $days[$i] }}').checked) {
-                                                            document.getElementById('{{ $days[$i] }}').checked = false
-                                                            document.getElementById('update{{ $i }}').className =
-                                                                "flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer"
-
+                                                        if (document.getElementById('update{{ $days[$i] }}').checked) {
+                                                            document.getElementById('update{{ $days[$i] }}').checked = false
+                                                            document.getElementById('update{{ $i }}').classList.remove("text-white")
+                                                            document.getElementById('update{{ $i }}').classList.remove("bg-success/80")
                                                         } else {
-                                                            document.getElementById('{{ $days[$i] }}').checked = true
-                                                            document.getElementById('update{{ $i }}').className =
-                                                                "bg-success/80 flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all text-white font-semibold cursor-pointer"
+                                                            document.getElementById('update{{ $days[$i] }}').checked = true
+                                                            document.getElementById('update{{ $i }}').classList.add("text-white")
+                                                            document.getElementById('update{{ $i }}').classList.add("bg-success/80")
                                                         }
                                                     }
                                                 </script>
@@ -195,6 +208,7 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                         @endforeach
 
                     </div>
+                    {{ $listPelatih->links() }}
                 </div>
 
             </div>

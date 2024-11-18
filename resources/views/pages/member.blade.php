@@ -8,7 +8,6 @@
     <div class="bg-white w-full min-h-screen p-8">
         <div class="flex flex-col w-full gap-8 min-h-screen">
             <div class="inline-flex justify-between items-center min-w-full">
-
                 {{-- Search --}}
                 <x-search action="{{ route('member.search') }}" name="value" placeholder="Cari Member" />
 
@@ -51,24 +50,16 @@
             </div>
 
             {{-- List Member --}}
+
             <h2 class="font-semibold text-base text-gray-800">Total Member {{ count($listMember) }}</h2>
             <div class="grid grid-cols-4 gap-4">
+                {{-- @dd($listMember); --}}
                 @foreach ($listMember as $item)
-                    @if ($item->member)
+                    @if ($item->role == 'member')
                         <x-cardmember id="{{ $item->id }}" fullname="{{ $item->firstname . ' ' . $item->lastname }}"
-                            picture="{{ asset('/icon/account.png') }}" phone="{{ $item->phone }}"
-                            email="{{ $item->email }}" description="" status="{{ $item->member->statusMember == 1 ? 'Aktif' : 'Tidak Aktif' }}" expire="{{ $item->member->expiredAt }}">
-
-                            {{-- Button Perpanjang Member --}}
-                            <button id={{ "perpanjangMember$item->id" }} class="btn btn-sm rounded-md btn-info text-white">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-calendar2-week" viewBox="0 0 16 16">
-                                    <path
-                                        d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z" />
-                                    <path
-                                        d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5zM11 7.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm-5 3a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5z" />
-                                </svg>
-                            </button>
+                            picture="{{ $item->profil ? $item->profil->picture : null }}" phone="{{ $item->phone }}"
+                            email="{{ $item->email }}" description="" status="{{ $item->status }}"
+                            expire="{{ $item->member ? $item->member->expiredAt : null }}">
 
                             {{-- Button Edit Member --}}
                             <button id={{ "editMember$item->id" }} class="btn btn-sm rounded-md btn-warning text-white">
@@ -104,52 +95,16 @@
                                             type="text" placeholder="Nama Belakang" />
                                         <x-input value="{{ $item->email }}" label="Email" name="email" type="text"
                                             placeholder="Email" />
-                                        <x-input value="{{ $item->phone }}" label="Nomor HP" name="phone"
-                                            type="text" placeholder="Nomor HP" />
+                                        <x-input value="{{ $item->phone }}" label="Nomor HP" name="phone" type="text"
+                                            placeholder="Nomor HP" />
                                         <button class="btn btn-warning text-white">Update</button>
                                     </div>
                                 </form>
                             </x-modal>
 
-                            {{-- Modal Perpanjang Member --}}
-                            <x-modal id="perpanjangMember.{{ $item->id }}" title="Perpanjang Member">
-                                {{-- Card Member --}}
-                                {{-- <div class="grid grid-cols-3 gap-4">
-                                    @for ($i = 0; $i < 3; $i++)
-                                        <div class="card bg-white border w-96 h-72 shadow-xl">
-                                            <div class="card-body">
-                                                <label class="card-title text-xl text-black" for="">Member
-                                                    Card</label>
-                                                <div class="w-full flex h-full flex-col items-center justify-center">
-
-                                                    <span class="inline-flex items-end">
-                                                        <h1 class="text-4xl text-light text-gray-800">@currency(100000) /</h1>
-                                                        <h2 class="text-2xl text-gray-500">Bulan</h2>
-                                                    </span>
-                                                </div>
-                                                <div class="card-actions justify-end">
-                                                    <form action="{{ route('transaction.checkoutCardMember') }}"
-                                                        method="post">
-                                                        @csrf
-                                                        <button id={{ "pay-button.$i" }}
-                                                            class="btn btn-success text-white">Upgrade Sekarang</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @endfor
-                                </div> --}}
-                            </x-modal>
-
                             <script type="text/javascript" class="hidden">
                                 document.getElementById('editMember{{ $item->id }}').onclick = () => {
                                     document.getElementById("editMember.{{ $item->id }}").showModal()
-                                }
-
-                                document.getElementById('perpanjangMember{{ $item->id }}').onclick = () => {
-                                    console.log("asd");
-
-                                    document.getElementById("perpanjangMember.{{ $item->id }}").showModal()
                                 }
                             </script>
 
@@ -157,15 +112,7 @@
                     @endif
                 @endforeach
             </div>
-
-            {{-- Pagination --}}
-
-            <div class="join mt-auto">
-                <button class="join-item btn btn-outline btn-active">1</button>
-                <button class="join-item btn btn-outline">2</button>
-                <button class="join-item btn btn-outline">3</button>
-                <button class="join-item btn btn-outline">4</button>
-            </div>
+            {{$listMember->links()}}
         </div>
     </div>
 @endsection

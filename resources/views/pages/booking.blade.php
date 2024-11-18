@@ -4,7 +4,15 @@
     <div
         class="{{ Auth::user()->role == 'member' ? 'container mx-auto max-w-7xl' : '' }} bg-white min-h-screen p-[2rem_4rem]">
         <div class="block w-full space-y-8 place-items-start">
-            <h1 class="font-semibold text-4xl text-black">Transaksi</h1>
+            <div class="inline-flex items-center justify-between gap-4">
+                <h1 class="font-semibold text-4xl text-black">Transaksi</h1>
+                <select class="select select-bordered ml-auto w-full max-w-xs bg-white text-black">
+                    <option disabled selected>Filter Pembayaran</option>
+                    <option>Semua</option>
+                    <option>Booking</option>
+                    <option>Card Member</option>
+                  </select>
+            </div>
             <div class="flex flex-col gap-4 w-full max-w-7xl">
                 <div class="w-full grid grid-cols-6 border border-gray-300 p-4 gap-4 rounded-md place-items-center">
                     <h3 class="text-black font-semibold place-self-start">
@@ -44,6 +52,29 @@
                             @if ($item->status == 'pending')
                                 <button id={{ "pay-button.$item->id" }} type="submit"
                                     class="btn btn-info btn-sm w-fit text-white rounded">Bayar</button>
+
+                                <script id="" type="text/javascript" hidden>
+                                    document.getElementById('pay-button.{{ $item->id }}').onclick = function() {
+                                        // SnapToken acquired from previous step
+                                        snap.pay('{{ $item->snap_token }}', {
+                                            // Optional
+                                            onSuccess: function(result) {
+                                                /* You may add your own js here, this is just example */
+                                                window.location.href = '{{ route('transaction.success', $item->id) }}';
+                                            },
+                                            // Optional
+                                            onPending: function(result) {
+                                                /* You may add your own js here, this is just example */
+                                                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                                            },
+                                            // Optional
+                                            onError: function(result) {
+                                                /* You may add your own js here, this is just example */
+                                                document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                                            }
+                                        });
+                                    };
+                                </script>
                             @else
                                 <button id="transaction-detail" class="btn btn-success btn-sm w-fit text-white rounded"
                                     onclick="detailTransaksi{{ $item->id }}.showModal()">Lihat Transaksi</button>
@@ -64,13 +95,17 @@
                                             value="{{ $item->created_at }}" />
                                     </div>
                                 </x-modal>
+
+                                <script id="" type="text/javascript" hidden>
+                                    document.getElementById('transaction-detail').onclick = () => {
+                                        document.getElementById('detailTransaksi{{ $item->id }}').showModal()
+                                    }
+                                </script>
                             @endif
                         </div>
                     </div>
 
                     <script id="" type="text/javascript" hidden>
-
-
                         document.getElementById('transaction-detail').onclick = () => {
                             document.getElementById('detailTransaksi{{ $item->id }}').showModal()
                         }
@@ -97,12 +132,7 @@
                         };
                     </script>
                 @endforeach
-            </div>
-            <div class="join">
-                <button class="join-item btn btn-outline btn-active">1</button>
-                <button class="join-item btn btn-outline">2</button>
-                <button class="join-item btn btn-outline">3</button>
-                <button class="join-item btn btn-outline">4</button>
+                {{$listTransaksi->links()}}
             </div>
         </div>
     </div>

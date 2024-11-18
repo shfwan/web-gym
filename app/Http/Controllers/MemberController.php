@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profil;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
@@ -11,13 +12,34 @@ class MemberController extends Controller
     //
     function index()
     {
-        $listMember = User::with('profil')->with('member')->where('role', 'member')->get();
+        $listMember = User::with('profil')->with('member')->where('role', 'member')->paginate(10);
+        $date = Carbon::now();
+
+        foreach ($listMember as $item) {
+            if ($item->member && $date->gt($item->member->expiredAt)) {
+                $item->status = false;
+            } else {
+                $item->status = true;
+            }
+        }
+
+        // $date->date("d-m-Y", strtotime($listMember[0]->member->expiredAt));
+        // dd($listMember[0]->member->expiredAt, (int)$date->format('d'));
         return view('pages.member', ["listMember" => $listMember]);
     }
 
     function searchMember(Request $request)
     {
-        $listMember = User::where('role', 'member')->orWhere('firstname', 'like', '%' . $request->value . '%')->orWhere('lastname', 'like', '%' . $request->value . '%')->orWhere('email', 'like', '%' . $request->value . '%')->orWhere('phone', 'like', '%' . $request->value . '%')->get();
+        $listMember = User::with('profil')->with('member')->where('role', 'member')->orWhere('firstname', 'like', '%' . $request->value . '%')->orWhere('lastname', 'like', '%' . $request->value . '%')->orWhere('email', 'like', '%' . $request->value . '%')->orWhere('phone', 'like', '%' . $request->value . '%')->get();
+        $date = Carbon::now();
+
+        foreach ($listMember as $item) {
+            if ($item->member && $date->gt($item->member->expiredAt)) {
+                $item->status = false;
+            } else {
+                $item->status = true;
+            }
+        }
         return view('pages.member', ["listMember" => $listMember]);
     }
 

@@ -10,6 +10,7 @@
 <div class="block w-full space-y-2">
     <label class="font-normal text-sm text-gray-700" for="label">{{ $label }}</label>
     <input
+        id="{{ $name }}"
         name="{{ $name }}"
         value="{{ $value }}"
         {{ $disabled ? 'disabled' : '' }}

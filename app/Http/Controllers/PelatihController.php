@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gym;
 use App\Models\Pelatih;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -11,18 +12,24 @@ use Illuminate\Support\Facades\Storage;
 
 class PelatihController extends Controller
 {
-    function listPelatih()
+    function listPelatih(Request $request)
     {
-        $listPelatih = Pelatih::all();
-        // $listPelatih = DB::table('pelatihs')->get();
+        $listPelatih = Pelatih::paginate(10);
+
+        foreach ($listPelatih as $item) {
+            $countProductInTransaction = Transaction::where('date', $request->has('date') ? $request->input('date') : date('Y-m-d'))->where('product_id', $item->id)->where('status', 'accepted')->get();
+            $item->booking = count($countProductInTransaction);
+
+            if ($item->booking == 1) {
+                $item->statusAvailable = false;
+            } else {
+                $item->statusAvailable = true;
+            }
+        }
+
         return view('pages.pelatih', ["listPelatih" => $listPelatih]);
     }
 
-
-    function getDetailPelatih(Request $request)
-    {
-        return view('pages.pelatih');
-    }
 
     function searchPelatih(Request $request)
     {
@@ -53,19 +60,15 @@ class PelatihController extends Controller
                 'address' => 'string',
                 'price' => 'required|numeric',
                 'picture' => 'required|mimes:png,jpg,jpeg|max:4096',
-                // 'days' => 'required|min:1'
+                'days' => 'required|min:1'
             ],
             [
                 'name.required' => 'Name is required',
                 'price.required' => 'Price is required',
                 'picture.required' => 'Picture is required',
-                // 'days.required' => 'Days is required'
+                'days.required' => 'Days is required'
             ]
         );
-        // dd($request->days);
-
-
-
 
         $image = time() . '.' . $request->picture->extension();
         $path = "upload/" . $image;
@@ -73,7 +76,6 @@ class PelatihController extends Controller
         Storage::disk('public')->put($path, file_get_contents($request->picture));
         $findGymId = Gym::where('user_id', auth()->user()->id)->first();
 
-        // dd($request->days);
 
         $data = [
             'gym_id' => $findGymId->id,
@@ -84,7 +86,7 @@ class PelatihController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'price' => $request->price,
-            // 'available_days' => $request->days
+            'available_days' => $request->days
         ];
 
         Pelatih::create($data);
@@ -120,19 +122,33 @@ class PelatihController extends Controller
             Storage::disk('public')->put($path, file_get_contents($request->picture));
         }
 
+        if ($request->picture) {
+            Pelatih::where('id', $id)->update(
+                [
+                    'picture' => $image,
+                    'name' => $request->name,
+                    'description' => $request->description,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'address' => $request->address,
+                    'price' => $request->price,
+                    'available_days' => $request->days
+                ]
+            );
+        } else {
+            Pelatih::where('id', $id)->update(
+                [
+                    'name' => $request->name,
+                    'description' => $request->description,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'address' => $request->address,
+                    'price' => $request->price,
+                    'available_days' => $request->days
+                ]
+            );
+        }
 
-        $data = [
-            'picture' => $image,
-            'name' => $request->name,
-            'description' => $request->description,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'address' => $request->address,
-            'price' => $request->price,
-            // 'available_days' => $request->days
-        ];
-
-        Pelatih::where('id', $id)->update($data);
 
         return redirect()->route('management')->with('success', "Data Berhasil Diperbarui");
     }

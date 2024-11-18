@@ -1,4 +1,4 @@
-<div class="w-full p-2 bg-white sticky top-0 z-50 shadow">
+<div id="top-navigation" class="w-full p-2 bg-white sticky top-0 z-50 shadow">
     <div class="w-full inline-flex items-center justify-between">
         <div class="inline-flex">
             <figure class="max-w-16">
@@ -15,7 +15,7 @@
                     <x-navlink href="/pelatih">Pelatih</x-navlink>
                     <x-navlink href="/transaksi">Trasanksi</x-navlink>
                     <x-navlink href="/profil">Profil</x-navlink>
-                    
+
                     <x-navlink href="/upgrade_member" class="btn btn-warning text-white" >Upgrade Ke
                         Member</x-navlink>
                     <x-side-navlink href="/logout">Keluar</x-side-navlink>
@@ -28,3 +28,11 @@
         </nav>
     </div>
 </div>
+
+<script type="text/javascript" hidden>
+    // if(window.pageYOffset > 0) {
+    //     alert(window.pageYOffset)
+    // } else {
+    //     alert(window.pageYOffset)
+    // }
+</script>

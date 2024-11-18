@@ -2,10 +2,10 @@
 
 @section('content')
     <div class="container mx-auto max-w-6xl bg-white min-h-screen p-8">
-        {{-- Card Member --}}
-        <div class="flex flex-col gap-4">
+        {{-- List Card Member --}}
+        <div class="flex flex-col gap-4in">
             <h1 class="font-semibold text-xl text-black">List Kartu Member</h1>
-            <div class="grid grid-cols-4 gap-4">
+            <div class="grid grid-cols-3 gap-4">
                 @foreach ($listCardMember as $item)
                     <form action="{{ route('transaction.checkout.card_member', $item->id) }}" method="post">
                         @csrf

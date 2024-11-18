@@ -30,9 +30,9 @@
     @yield('script')
 </body>
 
-@if (Auth::user() && Auth::user()->role == 'member')
-    @include('layouts.footer')
-@endif
+@include('layouts.footer')
+{{-- @if (Auth::user() && Auth::user()->role == 'member')
+@endif --}}
 
 
 </html>
