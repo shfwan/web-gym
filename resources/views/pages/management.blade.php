@@ -167,7 +167,7 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                             Tersedia Untuk
                                             Pelatih</label>
                                         <div class="inline-flex gap-4">
-                                            {{-- @if ($days)
+                                            @if ($days)
                                                 @for ($i = 0; $i < count($days); $i++)
                                                     @if (in_array($days[$i], $item->available_days))
                                                         <div id="update{{ $i }}"
@@ -200,7 +200,7 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                                         }
                                                     </script>
                                                 @endfor
-                                            @endif --}}
+                                            @endif
                                         </div>
                                         <button type="submit" class="btn btn-warning text-white">Ubah</button>
 
