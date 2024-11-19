@@ -5,12 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\CardMember;
 use App\Models\Gym;
 use App\Models\Member;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CardMemberController extends Controller
 {
-    function index() {
-        $findCardMember = Member::where('user_id', auth()->user()->gym_id)->get();
+    function index()
+    {
+        $findCardMember = Member::where('user_id', auth()->user()->id)->first();
+        $date = Carbon::now();
+        $date->addDay(1);
+
+
+        if ($findCardMember != null) {
+            if ($date->gt($findCardMember->expiredAt)) {
+
+                $findCardMember->status = false;
+            } else {
+                $findCardMember->status = true;
+            }
+            $findCardMember->updatedAt = Carbon::parse($findCardMember->updated_at)->format('d F Y');
+            $findCardMember->expiredAt = Carbon::parse($findCardMember->expiredAt)->format('d F Y');
+        }
+
+
         $listCardMember = CardMember::all();
         return view('pages.upgrade_card', [
             'listCardMember' => $listCardMember,

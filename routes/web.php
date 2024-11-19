@@ -36,15 +36,17 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [AuthController::class, 'login'])->name('login.post');
     Route::get('register', [AuthController::class, 'registerIndex'])->name('register');
     Route::post('register', [AuthController::class, 'register'])->name('register.post');
+    Route::get('/', function () {
+        if(auth()->user()) {
+            return redirect()->route('home');
+        }
+        return view('home');
+    })->name('home');
 });
 
-Route::get('/', function () {
-    return view('home');
-});
 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/transaksi/success/{id}', [TransactionController::class, "success"])->name('transaction.success');
 
     Route::get("logout", [AuthController::class, "logOut"]);
     Route::post("password", [AuthController::class, "changePassword"])->name('password.post');
@@ -53,7 +55,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pelatih', [PelatihController::class, 'listPelatih'])->middleware('userAccess:member')->name('pelatih');
     Route::get('/pelatih/search', [PelatihController::class, 'searchPelatih'])->middleware('userAccess:member')->name('pelatih.search');
 
-    Route::get('/transaksi', [TransactionController::class, "index"])->name('transaction');
 
     Route::get('/profil', [ProfilController::class, "index"])->name('profil');
     Route::post('/profil/{id}', [ProfilController::class, "update"])->name('profil.update');
@@ -82,6 +83,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post("/management/latihan/{id}", [LatihanController::class, "deleteLatihan"])->middleware('userAccess:admin')->name('latihan.delete');
 
     Route::get("/member", [MemberController::class, "index"])->middleware('userAccess:admin')->name('member');
+    Route::get("/member/expired", function() {
+        return view('pages.member_expired');
+    })->middleware('userAccess:member')->name('member.expired');
     Route::get("/member/search", [MemberController::class, "searchMember"])->middleware('userAccess:admin')->name('member.search');
     Route::post("/member", [MemberController::class, "addMember"])->middleware('userAccess:admin')->name('member.post');
     Route::post("/member/update/{id}", [MemberController::class, "updateMember"])->middleware('userAccess:admin')->name('member.update');
@@ -90,9 +94,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get("/riwayat", [HistoryController::class, "index"])->middleware('userAccess:admin')->name('history');
 
     // Transaksi
-    Route::post('/member/checkout/{id}', [CheckoutController::class, "checkout"])->middleware('userAccess:member')->name('transaction.checkout.card_member');
+    Route::get('/transaksi', [TransactionController::class, "index"])->name('transaction');
+    Route::get('/transaksi/success/{id}', [TransactionController::class, "success"])->name('transaction.success');
+    Route::get('/transaksi/fail/{id}', [TransactionController::class, "fail"])->name('transaction.fail');
+    Route::post('/member/checkout/{id}', [CheckoutController::class, "checkoutCardMember"])->middleware('userAccess:member')->name('transaction.checkout.card_member');
     Route::post('/pelatih/checkout/{id}', [CheckoutController::class, "checkout"])->middleware('userAccess:member')->name('transaction.checkout');
-    Route::post('/cardmember/checkout', [CheckoutController::class, "checkoutCardMember"])->middleware('userAccess:member')->name('transaction.checkoutCardMember');
 
     // Setting
     Route::get('/setting', [SettingController::class, "index"])->middleware('userAccess:admin')->name('setting');

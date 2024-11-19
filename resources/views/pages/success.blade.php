@@ -4,7 +4,7 @@
     <div class="container mx-auto max-w-7xl  flex items-center justify-center min-h-screen">
         <div class="card bg-white shadow border text-neutral-content w-96">
             <div class="card-body items-center text-center gap-4 space-y-4">
-                <h2 class="card-title">Success Payment</h2>
+                <h2 class="card-title text-black text-2xl">Success Payment</h2>
                 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="#00a96e"
                     class="bi bi-check-circle" viewBox="0 0 16 16">
                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16" />

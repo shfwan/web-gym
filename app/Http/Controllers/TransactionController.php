@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CardMember;
 use App\Models\Member;
+use App\Models\Pelatih;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,29 +17,72 @@ class TransactionController extends Controller
         $filter = $request->has('filter') ? $request->filter : 'Semua';
 
         if (Auth::user()->role == 'member') {
-            if($filter == 'Semua') {
+
+
+            if ($filter == 'Semua') {
 
                 $transactions = Transaction::with('user')->orderBy('id', 'DESC')->where('user_id', Auth::user()->id)->paginate(10);
+
+                foreach ($transactions as $transaction) {
+                    // find product
+                    if ($transaction->type == 'Booking') {
+                        $transaction->pelatih = Pelatih::where('id', $transaction->product_id)->first();
+                    } else {
+                        $transaction->cardMember = CardMember::where('id', $transaction->product_id)->first();
+                    }
+                }
+
                 return view('pages.booking', ['listTransaksi' => $transactions]);
             }
             $transactions = Transaction::with('user')->orderBy('id', 'DESC')->where('type', $filter)->where('user_id', Auth::user()->id)->paginate(10);
+            foreach ($transactions as $transaction) {
+                // find product
+                if ($transaction->type == 'Booking') {
+                    $transaction->pelatih = Pelatih::where('id', $transaction->product_id)->first();
+                } else {
+                    $transaction->cardMember = CardMember::where('id', $transaction->product_id)->first();
+                }
+            }
             return view('pages.booking', ['listTransaksi' => $transactions]);
         }
 
-        $transactions = Transaction::with('user')->orderBy('id', 'DESC')->where('type', $filter)->where('status', 'accepted')->where('date', Carbon::now()->format('Y-m-d'))->paginate(10);
+        if($filter == "Semua") {
+            $transactions = Transaction::with('user')->orderBy('id', 'DESC')->where('status', 'accepted')->where('date', Carbon::now()->format('Y-m-d'))->paginate(10);
+            foreach ($transactions as $transaction) {
+                // find product
+                if ($transaction->type == 'Booking') {
+                    $transaction->pelatih = Pelatih::where('id', $transaction->product_id)->first();
+                } else {
+                    $transaction->cardMember = CardMember::where('id', $transaction->product_id)->first();
+                }
+            }
+            return view('pages.booking', ['listTransaksi' => $transactions]);
+        } else {
 
-        return view('pages.booking', ['listTransaksi' => $transactions]);
+            $transactions = Transaction::with('user')->orderBy('id', 'DESC')->where('type', $filter)->where('status', 'accepted')->where('date', Carbon::now()->format('Y-m-d'))->paginate(10);
+            foreach ($transactions as $transaction) {
+                // find product
+                if ($transaction->type == 'Booking') {
+                    $transaction->pelatih = Pelatih::where('id', $transaction->product_id)->first();
+                } else {
+                    $transaction->cardMember = CardMember::where('id', $transaction->product_id)->first();
+                }
+            }
+            return view('pages.booking', ['listTransaksi' => $transactions]);
+        }
     }
 
     function success($id)
     {
         $updateOrder = Transaction::where('id', $id)->update(['status' => 'accepted']);
-        if($updateOrder) {
+        if ($updateOrder) {
 
             $findTransaction = Transaction::where('id', $id)->first();
 
             if ($findTransaction->type != 'Booking' && $findTransaction->status == 'accepted') {
                 $findCardMember = CardMember::where('id', $findTransaction->product_id)->first();
+                $findMember = Member::where('user_id', auth()->user()->id)->first();
+
                 $date = Carbon::now();
 
                 switch ($findCardMember->type) {
@@ -60,16 +104,24 @@ class TransactionController extends Controller
                     default:
                 }
 
-                if ($findCardMember) {
+                if ($findMember) {
+                    Member::where('user_id', auth()->user()->id)->update([
+                        'user_id' => auth()->user()->id,
+                        'expiredAt' => $expiredAt->toDateString(),
+                    ]);
+                } else {
                     Member::create([
                         'user_id' => auth()->user()->id,
                         'expiredAt' => $expiredAt->toDateString(),
-
                     ]);
                 }
             }
         }
         return view('pages.success');
-
+    }
+    function fail($id)
+    {
+        $updateOrder = Transaction::where('id', $id)->update(['status' => 'declined']);
+        return redirect()->route('transaction');
     }
 }

@@ -52,7 +52,7 @@ class AuthController extends Controller
         return view('pages.register');
     }
 
-    function register($request)
+    function register(Request $request)
     {
         $request->validate(
             [
@@ -89,10 +89,7 @@ class AuthController extends Controller
                 'user_id' => $user->id
             ]);
         }
-
-        if(Auth::user()->role == 'admin') {
-            return redirect()->route('member')->with('success', "Success Register");
-        }
+        
         return redirect()->route('login')->with('success', "Success Register");
     }
 

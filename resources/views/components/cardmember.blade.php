@@ -6,6 +6,7 @@
     'email' => '',
     'description' => '',
     'status' => '',
+    'created_at' => '',
     'expire' => null,
 ])
 
@@ -40,8 +41,12 @@
                 </div>
             </div>
             <div class="inline-flex flex-col gap-2 w-full">
-                <label for="label" class="text-sm text-gray-500">Berlaku Sampai</label>
-                <p class="truncate w-full text-base text-gray-700">{{ $expire == "" ? '-' : $expire }}</p>
+                <label for="label" class="text-sm text-gray-500">Berlaku Dari</label>
+                <h3 class="truncate w-full text-base text-gray-700">
+                    {{ $created_at == '' ? '-' : $created_at }}</h3>
+                <label for="label" class="text-sm text-gray-500">Sampai</label>
+                <h3 class="truncate w-full text-base text-gray-700">
+                    {{ $expire == '' ? '-' : $expire }}</h3>
             </div>
         </div>
 
@@ -50,7 +55,7 @@
         </div>
     </div>
 </div>
-<x-modal id="image{{ $id }}">
+<x-modal class="w-fit" id="image{{ $id }}">
     <img class="flex-[1_0_100% max-w-xl rounded-md aspect-square object-cover size-full bg-gray-300"
         src="{{ asset('storage/upload/' . $picture) }}" alt="image" class="rounded-md" />
 

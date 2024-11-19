@@ -20,9 +20,8 @@
                         New Card Member
                     </button>
 
-
                     {{-- Modal Add Card Member --}}
-                    <x-modal id="addCard" title="Tambah Member Card">
+                    <x-modal class="w-fit" id="addCard" title="Tambah Member Card">
                         @if ($errors->any())
                             <div class="bg-red-400 rounded-md p-4">
                                 <ul>
@@ -36,7 +35,7 @@
                             @csrf
                             <div class="flex flex-col w-full gap-4 max-w-2xl">
                                 <input type="text" name="gym_id" class="hidden">
-                                <x-input label="Judul" name="title" value="{{ old('tile') }}" type="text"
+                                <x-input label="Judul" name="title" value="{{ old('title') }}" type="text"
                                     placeholder="Nama Kartu" />
                                 <x-input label="Harga" name="price" value="{{ old('price') }}" type="number"
                                     placeholder="Masukan Harga" />
@@ -45,7 +44,8 @@
                                         type="number" placeholder="Berlaku Selama" />
                                     <div class="flex flex-col w-full gap-2">
                                         <label class="font-normal text-sm text-gray-700" for="label">Tipe</label>
-                                        <select name="type" class="select select-bordered max-w-xs bg-transparent text-black">
+                                        <select name="type"
+                                            class="select select-bordered max-w-xs bg-transparent text-black">
                                             <option disabled selected>Pilih Masa Aktif Member</option>
                                             <option>Hari</option>
                                             <option>Minggu</option>
@@ -54,6 +54,7 @@
                                         </select>
                                     </div>
                                 </div>
+
                                 <div class="w-full">
                                     <x-textarea label="Deskripsi" name="description" placeholder="Deskripsi Member Card" />
                                 </div>
@@ -66,9 +67,9 @@
                     </x-modal>
                 </div>
 
-                <div class="grid grid-cols-4 gap-4">
+                <div class="grid grid-cols-3 gap-4">
                     @foreach ($listCardMember as $item)
-                        <div class="card bg-white border w-fit min-w-72 h-fit shadow b">
+                        <div class="card bg-white border w-fit min-w-full h-fit shadow b">
                             <div class="card-body gap-8">
                                 <label class="card-title text-xl text-black" for="">{{ $item->title }}</label>
                                 <div class="w-full flex h-full flex-col items-center justify-center">
@@ -81,10 +82,84 @@
                                 {{-- <h2 class="card-title">Card title!</h2>
                             <p>If a dog chews shoes whose shoes does he choose?</p> --}}
                                 <div class="card-actions justify-end">
-                                    <form action="{{ route('transaction.checkoutCardMember') }}" method="post">
+
+                                    {{-- Button Edit Member --}}
+                                    <button id={{ "editbtnCard$item->id" }}
+                                        class="btn btn-sm rounded-md btn-warning text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                            <path
+                                                d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                            <path fill-rule="evenodd"
+                                                d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                                        </svg>
+                                    </button>
+
+                                    {{-- Modal Update Card Member --}}
+                                    <x-modal class="w-fit" id="editCard.{{ $item->id }}" title="Ubah Member Card">
+                                        @if ($errors->any())
+                                            <div class="bg-red-400 rounded-md p-4">
+                                                <ul>
+                                                    @foreach ($errors->all() as $item)
+                                                        <li class="text-white">{{ $item }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
+                                        <form action="{{ route('setting.card.update', $item->id) }}" method="post">
+                                            @csrf
+                                            <div class="flex flex-col w-full gap-4 max-w-2xl">
+                                                <input type="text" name="gym_id" class="hidden">
+                                                <x-input label="Judul" name="title" value="{{ $item->title }}"
+                                                    type="text" placeholder="Nama Kartu" />
+                                                <x-input label="Harga" name="price" value="{{ $item->price }}"
+                                                    type="number" placeholder="Masukan Harga" />
+                                                <div class="inline-flex gap-4 w-full items-center">
+                                                    <x-input label="Berlaku Selama" name="long"
+                                                        value="{{ $item->long }}" type="number"
+                                                        placeholder="Berlaku Selama" />
+                                                    <div class="flex flex-col w-full gap-2">
+                                                        <label class="font-normal text-sm text-gray-700"
+                                                            for="label">Tipe</label>
+                                                        <select name="type"
+                                                            class="select select-bordered max-w-xs bg-transparent text-black">
+                                                            <option disabled selected>Pilih Masa Aktif Member</option>
+                                                            <option>Hari</option>
+                                                            <option>Minggu</option>
+                                                            <option>Bulan</option>
+                                                            <option>Tahun</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="w-full">
+                                                    <x-textarea label="Deskripsi" name="description"
+                                                        placeholder="Deskripsi Member Card">{{ $item->description }}</x-textarea>
+                                                </div>
+
+
+                                                <button type="submit" class="btn btn-warning text-white">Ubah</button>
+                                            </div>
+
+                                        </form>
+                                    </x-modal>
+
+                                    <script type="text/javascript">
+                                        document.getElementById("editbtnCard{{ $item->id }}").onclick = function() {
+                                            document.getElementById("editCard.{{ $item->id }}").showModal();
+                                        }
+                                    </script>
+
+                                    {{-- Button Delete Member --}}
+                                    <form action="{{ route('setting.card.delete', $item->id) }}" method="post">
                                         @csrf
-                                        <button id={{ 'pay-button' }} class="btn btn-success text-white">Upgrade
-                                            Sekarang</button>
+                                        <button class="btn btn-sm rounded-md btn-error text-white">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                                            </svg>
+                                        </button>
                                     </form>
                                 </div>
                             </div>

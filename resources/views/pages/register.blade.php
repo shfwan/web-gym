@@ -17,9 +17,9 @@
                 <form action="{{ route('register.post') }}" method="post">
                     @csrf
                     <div class="grid grid-cols-2 gap-4 place-items-center">
-                        <x-input label="First Name" name="first_name" value="{{ old('first_name') }}" type="text"
+                        <x-input label="First Name" name="firstname" value="{{ old('firstname') }}" type="text"
                             placeholder="Nama Depan" />
-                        <x-input label="Last Name" name="last_name" value="{{ old('last_name') }}" type="text"
+                        <x-input label="Last Name" name="lastname" value="{{ old('lastname') }}" type="text"
                             placeholder="Nama Belakang" />
                         <x-input label="Email" name="email" value="{{ old('email') }}" type="text"
                             placeholder="Email" />

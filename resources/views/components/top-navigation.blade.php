@@ -10,16 +10,15 @@
         </div>
         <nav class="inline-flex gap-4 items-center">
             <ul class="inline-flex gap-4 text-black items-center">
-                <x-navlink href="/">Home</x-navlink>
                 @if (Auth::user())
                     <x-navlink href="/pelatih">Pelatih</x-navlink>
                     <x-navlink href="/transaksi">Trasanksi</x-navlink>
                     <x-navlink href="/profil">Profil</x-navlink>
 
-                    <x-navlink href="/upgrade_member" class="btn btn-warning text-white" >Upgrade Ke
-                        Member</x-navlink>
+                    <x-navlink href="/upgrade_member">Kartu Member</x-navlink>
                     <x-side-navlink href="/logout">Keluar</x-side-navlink>
                 @else
+                    <x-navlink href="/">Home</x-navlink>
                     <button class="btn btn-warning rounded-md text-white ">
                         <a href="/logout">Login</a>
                     </button>
@@ -28,11 +27,3 @@
         </nav>
     </div>
 </div>
-
-<script type="text/javascript" hidden>
-    // if(window.pageYOffset > 0) {
-    //     alert(window.pageYOffset)
-    // } else {
-    //     alert(window.pageYOffset)
-    // }
-</script>

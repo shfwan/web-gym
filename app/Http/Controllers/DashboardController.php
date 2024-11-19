@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $countPelatih = Pelatih::all();
 
         $listTransaksi = Transaction::with('user')->where('status', 'accepted')->where('date', Carbon::now()->format('Y-m-d'))->where('type', 'Booking')->get();
-        $countIncome = $listTransaksi->sum('price');
+        $countIncome = $listTransaksi->sum('total_price');
 
         return view('pages.dashboard', [
             "countMember" => $countMember->count(),

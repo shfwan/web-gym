@@ -14,7 +14,7 @@
                         <img class="flex-[1_0_100%] " src="{{ asset('/icon/account.png') }}" alt="profil">
                     @endif
                 </figure>
-                <x-modal id="ubahGambar" title="Ubah Foto Profil">
+                <x-modal class="w-fit" id="ubahGambar" title="Ubah Foto Profil">
                     <form action="{{ route('profil.update-picture', $user->id) }}" method="post"
                         class="flex flex-col gap-4 items-center justify-center w-full" enctype="multipart/form-data">
                         @csrf
@@ -49,7 +49,7 @@
                         </div>
                     </form>
                 </x-modal>
-                <h2 class="font-semibold text-xl">{{ $user->firstname }}</h2>
+                <h2 class="font-semibold text-xl text-black">{{ $user->firstname }}</h2>
 
                 <div class="w-full block space-y-4">
                     <form id="form" action="{{ route('profil.update', $user->id) }}" class="flex flex-col gap-4 w-full"
@@ -88,7 +88,7 @@
                     }
                 }
             </script>
-            <x-modal title="Ubah Password" id="ubahPassword">
+            <x-modal class="w-fit" title="Ubah Password" id="ubahPassword">
                 <form action="{{ route('password.post') }}" method="post">
                     @csrf
                     <div class="block w-full space-y-4">

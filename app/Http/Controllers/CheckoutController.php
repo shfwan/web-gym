@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Member;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,6 +15,17 @@ class CheckoutController extends Controller
     function checkout(Request $request, $id)
     {
         $date = Carbon::parse($request->date);
+
+        $cardMember = Member::where('user_id', Auth::user()->id)->first();
+
+        $expireDate = Carbon::now();
+        $expireDate->addDay(1);
+
+        if ($expireDate->gt($cardMember->expiredAt)) {
+
+            return redirect()->route('member.expired');
+        }
+
 
         $transaction = Transaction::create([
             'user_id' => Auth::user()->id,
@@ -57,14 +69,17 @@ class CheckoutController extends Controller
         return redirect()->route('transaction');
     }
 
-    function checkoutCardMember(Request $request)
+    function checkoutCardMember(Request $request, $id)
     {
-
+        $date = Carbon::parse($request->date);
+        
         $transaction = Transaction::create([
             'user_id' => Auth::user()->id,
+            'product_id' => $id,
             'gym_id' => $request->gym_id,
-            'type' => 'Booking',
+            'type' => $request->type,
             'status' => 'pending',
+            'date' => $date->format('Y-m-d'),
             'total_price' => $request->price,
 
         ]);

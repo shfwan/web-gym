@@ -14,6 +14,7 @@ class MemberController extends Controller
     {
         $listMember = User::with('profil')->with('member')->where('role', 'member')->paginate(10);
         $date = Carbon::now();
+        $date->addDay(1);
 
         foreach ($listMember as $item) {
             if ($item->member && $date->gt($item->member->expiredAt)) {
@@ -21,10 +22,10 @@ class MemberController extends Controller
             } else {
                 $item->status = true;
             }
+            $item->member->updatedAt = Carbon::parse($item->member->updated_at)->format('d F Y');
+            $item->member->expiredAt = Carbon::parse($item->member->expiredAt)->format('d F Y');
         }
 
-        // $date->date("d-m-Y", strtotime($listMember[0]->member->expiredAt));
-        // dd($listMember[0]->member->expiredAt, (int)$date->format('d'));
         return view('pages.member', ["listMember" => $listMember]);
     }
 

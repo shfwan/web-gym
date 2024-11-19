@@ -17,7 +17,8 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                     </div>
 
                     {{-- Date Filter --}}
-                    <input class="input bg-transparent input-bordered text-white bg-warning" type="date" name="date"
+                    <input id="date" class="input bg-transparent input-bordered text-white bg-warning" type="date"
+                        name="date"
                         value="{{ app('request')->input('date') != null ? app('request')->input('date') : date('Y-m-d') }}">
 
                     <script type="text/javascript">
@@ -25,8 +26,6 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                         date.addEventListener('change', () => {
                             window.location.href = "/pelatih?date=" + date.value;
                         })
-
-
                     </script>
                 </div>
 
@@ -41,12 +40,16 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                         <x-cardpelatih picture="{{ $item->picture }}" name="{{ $item->name }}"
                             description="{{ $item->description }}" price="{{ $item->price }}">
 
-                            <button class="btn btn-info rounded-md text-white"
+                            <button
+                                class="btn btn-info rounded-md text-white {{ $item->memberStatus ? 'btn-disabled' : '' }}"
                                 onclick="pelatih{{ $item->id }}.showModal()">Lihat</button>
+                            <label class="text-error font-semibold {{ $item->memberStatus ? '' : 'hidden' }}"
+                                for="">Anda belum terdaftar member / Member anda sudah kadaluarsa</label>
                         </x-cardpelatih>
 
+                        <script type="text/javascript"></script>
 
-                        <x-modal id="pelatih{{ $item->id }}" title="Pelatih">
+                        <x-modal class="w-fit" id="pelatih{{ $item->id }}" title="Pelatih">
                             <form class="flex flex-col gap-4" action="{{ route('transaction.checkout', $item->id) }}"
                                 method="post">
                                 @csrf

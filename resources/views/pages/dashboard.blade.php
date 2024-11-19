@@ -8,13 +8,13 @@
                 <x-cardstat title="Member" count="{{ $countMember }}" icon="" />
                 <x-cardstat title="Pelatih" count="{{ $countPelatih }}" icon="" />
                 <x-cardstat title="Booking" count="{{ count($listTransaksi) }}" icon="" />
-                <x-cardstat title="Pendapatan" count="{{ $countIncome }}" icon="" />
+                <x-cardstat type="currency" title="Pendapatan" count="{{ $countIncome }}" icon="" />
             </div>
 
             {{-- List Booking --}}
             <div class="block w-full h-full space-y-4">
                 <h2 class="font-semibold text-base text-gray-800">Total Booking Hari ini {{ count($listTransaksi) }}</h2>
-                <div class="h-[30rem] overflow-hidden border rounded-md p-4">
+                <div class="h-full overflow-hidden border rounded-md p-4">
                     <div class="flex flex-col gap-4 w-full max-w-full">
                         <div class="w-full grid grid-cols-6 border border-gray-300 p-4 gap-4 rounded-md place-items-center">
                             <h3 class="text-black font-semibold place-self-start">Nama Member</h3>
@@ -26,9 +26,9 @@
                         </div>
                         @foreach ($listTransaksi as $item)
                             <div
-                                class="w-full grid grid-cols-6 border border-gray-300 transition-all cursor-pointer   p-4 gap-4 rounded-md place-items-center">
+                                class="w-full grid grid-cols-6 border border-gray-300 transition-all p-4 gap-4 rounded-md place-items-center">
                                 <div class="place-self-start flex items-center justify-center h-full">
-                                    <h3 class="text-black truncate ">{{ $item->user->firstname }}</h3>
+                                    <h3 class="text-black truncate ">{{ $item->user->firstname ." ". $item->user->lastname }}</h3>
                                 </div>
                                 <h3 class="text-black ">@currency($item->total_price)</h3>
                                 <div class="place-self-start  h-full flex items-center justify-center">
@@ -51,8 +51,8 @@
                                     <x-modal id="detailTransaksi{{ $item->id }}" title="Detail Transaksi">
                                         <div class="flex flex-col gap-4  min-w-96 cursor-default">
                                             <x-label type="text" title="Transaksi ID" value="{{ $item->id }}" />
-                                            <x-label type="text" title="Nama Pelatih"
-                                                value="{{ $item->user->firstname }}" />
+                                            <x-label type="text" title="Nama Member"
+                                                value="{{ $item->user->firstname ." ". $item->user->lastname }}" />
                                             <x-label type="text" title="Tipe Pembayaran" value="{{ $item->type }}" />
                                             <x-label type="text" title="Tanggal" value="{{ $item->date }}" />
                                             <x-label type="status" title="Status Pembayaran">

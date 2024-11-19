@@ -18,20 +18,8 @@
                         </div>
                     </div>
                 </div>
-                {{-- <h1 class="text-5xl font-bold">Welcome To Laravel</h1> --}}
             </div>
         </section>
-
-        {{-- <section class="w-full bg-yellow-400  p-16 flex items-center justify-center h-full">
-            <div class="max-w-7xl mx-auto w-full h-full">
-                <div class="flex  items-center justify-center flex-col gap-4 h-full">
-                    <p class="text-center text-xl font-semibold max-w-4xl text-white">Ingin hasil yang lebih cepat dan maksimal? Dengan
-                        program latihan personal dari trainer berpengalaman kami, Anda akan mencapai tujuan kebugaran Anda
-                        lebih cepat.</p>
-                </div>
-
-            </div>
-        </section> --}}
         <section class="max-w-7xl mx-auto p-6 lg:p-8 w-full min-h-screen">
             <div class="block w-full space-y-8 place-items-start">
                 <h1 class="font-semibold text-4xl text-black">Keunggulan</h1>
@@ -96,7 +84,7 @@
             <div class="container  max-w-4xl mx-auto w-full h-full ">
                 <div class="flex  items-center justify-center flex-col gap-4 h-full">
                     <h1 class="font-semibold text-xl text-white">Tekan tombol di bawah untuk melihat lokasi</h1>
-                    <a class="btn btn-success btn-md w-fit text-white rounded" href="{{ route('login') }}">Lihat Lokasi</a>
+                    <a class="btn btn-success btn-md w-fit text-white rounded" target="_blank" href="https://maps.app.goo.gl/RRUzGihhGDAzaxJx7">Lihat Lokasi</a>
                 </div>
             </div>
         </section>
