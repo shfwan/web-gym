@@ -48,30 +48,30 @@
                                     <button id="transaction-detail" class="btn btn-success btn-sm w-fit text-white rounded"
                                         onclick="detailTransaksi{{ $item->id }}.showModal()">Lihat
                                         Transaksi</button>
-                                    <x-modal id="detailTransaksi{{ $item->id }}" title="Detail Transaksi">
-                                        <div class="flex flex-col gap-4  min-w-96 cursor-default">
-                                            <x-label type="text" title="Transaksi ID" value="{{ $item->id }}" />
-                                            <x-label type="text" title="Nama Member"
-                                                value="{{ $item->user->firstname ." ". $item->user->lastname }}" />
-                                            <x-label type="text" title="Tipe Pembayaran" value="{{ $item->type }}" />
-                                            <x-label type="text" title="Tanggal" value="{{ $item->date }}" />
-                                            <x-label type="status" title="Status Pembayaran">
-                                                <div class="badge badge-success text-white p-4">
-                                                    {{ $item->status }}
-                                                </div>
-                                            </x-label>
-                                            <x-label type="number" title="Total Harga" value="{{ $item->total_price }}" />
-                                            <x-label type="text" title="Tanggal Transaksi"
-                                                value="{{ $item->created_at }}" />
-                                        </div>
-                                        <script id="" type="text/javascript" hidden>
-                                            document.getElementById('transaction-detail').onclick = () => {
-                                                document.getElementById('detailTransaksi{{ $item->id }}').showModal()
-                                            }
-                                        </script>
-                                    </x-modal>
+                                    </div>
                                 </div>
-                            </div>
+                                <x-modal class="w-fit" id="detailTransaksi{{ $item->id }}" title="Detail Transaksi">
+                                    <div class="flex flex-col gap-4  min-w-96 w-fit">
+                                        <x-label type="text" title="Transaksi ID" value="{{ $item->id }}" />
+                                        <x-label type="text" title="Nama Member"
+                                            value="{{ $item->user->firstname ." ". $item->user->lastname }}" />
+                                        <x-label type="text" title="Tipe Pembayaran" value="{{ $item->type }}" />
+                                        <x-label type="text" title="Tanggal" value="{{ $item->date }}" />
+                                        <x-label type="status" title="Status Pembayaran">
+                                            <div class="badge badge-success text-white p-4">
+                                                {{ $item->status }}
+                                            </div>
+                                        </x-label>
+                                        <x-label type="number" title="Total Harga" value="{{ $item->total_price }}" />
+                                        <x-label type="text" title="Tanggal Transaksi"
+                                            value="{{ $item->created_at }}" />
+                                    </div>
+                                    <script id="" type="text/javascript" hidden>
+                                        document.getElementById('transaction-detail').onclick = () => {
+                                            document.getElementById('detailTransaksi{{ $item->id }}').showModal()
+                                        }
+                                    </script>
+                                </x-modal>
                         @endforeach
                     </div>
                 </div>

@@ -23,7 +23,7 @@
                 </button>
 
                 {{-- Modal Add Member --}}
-                <x-modal id="addMember" title="Tambah Member">
+                <x-modal class="w-fit" id="addMember" title="Tambah Member">
                     <form action="{{ route('member.post') }}" method="post">
                         @csrf
                         <div class="flex flex-col w-full gap-4">
@@ -85,7 +85,7 @@
                                 </form>
 
                                 {{-- Modal Edit Member --}}
-                                <x-modal id="editMember.{{ $item->id }}" title="Edit Member">
+                                <x-modal class="w-fit" id="editMember.{{ $item->id }}" title="Edit Member">
                                     <form action="{{ route('member.update', $item->id) }}" method="POST">
                                         @csrf
                                         <div class="flex flex-col w-96 gap-4">
