@@ -69,7 +69,7 @@ class CardMemberController extends Controller
 
         CardMember::create($data);
 
-        return redirect()->route('setting')->with('success', "Card Member Berhasil Ditambahkan");
+        return redirect()->route('setting')->with('add', "Card Member Berhasil Ditambahkan");
     }
 
     function updateCardMember(Request $request, $id)
@@ -97,12 +97,12 @@ class CardMemberController extends Controller
 
         CardMember::where('id', $id)->update($data);
 
-        return redirect()->route('setting')->with('success', "Card Member Berhasil Diubah");
+        return redirect()->route('setting')->with('update', "Card Member Berhasil Diubah");
     }
 
     function deleteCardMember($id)
     {
         CardMember::where('id', $id)->delete();
-        return redirect()->route('setting')->with('success', "Card Member Berhasil Dihapus");
+        return redirect()->route('setting')->with('delete', "Card Member Berhasil Dihapus");
     }
 }

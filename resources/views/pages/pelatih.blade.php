@@ -119,4 +119,23 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
             </div>
         </div>
     </div>
+    <script type="text/javascript" hidden>
+        @if (session('success.checkout'))
+            Swal.fire({
+                title: "Berhasil",
+                text: "Berhasil checkout",
+                icon: "success",
+                confirmButtonColor: "#00a96e",
+            })
+        @endif
+
+        @if (session('error.checkout'))
+            Swal.fire({
+                title: "Gagal",
+                text: "Gagal melakukan checkout",
+                icon: "error",
+                confirmButtonColor: "#ff5861",
+            })
+        @endif
+    </script>
 @endsection

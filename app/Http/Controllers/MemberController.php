@@ -91,7 +91,7 @@ class MemberController extends Controller
         ]);
 
 
-        return redirect()->route('member')->with('success', "Success Add New Member");
+        return redirect()->route('member')->with('add', "Success Add New Member");
     }
 
     function updateMember(Request $request, $id)
@@ -118,12 +118,12 @@ class MemberController extends Controller
             'phone' => $request->phone
         ]);
 
-        return redirect()->route('member')->with('success', "Success Update Member");
+        return redirect()->route('member')->with('update', "Success Update Member");
     }
 
     function deleteMember($id)
     {
         User::where('id', $id)->delete();
-        return redirect()->route('member')->with('success', "Success Delete Member");
+        return redirect()->route('member')->with('delete', "Success Delete Member");
     }
 }

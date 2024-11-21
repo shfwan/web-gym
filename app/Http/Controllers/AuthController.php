@@ -36,14 +36,14 @@ class AuthController extends Controller
 
         if (Auth::attempt($body)) {
             if (Auth::user()->role == "admin") {
-                return redirect('dashboard');
+                return redirect()->route('dashboard')->with('success', true);
             } else if (Auth::user()->role == "member") {
-                return redirect('pelatih');
+                return redirect()->route('pelatih')->with('success', true);
             } else {
                 return redirect('login')->withErrors('Invalid')->withInput();
             }
         } else {
-            return redirect('login')->withErrors('Username or Password Incorrect')->withInput();
+            return back()->withErrors('Username or Password Incorrect')->withInput();
         }
     }
 
@@ -54,33 +54,35 @@ class AuthController extends Controller
 
     function register(Request $request)
     {
-        $request->validate(
+        $validate = $request->validate(
             [
                 'firstname' => 'required|string',
                 'lastname' => 'required|string',
                 'email' => 'required|email',
                 'phone' => 'required|string',
-                'password' => 'required|string',
-                'confirm_password' => 'required|string',
+                'password' => 'required|string|min:8',
+                'confirm_password' => 'required|string|min:8',
             ],
-            [
-                'firstname.required' => 'First Name is required',
-                'lastname.required' => 'Last Name is required',
-                'email.required' => 'Email is required',
-                'phone.required' => 'Phone is required',
-                'password.required' => 'Password is required',
-                'confirm_password.required' => 'Confirm Password is required',
-            ]
         );
 
-
         $data = [
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => bcrypt($request->password)
+            'firstname' => $validate['firstname'],
+            'lastname' => $validate['lastname'],
+            'email' => $validate['email'],
+            'phone' => $validate['phone'],
+            'password' => bcrypt($validate['password'])
         ];
+
+        $findEmailExist = User::where('email', $validate['email'])->first();
+        $findPhoneExist = User::where('phone', $validate['phone'])->first();
+
+        if($findEmailExist) {
+            return redirect()->route('register')->with('existEmail', true);
+        }
+
+        if($findPhoneExist) {
+            return redirect()->route('register')->with('existPhone', true);
+        }
 
         $user = User::create($data);
 
@@ -89,7 +91,7 @@ class AuthController extends Controller
                 'user_id' => $user->id
             ]);
         }
-        
+
         return redirect()->route('login')->with('success', "Success Register");
     }
 
@@ -111,7 +113,7 @@ class AuthController extends Controller
         User::where('id', Auth::user()->id)->update($data);
 
         Auth::logout();
-        return redirect('/');
+        return redirect()->route('home')->with('updatePass', true);
     }
 
     function logOut()

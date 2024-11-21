@@ -20,7 +20,6 @@ class ProfilController extends Controller
     function update(Request $request, $id)
     {
         $user = User::where('id', $id)->first();
-        // dd($request->firstname);
         $data = [
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
@@ -30,7 +29,7 @@ class ProfilController extends Controller
 
 
         $user->update($data);
-        return redirect()->route('profil');
+        return redirect()->route('profil')->with('update', true);
     }
 
     function updatePicture(Request $request, $id)
@@ -57,7 +56,7 @@ class ProfilController extends Controller
         }
 
 
-        return redirect()->route('profil');
+        return redirect()->route('profil')->with('updateImage', true);
     }
 
     function deletePicture($id) {
@@ -68,6 +67,6 @@ class ProfilController extends Controller
             'picture' => ''
         ]);
 
-        return redirect()->route('profil');
+        return redirect()->route('profil')->with('deleteImage', true);
     }
 }

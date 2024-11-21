@@ -9,7 +9,10 @@
 </head>
 
 <body class="bg-gray-100 w-full min-h-screen antialiased">
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+    {{-- Midtrans --}}
+    <script src="{{ env('MIDTRANS_URL') }}" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+    {{-- SweetAlert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <div class="flex">
         @if (Auth::user() && Auth::user()->role == 'admin')
             @include('components.side-navigation')
@@ -31,7 +34,7 @@
 </body>
 
 @if (Auth::user() && Auth::user()->role == 'member')
-@include('layouts.footer')
+    @include('layouts.footer')
 @endif
 
 

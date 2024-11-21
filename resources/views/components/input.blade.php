@@ -4,18 +4,17 @@
     'value' => '',
     'type' => 'text',
     'placeholder' => '',
-    'disabled' => false
+    'disabled' => false,
 ])
 
-<div class="block w-full space-y-2">
+<div class="block w-full  space-y-2">
     <label class="font-normal text-sm text-gray-700" for="label">{{ $label }}</label>
-    <input
-        id="{{ $name }}"
-        name="{{ $name }}"
-        value="{{ $value }}"
+    <input id="{{ $name }}" name="{{ $name }}" value="{{ $value }}"
         {{ $disabled ? 'disabled' : '' }}
         class="input input-bordered w-full max-w-full bg-transparent disabled:bg-gray-200 disabled:border-none disabled:text-gray-500 text-black  focus:bg-transparent"
-        type="{{ $type }}"
-        placeholder="{{ $placeholder }}"
-    />
+        type="{{ $type }}" placeholder="{{ $placeholder }}" />
+    {{-- Error Message --}}
+    <div class="max-w-2xl">
+        {{ $slot }}
+    </div>
 </div>

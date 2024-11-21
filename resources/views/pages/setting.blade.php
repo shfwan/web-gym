@@ -153,7 +153,7 @@
                                     {{-- Button Delete Member --}}
                                     <form action="{{ route('setting.card.delete', $item->id) }}" method="post">
                                         @csrf
-                                        <button class="btn btn-sm rounded-md btn-error text-white">
+                                        <button type="button" onclick="btnDeleteCardMember(this)" class="btn btn-sm rounded-md btn-error text-white">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                                 <path
@@ -169,4 +169,50 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" hidden>
+        @if (session('add'))
+            Swal.fire({
+                title: "Berhasil",
+                text: "Berhasil menambahkan Kartu Member",
+                icon: "success",
+                confirmButtonColor: "#00a96e",
+            })
+        @endif
+
+        @if (session('update'))
+            Swal.fire({
+                title: "Berhasil",
+                text: "Berhasil mengubah Kartu Member",
+                icon: "success",
+                confirmButtonColor: "#00a96e",
+            })
+        @endif
+
+        const btnDeleteCardMember = (btn) => {
+
+            Swal.fire({
+                title: "Apakah kamu yakin?",
+                text: "Data akan benar-benar terhapus!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#00b5ff",
+                cancelButtonColor: "#ff5861",
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success",
+                        confirmButtonColor: "#00a96e",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            btn.parentElement.submit()
+                        }
+                    });
+                }
+            });
+        }
+    </script>
 @endsection

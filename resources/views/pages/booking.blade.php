@@ -43,7 +43,8 @@
                             class="w-full grid grid-cols-6 border border-gray-300 transition-all p-4 gap-4 rounded-md place-items-center">
                             <div class="place-self-start flex items-center justify-center h-full">
                                 @if (auth()->user()->role == 'admin')
-                                    <h3 class="text-black truncate ">{{ $item->user->firstname ." ". $item->user->lastname }}</h3>
+                                    <h3 class="text-black truncate ">
+                                        {{ $item->user->firstname . ' ' . $item->user->lastname }}</h3>
                                 @else
                                     @if ($item->type == 'Booking')
                                         <h3 class="text-black truncate ">{{ $item->pelatih->name }}</h3>

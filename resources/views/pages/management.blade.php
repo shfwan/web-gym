@@ -48,47 +48,85 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
                             <div class="grid grid-cols-2 w-full gap-4 max-w-2xl">
                                 <x-input label="Nama" name="name" value="{{ old('name') }}" type="text"
-                                    placeholder="Nama Pelatih" />
+                                    placeholder="Nama Pelatih">
+                                    @error('name')
+                                        <label class="font-normal text-sm text-error" for="">{{ $message }}</label>
+                                    @enderror
+                                </x-input>
                                 <x-input label="Email" name="email" value="{{ old('email') }}" type="text"
-                                    placeholder="Email" />
+                                    placeholder="Email">
+                                    @error('email')
+                                        <label class="font-normal text-sm text-error" for="">{{ $message }}</label>
+                                    @enderror
+                                </x-input>
                                 <x-input label="Nomor HP" name="phone" value="{{ old('phone') }}" type="text"
-                                    placeholder="Nomor HP" />
+                                    placeholder="Nomor HP">
+                                    @error('phone')
+                                        <label class="font-normal text-sm text-error" for="">{{ $message }}</label>
+                                    @enderror
+                                </x-input>
                                 <x-input label="Alamat" name="address" value="{{ old('address') }}" type="text"
-                                    placeholder="Alamat Pelatih" />
+                                    placeholder="Alamat Pelatih">
+                                    @error('address')
+                                        <label class="font-normal text-sm text-error"
+                                            for="">{{ $message }}</label>
+                                    @enderror
+                                </x-input>
                                 <x-input label="Harga" name="price" value="{{ old('price') }}" type="number"
-                                    placeholder="Harga" />
+                                    placeholder="Harga">
+                                    @error('price')
+                                        <label class="font-normal text-sm text-error"
+                                            for="">{{ $message }}</label>
+                                    @enderror
+                                </x-input>
                                 <x-input label="Kapasitas" name="capacity" value="{{ old('capacity') }}" type="number"
-                                    placeholder="Masukan Kapasistas Pelatih" />
+                                    placeholder="Masukan Kapasistas Pelatih">
+                                    @error('capacity')
+                                        <label class="font-normal text-sm text-error"
+                                            for="">{{ $message }}</label>
+                                    @enderror
+                                </x-input>
                                 <x-textarea label="Deskripsi" name="description" placeholder="Deskripsi Pelatih"
-                                    value="{{ old('description') }}" />
+                                    value="{{ old('description') }}">
+                                    @error('description')
+                                        <label class="font-normal text-sm text-error"
+                                            for="">{{ $message }}</label>
+                                    @enderror
+                                </x-textarea>
 
                             </div>
-                            <label class="font-normal text-sm text-gray-700" for="label">Pilih Hari yang Tersedia Untuk
-                                Pelatih</label>
-                            <div class="inline-flex gap-4">
-                                @for ($i = 0; $i < count($days); $i++)
-                                    <div id="add{{ $i }}"
-                                        class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer"
-                                        onclick="checkBox()">
-                                        <input type="checkbox" name="days[]" value="{{ $i }}"
-                                            id="{{ $days[$i] }}" hidden>
-                                        <h2>{{ $days[$i] }}</h2>
-                                    </div>
-                                    <script id="{{ $days[$i] }}" type="text/javascript" hidden>
-                                        document.getElementById('add{{ $i }}').onclick = () => {
-                                            if (document.getElementById('{{ $days[$i] }}').checked) {
-                                                document.getElementById('{{ $days[$i] }}').checked = false
-                                                document.getElementById('add{{ $i }}').className =
-                                                    "flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer"
+                            <div class="flex flex-col w-fit gap-2">
+                                <label class="font-normal text-sm text-gray-700" for="label">Pilih Hari yang Tersedia
+                                    Untuk
+                                    Pelatih</label>
+                                <div class="inline-flex gap-4">
+                                    @for ($i = 0; $i < count($days); $i++)
+                                        <div id="add{{ $i }}"
+                                            class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer"
+                                            onclick="checkBox()">
+                                            <input type="checkbox" name="days[]" value="{{ $i }}"
+                                                id="{{ $days[$i] }}" hidden>
+                                            <h2>{{ $days[$i] }}</h2>
+                                        </div>
+                                        <script id="{{ $days[$i] }}" type="text/javascript" hidden>
+                                            document.getElementById('add{{ $i }}').onclick = () => {
+                                                if (document.getElementById('{{ $days[$i] }}').checked) {
+                                                    document.getElementById('{{ $days[$i] }}').checked = false
+                                                    document.getElementById('add{{ $i }}').className =
+                                                        "flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer"
 
-                                            } else {
-                                                document.getElementById('{{ $days[$i] }}').checked = true
-                                                document.getElementById('add{{ $i }}').className =
-                                                    "bg-success/80 flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all text-white font-semibold cursor-pointer"
+                                                } else {
+                                                    document.getElementById('{{ $days[$i] }}').checked = true
+                                                    document.getElementById('add{{ $i }}').className =
+                                                        "bg-success/80 flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all text-white font-semibold cursor-pointer"
+                                                }
                                             }
-                                        }
-                                    </script>
-                                @endfor
+                                        </script>
+                                    @endfor
+                                </div>
+                                @error('days[]')
+                                    <label class="font-normal text-sm text-error" for="">{{ $message }}</label>
+                                @enderror
                             </div>
                             <button type="submit" class="btn btn-success text-white">Tambah</button>
 
@@ -125,7 +163,7 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                     {{-- Button Delete Member --}}
                                     <form action="{{ route('pelatih.delete', $item->id) }}" method="post">
                                         @csrf
-                                        <button class="btn btn-sm rounded-md btn-error text-white" type="submit">
+                                        <button class="btn btn-sm rounded-md btn-error  text-white" onclick="btnDeletePelatih(this)" type="button">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                 fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                                 <path
@@ -135,15 +173,6 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                                     </form>
                                     {{-- Modal Update Pelatih --}}
                                     <x-modal class="w-fit" id="editPelatih{{ $item->id }}" title="Edit Pelatih">
-                                        @if ($errors->any())
-                                            <div class="bg-red-400 rounded-md p-4">
-                                                <ul>
-                                                    @foreach ($errors->all() as $item)
-                                                        <li class="text-white">{{ $item }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </div>
-                                        @endif
                                         <form class="flex flex-col gap-4"
                                             action="{{ route('pelatih.update', $item->id) }}" method="post"
                                             enctype="multipart/form-data">
@@ -153,62 +182,102 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
                                             <div class="grid grid-cols-2 w-full gap-4 max-w-2xl">
                                                 <x-input label="Nama" name="name" value="{{ $item->name }}"
-                                                    type="text" placeholder="Nama Pelatih" />
+                                                    type="text" placeholder="Nama Pelatih">
+                                                    @error('name')
+                                                        <label class="font-normal text-sm text-error"
+                                                            for="">{{ $message }}</label>
+                                                    @enderror
+                                                </x-input>
                                                 <x-input label="Email" name="email" value="{{ $item->email }}"
-                                                    type="text" placeholder="Email" />
+                                                    type="text" placeholder="Email">
+                                                    @error('email')
+                                                        <label class="font-normal text-sm text-error"
+                                                            for="">{{ $message }}</label>
+                                                    @enderror
+                                                </x-input>
                                                 <x-input label="Nomor HP" name="phone" value="{{ $item->phone }}"
-                                                    type="text" placeholder="Nomor HP" />
+                                                    type="text" placeholder="Nomor HP">
+                                                    @error('phone')
+                                                        <label class="font-normal text-sm text-error"
+                                                            for="">{{ $message }}</label>
+                                                    @enderror
+                                                </x-input>
                                                 <x-input label="Alamat" name="address" value="{{ $item->address }}"
-                                                    type="text" placeholder="Nama Pelatih" />
+                                                    type="text" placeholder="Nama Pelatih">
+                                                    @error('address')
+                                                        <label class="font-normal text-sm text-error"
+                                                            for="">{{ $message }}</label>
+                                                    @enderror
+                                                </x-input>
                                                 <x-input label="Harga" name="price" value="{{ $item->price }}"
-                                                    type="number" placeholder="Masukan Harga" />
+                                                    type="number" placeholder="Masukan Harga">
+                                                    @error('price')
+                                                        <label class="font-normal text-sm text-error"
+                                                            for="">{{ $message }}</label>
+                                                    @enderror
+                                                </x-input>
                                                 <x-input label="Kapasitas" name="capacity" value="{{ $item->capacity }}"
-                                                    type="number" placeholder="Masukan Kapasistas Pelatih" />
-
+                                                    type="number" placeholder="Masukan Kapasistas Pelatih">
+                                                    @error('capacity')
+                                                        <label class="font-normal text-sm text-error"
+                                                            for="">{{ $message }}</label>
+                                                    @enderror
+                                                </x-input>
                                                 <x-textarea label="Deskripsi" name="description"
-                                                    placeholder="Deskripsi Pelatih" value="{{ $item->description }}" />
+                                                    placeholder="Deskripsi Pelatih" value="{{ $item->description }}">
+                                                    @error('description')
+                                                        <label class="font-normal text-sm text-error"
+                                                            for="">{{ $message }}</label>
+                                                    @enderror
+                                                </x-textarea>
 
 
                                             </div>
-                                            <label class="font-normal text-sm text-gray-700" for="label">Pilih Hari
-                                                yang
-                                                Tersedia Untuk
-                                                Pelatih</label>
-                                            <div class="inline-flex gap-4">
-                                                @if ($days)
-                                                    @for ($i = 0; $i < count($days); $i++)
-                                                        @if (in_array($i, $item->available_days))
-                                                            <div id="update{{ $i }}"
-                                                                class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer bg-success/80 text-white">
-                                                                <input type="checkbox" name="days[]"
-                                                                    value="{{ $i }}"
-                                                                    id="update{{ $days[$i] }}" checked hidden>
-                                                                <h2>{{ $days[$i] }}</h2>
-                                                            </div>
-                                                        @else
-                                                            <div id="update{{ $i }}"
-                                                                class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer">
-                                                                <input type="checkbox" name="days[]"
-                                                                    value="{{ $i }}"
-                                                                    id="update{{ $days[$i] }}" hidden>
-                                                                <h2>{{ $days[$i] }}</h2>
-                                                            </div>
-                                                        @endif
-                                                        <script id="{{ $days[$i] }}" type="text/javascript" hidden>
-                                                            document.getElementById('update{{ $i }}').onclick = () => {
-                                                                if (document.getElementById('update{{ $days[$i] }}').checked) {
-                                                                    document.getElementById('update{{ $days[$i] }}').checked = false
-                                                                    document.getElementById('update{{ $i }}').classList.remove("text-white")
-                                                                    document.getElementById('update{{ $i }}').classList.remove("bg-success/80")
-                                                                } else {
-                                                                    document.getElementById('update{{ $days[$i] }}').checked = true
-                                                                    document.getElementById('update{{ $i }}').classList.add("text-white")
-                                                                    document.getElementById('update{{ $i }}').classList.add("bg-success/80")
+                                            <div class="flex flex-col">
+                                                <label class="font-normal text-sm text-gray-700" for="label">Pilih Hari
+                                                    yang
+                                                    Tersedia Untuk
+                                                    Pelatih</label>
+                                                <div class="inline-flex gap-4">
+                                                    @if ($days)
+                                                        @for ($i = 0; $i < count($days); $i++)
+                                                            @if (in_array($i, $item->available_days))
+                                                                <div id="update{{ $i }}"
+                                                                    class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer bg-success/80 text-white">
+                                                                    <input type="checkbox" name="days[]"
+                                                                        value="{{ $i }}"
+                                                                        id="update{{ $days[$i] }}" checked hidden>
+                                                                    <h2>{{ $days[$i] }}</h2>
+                                                                </div>
+                                                            @else
+                                                                <div id="update{{ $i }}"
+                                                                    class="flex flex-col w-full p-4 items-center justify-center border rounded-md hover:shadow-md transition-all cursor-pointer">
+                                                                    <input type="checkbox" name="days[]"
+                                                                        value="{{ $i }}"
+                                                                        id="update{{ $days[$i] }}" hidden>
+                                                                    <h2>{{ $days[$i] }}</h2>
+                                                                </div>
+                                                            @endif
+                                                            <script id="{{ $days[$i] }}" type="text/javascript" hidden>
+                                                                document.getElementById('update{{ $i }}').onclick = () => {
+                                                                    if (document.getElementById('update{{ $days[$i] }}').checked) {
+                                                                        document.getElementById('update{{ $days[$i] }}').checked = false
+                                                                        document.getElementById('update{{ $i }}').classList.remove("text-white")
+                                                                        document.getElementById('update{{ $i }}').classList.remove("bg-success/80")
+                                                                    } else {
+                                                                        document.getElementById('update{{ $days[$i] }}').checked = true
+                                                                        document.getElementById('update{{ $i }}').classList.add("text-white")
+                                                                        document.getElementById('update{{ $i }}').classList.add("bg-success/80")
+                                                                    }
                                                                 }
-                                                            }
-                                                        </script>
-                                                    @endfor
-                                                @endif
+                                                            </script>
+                                                        @endfor
+                                                    @endif
+                                                </div>
+                                                @error('days[]')
+                                                    <label class="font-normal text-sm text-error"
+                                                        for="">{{ $message }}</label>
+                                                @enderror
                                             </div>
                                             <button type="submit" class="btn btn-warning text-white">Ubah</button>
 
@@ -226,4 +295,51 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
         </div>
     </div>
+
+    <script type="text/javascript" hidden>
+        @if (session('add'))
+            Swal.fire({
+                title: "Berhasil",
+                text: "Berhasil menambahkan pelatih",
+                icon: "success",
+                confirmButtonColor: "#00a96e",
+            })
+        @endif
+
+        @if (session('update'))
+            Swal.fire({
+                title: "Berhasil",
+                text: "Berhasil mengubah pelatih",
+                icon: "success",
+                confirmButtonColor: "#00a96e",
+            })
+        @endif
+
+        const btnDeletePelatih = (btn) => {
+
+            Swal.fire({
+                title: "Apakah kamu yakin?",
+                text: "Data akan benar-benar terhapus!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#00b5ff",
+                cancelButtonColor: "#ff5861",
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Batal"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success",
+                        confirmButtonColor: "#00a96e",
+                    }).then((result) => {
+                        if(result.isConfirmed) {
+                            btn.parentElement.submit()
+                        }
+                    });
+                }
+            });
+        }
+    </script>
 @endsection

@@ -154,10 +154,10 @@ class PelatihController extends Controller
 
         Pelatih::create($data);
 
-        return redirect()->route('management');
+        return redirect()->route('management')->with('add', true);
     }
 
-        function updatePelatih(Request $request, $id)
+    function updatePelatih(Request $request, $id)
     {
         $request->validate(
             [
@@ -217,7 +217,7 @@ class PelatihController extends Controller
         }
 
 
-        return redirect()->route('management')->with('success', "Data Berhasil Diperbarui");
+        return redirect()->route('management')->with('update', "Data Berhasil Diperbarui");
     }
 
     function deletePelatih($id)
