@@ -295,7 +295,6 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 
         </div>
     </div>
-
     <script type="text/javascript" hidden>
         @if (session('add'))
             Swal.fire({
@@ -306,11 +305,29 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
             })
         @endif
 
+        @if (session('success.delete.pelatih'))
+            Swal.fire({
+                title: "Berhasil",
+                text: "Berhasil hapus pelatih",
+                icon: "success",
+                confirmButtonColor: "#00a96e",
+            })
+        @endif
+
         @if (session('update'))
             Swal.fire({
                 title: "Berhasil",
                 text: "Berhasil mengubah pelatih",
                 icon: "success",
+                confirmButtonColor: "#00a96e",
+            })
+        @endif
+
+        @if (session('error.delete.pelatih'))
+            Swal.fire({
+                title: "Gagal",
+                text: "Gagal dihapus karena pelatih masih terbooking",
+                icon: "error",
                 confirmButtonColor: "#00a96e",
             })
         @endif

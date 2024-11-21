@@ -222,7 +222,17 @@ class PelatihController extends Controller
 
     function deletePelatih($id)
     {
-        Pelatih::where('id', $id)->delete();
-        return redirect()->route('management');
+        $date = Carbon::now();
+        $date->addDay(1);
+        $checkTransaction = Transaction::whereDate('date', '>=', $date->toDateString())->where('status', 'accepted')->where('product_id', $id)->get();
+
+        if(count($checkTransaction) > 0) {
+            return redirect()->route('management')->with('error.delete.pelatih', true);
+        } else {
+            Pelatih::where('id', $id)->delete();
+            return redirect()->route('management')->with('success.delete.pelatih');
+        }
+
+
     }
 }
