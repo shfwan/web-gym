@@ -55,6 +55,14 @@
         </div>
     </div>
     <script type="text/javascript" hidden>
+        @if (session('success.register'))
+            Swal.fire({
+                title: "Berhasil",
+                text: "Berhasil Terdaftar",
+                icon: "success",
+                confirmButtonColor: "#00a96e",
+            })
+        @endif
         @if (session('existEmail'))
             Swal.fire({
                 title: "Gagal",

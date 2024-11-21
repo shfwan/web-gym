@@ -39,7 +39,7 @@
         </div>
     </div>
     <script type="text/javascript" hidden>
-        @if (session('success'))
+        @if (session('success.login'))
             Swal.fire({
                 title: "Berhasil",
                 text: "Berhasil login",

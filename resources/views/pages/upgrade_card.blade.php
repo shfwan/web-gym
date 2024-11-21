@@ -13,7 +13,8 @@
                             <h1 class="card-title text-black">Kartu Member</h1>
                             <div class="inline-flex flex-col gap-2 w-full">
                                 <label for="label" class="text-sm text-gray-500">Status Member</label>
-                                <div class="badge {{ $userCardMember->status ? 'badge-success' : 'badge-error' }} text-white">
+                                <div
+                                    class="badge {{ $userCardMember->status ? 'badge-success' : 'badge-error' }} text-white">
                                     {{ $userCardMember->status ? 'Aktif' : 'Tidak Aktif' }}
                                 </div>
                             </div>
@@ -62,4 +63,23 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript" hidden>
+        @if (session('success.checkout'))
+            Swal.fire({
+                title: "Berhasil",
+                text: "Berhasil checkout",
+                icon: "success",
+                confirmButtonColor: "#00a96e",
+            })
+        @endif
+
+        @if (session('error.checkout'))
+            Swal.fire({
+                title: "Gagal",
+                text: "Gagal melakukan checkout",
+                icon: "error",
+                confirmButtonColor: "#ff5861",
+            })
+        @endif
+    </script>
 @endsection

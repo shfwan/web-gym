@@ -74,27 +74,14 @@ class CheckoutController extends Controller
 
         } catch (\Throwable $th) {
             return redirect()->route('pelatih')->with('error.checkout', true);
-            throw $th;
         }
-
-
-
     }
 
     function checkoutCardMember(Request $request, $id)
     {
         $date = Carbon::parse($request->date);
 
-        $transaction = Transaction::create([
-            'user_id' => Auth::user()->id,
-            'product_id' => $id,
-            'gym_id' => $request->gym_id,
-            'type' => $request->type,
-            'status' => 'pending',
-            'date' => $date->format('Y-m-d'),
-            'total_price' => $request->price,
-
-        ]);
+        $transaction =
 
         // Set your Merchant Server Key
         \Midtrans\Config::$serverKey = config('midtrans.serverKey');
@@ -119,7 +106,30 @@ class CheckoutController extends Controller
         );
 
 
-        $snapToken = Snap::getSnapToken($params);
+
+        try {
+            $snapToken = Snap::getSnapToken($params);
+            //code...
+
+            if($snapToken != null) {
+                Transaction::create([
+                    'user_id' => Auth::user()->id,
+                    'product_id' => $id,
+                    'gym_id' => $request->gym_id,
+                    'type' => $request->type,
+                    'status' => 'pending',
+                    'date' => $date->format('Y-m-d'),
+                    'total_price' => $request->price,
+                    'snap_token' => $snapToken
+                ]);
+            }
+
+            return redirect()->route('transaction')->with('success.checkout', true);
+
+        } catch (\Throwable $th) {
+            return redirect()->route('upgrade')->with('error.checkout', true);
+        }
+
         $transaction->snap_token = $snapToken;
         $transaction->save();
 

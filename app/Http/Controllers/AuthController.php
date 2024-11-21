@@ -36,9 +36,9 @@ class AuthController extends Controller
 
         if (Auth::attempt($body)) {
             if (Auth::user()->role == "admin") {
-                return redirect()->route('dashboard')->with('success', true);
+                return redirect()->route('dashboard')->with('success.login', true);
             } else if (Auth::user()->role == "member") {
-                return redirect()->route('pelatih')->with('success', true);
+                return redirect()->route('pelatih')->with('success.login', true);
             } else {
                 return redirect('login')->withErrors('Invalid')->withInput();
             }
@@ -92,7 +92,7 @@ class AuthController extends Controller
             ]);
         }
 
-        return redirect()->route('login')->with('success', "Success Register");
+        return redirect()->route('login')->with('success.register', "Success Register");
     }
 
     function changePassword(Request $request) {

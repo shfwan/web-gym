@@ -47,9 +47,11 @@
                                         {{ $item->user->firstname . ' ' . $item->user->lastname }}</h3>
                                 @else
                                     @if ($item->type == 'Booking')
-                                        <h3 class="text-black truncate ">{{ $item->pelatih->name }}</h3>
+                                        <h3 class="text-black truncate ">
+                                            {{ $item->pelatih ? $item->pelatih->name : 'Sudah dihapus' }}</h3>
                                     @elseif ($item->type == 'Card Member')
-                                        <h3 class="text-black truncate ">{{ $item->cardMember->title }}</h3>
+                                        <h3 class="text-black truncate ">
+                                            {{ $item->cardMember ? $item->cardMember->title : 'Sudah dihapus' }}</h3>
                                     @endif
                                 @endif
                             </div>
@@ -57,94 +59,108 @@
                             <div class="place-self-start  h-full flex items-center justify-center">
                                 <h3 class="text-black truncate">{{ $item->type }}</h3>
                             </div>
-                            @if ($item->status == 'accepted')
-                                <div class="badge badge-success text-white p-4">
-                                    {{ $item->status }}
-                                </div>
-                            @elseif ($item->status == 'pending')
-                                <div class="badge badge-warning text-white p-4">
-                                    {{ $item->status }}
-                                </div>
+                            @if ($item->pelatih || $item->cardMember)
+                                @if ($item->status == 'accepted')
+                                    <div class="badge badge-success text-white p-4">
+                                        {{ $item->status }}
+                                    </div>
+                                @elseif ($item->status == 'pending')
+                                    <div class="badge badge-warning text-white p-4">
+                                        {{ $item->status }}
+                                    </div>
+                                @else
+                                    <div class="badge badge-error text-white p-4">
+                                        {{ $item->status }}
+                                    </div>
+                                @endif
                             @else
                                 <div class="badge badge-error text-white p-4">
-                                    {{ $item->status }}
+                                    declined
                                 </div>
                             @endif
                             <h3 class="text-black place-self-center truncate text-ellipsis">{{ $item->created_at }}</h3>
-                            <div class="place-self-center inline-flex gap-4">
-                                @if ($item->status == 'pending')
-                                    <button id={{ "pay-button.$item->id" }} type="submit"
-                                        class="btn btn-info btn-sm w-fit text-white rounded">Bayar</button>
+                            @if ($item->pelatih || $item->cardMember)
+                                <div class="place-self-center inline-flex gap-4">
+                                    @if ($item->status == 'pending')
+                                        <button id={{ "pay-button.$item->id" }} type="submit"
+                                            class="btn btn-info btn-sm w-fit text-white rounded">Bayar</button>
 
-                                    <script id="" type="text/javascript" hidden>
-                                        document.getElementById('pay-button.{{ $item->id }}').onclick = function() {
-                                            // SnapToken acquired from previous step
-                                            snap.pay('{{ $item->snap_token }}', {
-                                                // Optional
-                                                onSuccess: function(result) {
-                                                    /* You may add your own js here, this is just example */
-                                                    window.location.href = '{{ route('transaction.success', $item->id) }}';
-                                                },
-                                                // Optional
-                                                onPending: function(result) {
-                                                    /* You may add your own js here, this is just example */
-                                                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                                                },
-                                                // Optional
-                                                onError: function(result) {
-                                                    /* You may add your own js here, this is just example */
-                                                    window.location.href = '{{ route('transaction.fail', $item->id) }}';
+                                        <script id="" type="text/javascript" hidden>
+                                            document.getElementById('pay-button.{{ $item->id }}').onclick = function() {
+                                                // SnapToken acquired from previous step
+                                                snap.pay('{{ $item->snap_token }}', {
+                                                    // Optional
+                                                    onSuccess: function(result) {
+                                                        /* You may add your own js here, this is just example */
+                                                        window.location.href = '{{ route('transaction.success', $item->id) }}';
+                                                    },
+                                                    // Optional
+                                                    onPending: function(result) {
+                                                        /* You may add your own js here, this is just example */
+                                                        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                                                    },
+                                                    // Optional
+                                                    onError: function(result) {
+                                                        /* You may add your own js here, this is just example */
+                                                        window.location.href = '{{ route('transaction.fail', $item->id) }}';
 
-                                                }
-                                            });
-                                        };
-                                    </script>
-                                @else
-                                    <button id="transaction-detail{{ $item->id }}"
-                                        class="btn btn-success btn-sm w-fit text-white rounded"
-                                        onclick="detailTransaksi{{ $item->id }}.showModal()">Lihat Transaksi</button>
-                                    <x-modal id="detailTransaksi{{ $item->id }}" title="Detail Transaksi">
-                                        <div class="flex flex-col gap-4  min-w-96 cursor-default">
-                                            <x-label type="text" title="Transaksi ID" value="{{ $item->id }}" />
-                                            @if ($item->type == 'Booking')
-                                                {{-- <h3 class="text-black truncate ">{{ $item->pelatih->name }}</h3> --}}
-                                                <x-label type="text" title="Nama Pelatih / Kartu Member"
-                                                    value="{{ $item->pelatih->name }}" />
-                                            @elseif ($item->type == 'Card Member')
-                                                {{-- <h3 class="text-black truncate ">{{ $item->cardMember->title }}</h3> --}}
-                                                <x-label type="text" title="Nama Pelatih / Kartu Member"
-                                                    value="{{ $item->cardMember->title }}" />
-                                            @endif
-                                            <x-label type="text" title="Tipe Pembayaran" value="{{ $item->type }}" />
-                                            <x-label type="text" title="Tanggal Booking" value="{{ $item->date }}" />
-                                            <x-label type="status" title="Status Pembayaran">
-                                                @if ($item->status == 'accepted')
-                                                    <div class="badge badge-success text-white p-4">
-                                                        {{ $item->status }}
-                                                    </div>
-                                                @elseif ($item->status == 'pending')
-                                                    <div class="badge badge-warning text-white p-4">
-                                                        {{ $item->status }}
-                                                    </div>
-                                                @else
-                                                    <div class="badge badge-error text-white p-4">
-                                                        {{ $item->status }}
-                                                    </div>
+                                                    }
+                                                });
+                                            };
+                                        </script>
+                                    @else
+                                        <button id="transaction-detail{{ $item->id }}"
+                                            class="btn btn-success btn-sm w-fit text-white rounded"
+                                            onclick="detailTransaksi{{ $item->id }}.showModal()">Lihat
+                                            Transaksi</button>
+                                        <x-modal id="detailTransaksi{{ $item->id }}" title="Detail Transaksi">
+                                            <div class="flex flex-col gap-4  min-w-96 cursor-default">
+                                                <x-label type="text" title="Transaksi ID" value="{{ $item->id }}" />
+                                                @if ($item->type == 'Booking')
+                                                    {{-- <h3 class="text-black truncate ">{{ $item->pelatih->name }}</h3> --}}
+                                                    <x-label type="text" title="Nama Pelatih / Kartu Member"
+                                                        value="{{ $item->pelatih->name }}" />
+                                                @elseif ($item->type == 'Card Member')
+                                                    {{-- <h3 class="text-black truncate ">{{ $item->cardMember->title }}</h3> --}}
+                                                    <x-label type="text" title="Nama Pelatih / Kartu Member"
+                                                        value="{{ $item->cardMember->title }}" />
                                                 @endif
-                                            </x-label>
-                                            <x-label type="number" title="Total Harga" value="{{ $item->total_price }}" />
-                                            <x-label type="text" title="Tanggal Transaksi"
-                                                value="{{ $item->created_at }}" />
-                                        </div>
-                                    </x-modal>
+                                                <x-label type="text" title="Tipe Pembayaran"
+                                                    value="{{ $item->type }}" />
+                                                <x-label type="text" title="Tanggal Booking"
+                                                    value="{{ $item->date }}" />
+                                                <x-label type="status" title="Status Pembayaran">
+                                                    @if ($item->status == 'accepted')
+                                                        <div class="badge badge-success text-white p-4">
+                                                            {{ $item->status }}
+                                                        </div>
+                                                    @elseif ($item->status == 'pending')
+                                                        <div class="badge badge-warning text-white p-4">
+                                                            {{ $item->status }}
+                                                        </div>
+                                                    @else
+                                                        <div class="badge badge-error text-white p-4">
+                                                            {{ $item->status }}
+                                                        </div>
+                                                    @endif
+                                                </x-label>
+                                                <x-label type="number" title="Total Harga"
+                                                    value="{{ $item->total_price }}" />
+                                                <x-label type="text" title="Tanggal Transaksi"
+                                                    value="{{ $item->created_at }}" />
+                                            </div>
+                                        </x-modal>
 
-                                    <script id="" type="text/javascript" hidden>
-                                        document.getElementById('transaction-detail{{ $item->id }}').onclick = () => {
-                                            document.getElementById('detailTransaksi{{ $item->id }}').showModal()
-                                        }
-                                    </script>
-                                @endif
-                            </div>
+                                        <script id="" type="text/javascript" hidden>
+                                            document.getElementById('transaction-detail{{ $item->id }}').onclick = () => {
+                                                document.getElementById('detailTransaksi{{ $item->id }}').showModal()
+                                            }
+                                        </script>
+                                    @endif
+                                </div>
+                            @else
+                                <h3 class="text-black place-self-center truncate text-ellipsis">Product tidak valid</h3>
+                            @endif
                         </div>
                     @endforeach
                     {{ $listTransaksi->links() }}
