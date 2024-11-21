@@ -41,23 +41,29 @@
                         <div
                             class="w-full grid grid-cols-6 border border-gray-300 transition-all cursor-pointer   p-4 gap-4 rounded-md place-items-center">
                             <div class="place-self-start flex items-center justify-center h-full">
-                                <h3 class="text-black truncate ">{{ $item->user->firstname }}</h3>
+                                <h3 class="text-black truncate ">{{ $item->user ? $item->user->firstname : "User Dihapus" }}</h3>
                             </div>
                             <h3 class="text-black ">@currency($item->total_price)</h3>
                             <div class="place-self-start  h-full flex items-center justify-center">
                                 <h3 class="text-black truncate">{{ $item->type }}</h3>
                             </div>
-                            @if ($item->status == 'accepted')
-                                <div class="badge badge-success text-white p-4">
-                                    {{ $item->status }}
-                                </div>
-                            @elseif ($item->status == 'pending')
-                                <div class="badge badge-warning text-white p-4">
-                                    {{ $item->status }}
-                                </div>
+                            @if ($item->pelatih || $item->cardMember)
+                                @if ($item->status == 'accepted')
+                                    <div class="badge badge-success text-white p-4">
+                                        {{ $item->status }}
+                                    </div>
+                                @elseif ($item->status == 'pending')
+                                    <div class="badge badge-warning text-white p-4">
+                                        {{ $item->status }}
+                                    </div>
+                                @else
+                                    <div class="badge badge-error text-white p-4">
+                                        {{ $item->status }}
+                                    </div>
+                                @endif
                             @else
                                 <div class="badge badge-error text-white p-4">
-                                    {{ $item->status }}
+                                    declined
                                 </div>
                             @endif
                             <h3 class="text-black place-self-center truncate text-ellipsis">{{ $item->created_at }}</h3>
@@ -71,7 +77,7 @@
                                     <div class="flex flex-col gap-4  min-w-96 cursor-default">
                                         <x-label type="text" title="Transaksi ID" value="{{ $item->id }}" />
                                         <x-label type="text" title="Nama Pelatih"
-                                            value="{{ $item->user->firstname }}" />
+                                            value="{{ $item->user ? $item->user->firstname : "User Dihapus" }}" />
                                         <x-label type="text" title="Tipe Pembayaran" value="{{ $item->type }}" />
                                         <x-label type="text" title="Tanggal" value="{{ $item->date }}" />
                                         <x-label type="status" title="Status Pembayaran">

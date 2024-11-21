@@ -75,7 +75,7 @@
                                 @endif
                             @else
                                 <div class="badge badge-error text-white p-4">
-                                    declined
+                                    invalid
                                 </div>
                             @endif
                             <h3 class="text-black place-self-center truncate text-ellipsis">{{ $item->created_at }}</h3>
@@ -117,30 +117,34 @@
                                             <div class="flex flex-col gap-4  min-w-96 cursor-default">
                                                 <x-label type="text" title="Transaksi ID" value="{{ $item->id }}" />
                                                 @if ($item->type == 'Booking')
-                                                    {{-- <h3 class="text-black truncate ">{{ $item->pelatih->name }}</h3> --}}
                                                     <x-label type="text" title="Nama Pelatih / Kartu Member"
-                                                        value="{{ $item->pelatih->name }}" />
+                                                        value="{{ $item->pelatih ? $item->pelatih->name : 'Sudah dihapus' }}" />
                                                 @elseif ($item->type == 'Card Member')
-                                                    {{-- <h3 class="text-black truncate ">{{ $item->cardMember->title }}</h3> --}}
                                                     <x-label type="text" title="Nama Pelatih / Kartu Member"
-                                                        value="{{ $item->cardMember->title }}" />
+                                                        value="{{ $item->cardMember ? $item->cardMember->title : 'Sudah dihapus' }}" />
                                                 @endif
                                                 <x-label type="text" title="Tipe Pembayaran"
                                                     value="{{ $item->type }}" />
                                                 <x-label type="text" title="Tanggal Booking"
                                                     value="{{ $item->date }}" />
                                                 <x-label type="status" title="Status Pembayaran">
-                                                    @if ($item->status == 'accepted')
-                                                        <div class="badge badge-success text-white p-4">
-                                                            {{ $item->status }}
-                                                        </div>
-                                                    @elseif ($item->status == 'pending')
-                                                        <div class="badge badge-warning text-white p-4">
-                                                            {{ $item->status }}
-                                                        </div>
+                                                    @if ($item->pelatih || $item->cardMember)
+                                                        @if ($item->status == 'accepted')
+                                                            <div class="badge badge-success text-white p-4">
+                                                                {{ $item->status }}
+                                                            </div>
+                                                        @elseif ($item->status == 'pending')
+                                                            <div class="badge badge-warning text-white p-4">
+                                                                {{ $item->status }}
+                                                            </div>
+                                                        @else
+                                                            <div class="badge badge-error text-white p-4">
+                                                                {{ $item->status }}
+                                                            </div>
+                                                        @endif
                                                     @else
                                                         <div class="badge badge-error text-white p-4">
-                                                            {{ $item->status }}
+                                                            invalid
                                                         </div>
                                                     @endif
                                                 </x-label>
