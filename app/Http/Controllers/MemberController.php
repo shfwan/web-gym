@@ -22,8 +22,11 @@ class MemberController extends Controller
             } else {
                 $item->status = true;
             }
-            $item->member->updatedAt = Carbon::parse($item->member->updated_at)->format('d F Y');
-            $item->member->expiredAt = Carbon::parse($item->member->expiredAt)->format('d F Y');
+
+            if($item->member) {
+                $item->member->updatedAt = Carbon::parse($item->member->updated_at)->format('d F Y');
+                $item->member->expiredAt = Carbon::parse($item->member->expiredAt)->format('d F Y');
+            }
         }
 
         return view('pages.member', ["listMember" => $listMember]);
