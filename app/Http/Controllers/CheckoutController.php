@@ -18,13 +18,13 @@ class CheckoutController extends Controller
 
         $cardMember = Member::where('user_id', Auth::user()->id)->first();
 
-        $expireDate = Carbon::now();
-        $expireDate->addDay(1);
+        // $expireDate = Carbon::now();
+        // $expireDate->addDay(1);
 
-        if ($expireDate->gt($cardMember->expiredAt)) {
+        // if ($expireDate->gt($cardMember->expiredAt)) {
 
-            return redirect()->route('member.expired');
-        }
+        //     return redirect()->route('member.expired');
+        // }
 
 
 

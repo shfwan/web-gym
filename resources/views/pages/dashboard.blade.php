@@ -51,10 +51,13 @@
                                     </div>
                                 </div>
                                 <x-modal class="w-fit" id="detailTransaksi{{ $item->id }}" title="Detail Transaksi">
-                                    <div class="flex flex-col gap-4  min-w-96 w-fit">
+                                    @php
+                                        $fullname = $item->user->firstname . " " . $item->user->lastname;
+                                    @endphp
+                                    <div class="flex flex-col gap-4  min-w-96 cursor-default">
                                         <x-label type="text" title="Transaksi ID" value="{{ $item->id }}" />
-                                        <x-label type="text" title="Nama Member"
-                                            value="{{ $item->user->firstname ." ". $item->user->lastname }}" />
+                                            {{-- <h1>{{ $item->user->firstname ." ". $item->user->lastname }}</h1> --}}
+                                        <x-label type="text" title="Nama Member" value="{{$fullname }}" />
                                         <x-label type="text" title="Tipe Pembayaran" value="{{ $item->type }}" />
                                         <x-label type="text" title="Tanggal" value="{{ $item->date }}" />
                                         <x-label type="status" title="Status Pembayaran">

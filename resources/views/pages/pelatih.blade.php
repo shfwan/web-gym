@@ -41,10 +41,12 @@ $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
                             description="{{ $item->description }}" price="{{ $item->price }}">
 
                             <button
+                                class="btn btn-info rounded-md text-white" onclick="pelatih{{ $item->id }}.showModal()">Lihat</button>
+                            {{-- <button
                                 class="btn btn-info rounded-md text-white {{ $item->memberStatus ? 'btn-disabled' : '' }}"
-                                onclick="pelatih{{ $item->id }}.showModal()">Lihat</button>
-                            <label class="text-error font-semibold {{ $item->memberStatus ? '' : 'hidden' }}"
-                                for="">Anda belum terdaftar member / Member anda sudah kadaluarsa</label>
+                                onclick="pelatih{{ $item->id }}.showModal()">Lihat</button> --}}
+                            {{-- <label class="text-error font-semibold {{ $item->memberStatus ? '' : 'hidden' }}"
+                                for="">Anda belum terdaftar member / Member anda sudah kadaluarsa</label> --}}
                         </x-cardpelatih>
 
                         <script type="text/javascript"></script>
