@@ -21,7 +21,7 @@
     "env": {
         "APP_ENV": "production",
         "APP_DEBUG": "false",
-        "APP_URL": "https://gym-alfatih.com",
+        "APP_URL": "https://alfatih-gym.com",
         "APP_KEY": "base64:H7iV0Xrk8A431vnKZH2X/zqaKsGckEh8XL1AOhfw5R4=",
         "APP_CONFIG_CACHE": "/tmp/config.php",
         "APP_EVENTS_CACHE": "/tmp/events.php",
