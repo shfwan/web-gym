@@ -7,10 +7,6 @@
     },
     "routes": [
         {
-            "src": "/build/(.*)",
-            "dest": "/public/build/"
-        },
-        {
             "src": "/(.*)",
             "dest": "/api/index.php"
         }
@@ -32,11 +28,9 @@
         "CACHE_DRIVER": "array",
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",
-
         "DB_CONNECTION": "pgsql",
         "DATABASE_URL": "postgresql://postgres.frkryaikyczxwdojpzcv:sohnagfkwoan@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres",
         "DB_PASSWORD": "sohnagfkwoan",
-
         "MIDTRANS_URL": "https://app.sandbox.midtrans.com/snap/snap.js",
         "MIDTRANS_SERVER_KEY": "SB-Mid-server-eMotp-qrbIcYE8B0g6zGWIjk",
         "MIDTRANS_CLIENT_KEY": "SB-Mid-client-iavka1SuQLHc29Qm",
