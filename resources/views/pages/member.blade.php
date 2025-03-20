@@ -56,8 +56,8 @@
                         @if ($item->role == 'member')
                             <x-cardmember id="{{ $item->id }}" fullname="{{ $item->firstname . ' ' . $item->lastname }}"
                                 picture="{{ $item->profil ? $item->profil->picture : null }}" phone="{{ $item->phone }}"
-                                email="{{ $item->email }}" description="" status="{{ $item->status }}"
-                                created_at="{{ $item->member->updatedAt }}"
+                                email="{{ $item->email }}" description="" status="{{ $item->member ? $item->status : false }}"
+                                created_at="{{ $item->member ? $item->member->updatedAt : null }}"
                                 expire="{{ $item->member ? $item->member->expiredAt : null }}">
 
                                 {{-- Button Edit Member --}}
