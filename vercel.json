@@ -15,6 +15,10 @@
             "dest": "/public/img"
         },
         {
+            "src": "/icon/(.*)",
+            "dest": "/public/icon"
+        },
+        {
             "src": "/(.*)",
             "dest": "/api/index.php"
         }

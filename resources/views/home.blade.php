@@ -4,7 +4,7 @@
     <div class="block w-full ">
         <section
             class="min-h-screen max-h-screen overflow-hidden w-full h-full bg-no-repeat object-center object-scale-down relative flex items-center justify-center">
-            <img class="absolute aspect-video object-center flex-[1_0_100%]" src="/gambar/gym.jpg" alt="">
+            <img class="absolute aspect-video object-center flex-[1_0_100%]" src="/img/gym.jpg" alt="">
             <div class="max-w-7xl mx-auto p-6 lg:p-8 relative w-full h-fullflex-col flex items-center justify-center">
                 <div class="max-w-3xl h-fit  bg-yellow-400/50 rounded-md z-10 backdrop-blur-sm p-8">
                     <div class="inline-flex gap-8 items-center">
