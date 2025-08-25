@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUuid("user_id")->constrained('users')->onDelete("cascade");
             $table->string("product_id");
             $table->integer("gym_id");
+            $table->boolean("status_member")->default(false);
             $table->enum("type", ["Card Member", "Booking"])->default("Booking");
             $table->enum("status", ["pending", "accepted", "declined"])->default("pending");
             $table->date("date")->nullable();

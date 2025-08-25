@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Member;
 use App\Models\Transaction;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,11 +58,30 @@ class CheckoutController extends Controller
 
             //code...
 
-            if($snapToken != null) {
+            if ($snapToken != null) {
+                $member = Member::where('user_id', Auth::user()->id)->first();
+
+                $date = Carbon::now();
+                // $date->addDay(1);
+
+                $statusMember = false;
+
+
+                if ($member != null && $member->expiredAt) {
+                    if ($date->gt($member->expiredAt)) {
+                        $statusMember = false;
+                    } else {
+                        $statusMember = true;
+                    }
+                } else {
+                    $statusMember = false;
+                }
+
                 Transaction::create([
                     'user_id' => Auth::user()->id,
                     'product_id' => $id,
                     'gym_id' => $request->gym_id,
+                    'status_member' => $statusMember,
                     'type' => $request->type,
                     'status' => 'pending',
                     'date' => $date->format('Y-m-d'),
@@ -71,7 +91,6 @@ class CheckoutController extends Controller
             }
 
             return redirect()->route('transaction')->with('success.checkout', true);
-
         } catch (\Throwable $th) {
             return redirect()->route('pelatih')->with('error.checkout', true);
         }
@@ -83,8 +102,8 @@ class CheckoutController extends Controller
 
         $transaction =
 
-        // Set your Merchant Server Key
-        \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+            // Set your Merchant Server Key
+            \Midtrans\Config::$serverKey = config('midtrans.serverKey');
         // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
         \Midtrans\Config::$isProduction = config('midtrans.isProduction');
         // Set sanitization on (default)
@@ -111,7 +130,7 @@ class CheckoutController extends Controller
             $snapToken = Snap::getSnapToken($params);
             //code...
 
-            if($snapToken != null) {
+            if ($snapToken != null) {
                 Transaction::create([
                     'user_id' => Auth::user()->id,
                     'product_id' => $id,
@@ -125,7 +144,6 @@ class CheckoutController extends Controller
             }
 
             return redirect()->route('transaction')->with('success.checkout', true);
-
         } catch (\Throwable $th) {
             return redirect()->route('upgrade')->with('error.checkout', true);
         }

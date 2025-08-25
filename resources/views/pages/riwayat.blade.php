@@ -21,11 +21,12 @@
                 })
             </script>
             <div class="flex flex-col gap-4 w-full max-w-7xl">
-                <div class="w-full grid grid-cols-6 border border-gray-300 p-4 gap-4 rounded-md place-items-center">
+                <div class="w-full grid grid-cols-7 border border-gray-300 p-4 gap-4 rounded-md place-items-center">
                     <h3 class="text-black font-semibold place-self-start">
                         {{ Auth::user()->role == 'member' ? 'Nama Pelatih / Kartu Member' : 'Nama Member' }}
                     </h3>
                     <h3 class="text-black font-semibold">Harga</h3>
+                    <h3 class="text-black font-semibold">Status Member</h3>
                     <h3 class="text-black font-semibold place-self-start">Tipe Pembayaran</h3>
                     <h3 class="text-black font-semibold">Status</h3>
                     <h3 class="text-black font-semibold">Tanggal</h3>
@@ -39,11 +40,28 @@
                 @else
                     @foreach ($listTransaksi as $item)
                         <div
-                            class="w-full grid grid-cols-6 border border-gray-300 transition-all cursor-pointer   p-4 gap-4 rounded-md place-items-center">
+                            class="w-full grid grid-cols-7 border border-gray-300 transition-all cursor-pointer   p-4 gap-4 rounded-md place-items-center">
                             <div class="place-self-start flex items-center justify-center h-full">
-                                <h3 class="text-black truncate ">{{ $item->user ? $item->user->firstname : "User Dihapus" }}</h3>
+                                <h3 class="text-black truncate max-w-48">{{ $item->user ? $item->user->firstname : 'User Dihapus' }}
+                                </h3>
                             </div>
                             <h3 class="text-black ">@currency($item->total_price)</h3>
+                            {{-- Status Member --}}
+                            @if ($item->type == 'Booking')
+                                @if ($item->status_member)
+                                    <div class="badge badge-success text-white p-4">
+                                        {{ 'Member' }}
+                                    </div>
+                                @else
+                                    <div class="badge badge-error text-white p-4">
+                                        {{ 'Non Member' }}
+                                    </div>
+                                @endif
+                            @else
+                                <div class="badge bg-ghost text-white p-4">
+                                    -
+                                </div>
+                            @endif
                             <div class="place-self-start  h-full flex items-center justify-center">
                                 <h3 class="text-black truncate">{{ $item->type }}</h3>
                             </div>
@@ -77,7 +95,26 @@
                                     <div class="flex flex-col gap-4  min-w-96 cursor-default">
                                         <x-label type="text" title="Transaksi ID" value="{{ $item->id }}" />
                                         <x-label type="text" title="Nama Pelatih"
-                                            value="{{ $item->user ? $item->user->firstname : "User Dihapus" }}" />
+                                            value="{{ $item->user ? $item->user->firstname : 'User Dihapus' }}" />
+
+                                        <x-label type="status" title="Status Member">
+                                            {{-- Status Member --}}
+                                            @if ($item->type == 'Booking')
+                                                @if ($item->status_member)
+                                                    <div class="badge badge-success text-white p-4">
+                                                        {{ 'Member' }}
+                                                    </div>
+                                                @else
+                                                    <div class="badge badge-error text-white p-4">
+                                                        {{ 'Non Member' }}
+                                                    </div>
+                                                @endif
+                                            @else
+                                                <div class="badge bg-ghost text-white p-4">
+                                                    -
+                                                </div>
+                                            @endif
+                                        </x-label>
                                         <x-label type="text" title="Tipe Pembayaran" value="{{ $item->type }}" />
                                         <x-label type="text" title="Tanggal" value="{{ $item->date }}" />
                                         <x-label type="status" title="Status Pembayaran">

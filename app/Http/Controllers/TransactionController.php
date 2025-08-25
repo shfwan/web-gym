@@ -46,7 +46,7 @@ class TransactionController extends Controller
             return view('pages.booking', ['listTransaksi' => $transactions]);
         }
 
-        if($filter == "Semua") {
+        if ($filter == "Semua") {
             $transactions = Transaction::with('user')->orderBy('id', 'DESC')->where('status', 'accepted')->where('date', Carbon::now()->format('Y-m-d'))->paginate(10);
             foreach ($transactions as $transaction) {
                 // find product
@@ -83,33 +83,55 @@ class TransactionController extends Controller
                 $findCardMember = CardMember::where('id', $findTransaction->product_id)->first();
                 $findMember = Member::where('user_id', auth()->user()->id)->first();
 
-                $date = Carbon::now();
 
-                switch ($findCardMember->type) {
-                    case 'Hari':
-                        $expiredAt = $date->addDays(1 * $findCardMember->long);
-                        break;
-
-                    case 'Minggu':
-                        $expiredAt = $date->addDays(7 * $findCardMember->long);
-                        break;
-
-                    case 'Bulan':
-                        $expiredAt = $date->addDays(30 * $findCardMember->long);
-                        break;
-
-                    case 'Tahun':
-                        $expiredAt = $date->addDays(365 * $findCardMember->long);
-                        break;
-                    default:
-                }
 
                 if ($findMember) {
+                    $date = Carbon::parse($findMember->expiredAt);
+
+                    switch ($findCardMember->type) {
+                        case 'Hari':
+                            $expiredAt = $date->addDays(1 * $findCardMember->long);
+                            break;
+
+                        case 'Minggu':
+                            $expiredAt = $date->addDays(7 * $findCardMember->long);
+                            break;
+
+                        case 'Bulan':
+                            $expiredAt = $date->addDays(30 * $findCardMember->long);
+                            break;
+                        case 'Tahun':
+                            $expiredAt = $date->addDays(365 * $findCardMember->long);
+                            break;
+                        default:
+                    }
+
                     Member::where('user_id', auth()->user()->id)->update([
                         'user_id' => auth()->user()->id,
                         'expiredAt' => $expiredAt->toDateString(),
                     ]);
                 } else {
+                    $date = Carbon::now();
+
+                    switch ($findCardMember->type) {
+                        case 'Hari':
+                            $expiredAt = $date->addDays(1 * $findCardMember->long);
+                            break;
+
+                        case 'Minggu':
+                            $expiredAt = $date->addDays(7 * $findCardMember->long);
+                            break;
+
+                        case 'Bulan':
+                            $expiredAt = $date->addDays(30 * $findCardMember->long);
+                            break;
+
+                        case 'Tahun':
+                            $expiredAt = $date->addDays(365 * $findCardMember->long);
+                            break;
+                        default:
+                    }
+
                     Member::create([
                         'user_id' => auth()->user()->id,
                         'expiredAt' => $expiredAt->toDateString(),

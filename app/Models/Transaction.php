@@ -14,6 +14,7 @@ class Transaction extends Model
         'user_id',
         'gym_id',
         'product_id',
+        'status_member',
         'type',
         'status',
         'date',
